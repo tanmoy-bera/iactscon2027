@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>NAPCON 2024</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <style>
+        .left-wrap {
+            grid-area: leftwrap;
+            padding: 60px 70px 0 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .payment-wrap {
+            grid-area: paymentwrap;
+            background: linear-gradient(#5497a0, #10434d);
+            padding: 35px;
+            border-bottom-right-radius: 25px;
+            border-bottom-left-radius: 25px;
+            margin-bottom: 30px;
+        }
+
+        .total-bill {
+            grid-area: totalbill;
+            margin-bottom: 30px;
+            padding: 60px 0 0 40px;
+        }
+
+        .summery {
+            grid-area: summery;
+        }
+
+        .summery ul {
+            margin: 0;
+            max-height: 200px;
+            overflow: auto;
+            padding: 0;
+        }
+
+        .summery ul::-webkit-scrollbar {
+            width: 4px;
+
+            border-radius: 50px;
+        }
+
+        .summery ul::-webkit-scrollbar-track {
+            background: #237383;
+        }
+
+        .summery ul::-webkit-scrollbar-thumb {
+            background: #28626d;
+        }
+
+        .summery ul li {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(#122f33, #104853);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        .order-image {
+            margin: 0;
+            width: 33px;
+        }
+
+        .order-image img {
+            width: 100%;
+        }
+
+        .order-name {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .order-amount {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .order-dlt {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .block-head {
+            margin-top: 0;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .bank-info {}
+
+        .bank-info p {
+            margin-bottom: 0;
+            margin-top: 5px;
+            color: #4cc6dd;
+        }
+
+        .qr-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 15px;
+        }
+
+        .qr-info {
+            margin-top: 1em;
+        }
+
+        .qr-info p span {
+            color: #4cc6dd;
+            font-size: 15px;
+        }
+
+        .qr-info p .qr-img {
+            width: 71px;
+            background: white;
+            padding: 12px;
+            border-radius: 17px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .qr-info p span img {
+            width: 100%;
+        }
+
+        .card-info {}
+
+        .card-info p {
+            display: flex;
+            gap: 5px;
+        }
+
+        .card-info p img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .payment-wrap {}
+
+        .paymeny-type-wrap {}
+
+        .card-con {}
+
+        .paymnet-box {
+            display: none;
+        }
+
+        .checkout-main-wrap-box {
+            display: grid;
+            grid-template-areas:
+                'leftwrap leftwrap paymentwrap paymentwrap totalbill'
+                'leftwrap leftwrap paymentwrap paymentwrap totalbill'
+                'leftwrap leftwrap summery summery summery';
+            padding: 50px;
+            padding-top: 0;
+            background: #164f5a;
+            border-radius: 25px;
+            width: 1023px;
+            grid-template-columns: min-content;
+        }
+
+        .payment-type-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .card-con {
+            display: block;
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            color: white;
+        }
+
+        /* Hide the browser's default radio button */
+        .card-con input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Create a custom radio button */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: #eeeeee52;
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .card-con:hover input~.checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .card-con input:checked~.checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .card-con input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .card-con .checkmark:after {
+            top: 6px;
+            left: 6px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .top-input {
+            background: linear-gradient(#346f77, #0e3841);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .top-input label {
+            width: 100%;
+            display: inline-block;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .top-input input {
+            background: transparent;
+            border: none;
+            width: 100%;
+            height: 40px;
+            outline: 0;
+            color: white;
+        }
+
+        .top-input input::placeholder {
+            color: white;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 2px solid #347e8d;
+        }
+
+        .input-box label {
+            width: 100%;
+            display: inline-block;
+            font-size: 16px;
+            width: 50%;
+            color: white;
+        }
+
+        .input-box input {
+            width: 50%;
+            font-size: 14px;
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            text-align: right;
+            color: white;
+            outline: 0;
+        }
+
+        .payment-button {
+            margin-top: 25px;
+            padding: 19px 31px;
+            font-size: 17px;
+            border-radius: 15px;
+            border: none;
+            background: #113e47;
+            color: white;
+        }
+
+        .total-bill h5 {
+            margin-top: 0;
+            font-size: 18px;
+            margin-bottom: 0;
+            color: white;
+        }
+
+        .total-bill h3 {
+            margin-bottom: 0;
+            margin-top: 15px;
+            font-size: 40px;
+            color: #bdf7ff;
+        }
+
+        .file-label {
+            text-align: center;
+            border: 1px dashed;
+            padding: 11px;
+            width: 75px !important;
+        }
+
+        .qr-large {
+            width: 300px;
+            position: absolute;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .qr-large img {
+            width: 100%;
+        }
+
+        .blr {
+            filter: blur(5px);
+        }
+
+        .qr-large button {
+            position: absolute;
+            bottom: -43px;
+            left: 50%;
+            transform: translate(-50%, 0px);
+            background: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .bill-info-text {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #347e8d;
+        }
+
+        .bill-info-text p {
+            color: white;
+            font-size: 16px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .total-bill-amount {}
+
+        @media only screen and (min-width: 300px) and (max-width: 999px) {
+            .checkout-main-wrap-box {
+                grid-template-areas:
+                    'leftwrap'
+                    'paymentwrap '
+                    'totalbill'
+                    'summery';
+                width: 300px;
+                margin: 10px 0;
+                padding: 20px;
+                padding-top: 0;
+            }
+
+            .checkout-main-wrap-inner {
+                align-items: start !important;
+                justify-content: center !important;
+                overflow: auto;
+            }
+
+            .payment-type-wrap {
+                flex-wrap: wrap;
+            }
+
+            .card-con {
+                width: 35%;
+            }
+
+            .payment-wrap {
+                padding: 17px;
+                border-radius: 25px;
+                margin-bottom: 0;
+                margin-top: 30px;
+            }
+
+            .total-bill {
+                padding: 30px 0 0 0px;
+            }
+
+            .summery ul {
+                max-height: max-content;
+            }
+
+            .summery ul li {
+                flex-direction: column;
+                align-items: start;
+                gap: 6px;
+                position: relative;
+            }
+
+            .order-dlt {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+
+            .left-wrap {
+                padding: 30px 0px 0 0;
+            }
+
+            .qr-large {
+                top: 50%;
+                transform: translate(0px, -50%);
+            }
+        }
+    </style>
+    <div id="checkout-main-wrap" class="checkout-main-wrap"
+        style="    position: fixed;width: 100%;height: 100vh;top: 0;left: 0;background: rgba(0, 0, 0, 0.52);z-index: 99;">
+        <div class="checkout-main-wrap-inner"
+            style="width: 100%;height: 100%;display: flex;align-items: center;justify-content: center;">
+            <div class="checkout-main-wrap-box">
+                <div class="left-wrap">
+                    <div class="card-info">
+                        <h4 class="block-head">Accepted Cards</h4>
+                        <p>
+                            <img src="">
+                            <img src="">
+                        </p>
+                    </div>
+                    <div class="bank-info">
+                        <h4 class="block-head">Bank Details</h4>
+                        <p>Bank Name</p>
+                        <p>Account Number</p>
+                        <p>Account Holder</p>
+                        <p>IFSC Code</p>
+                        <p>Branch</p>
+                    </div>
+                    <div class="qr-info">
+                        <h4 class="block-head">UPI Details</h4>
+                        <p>
+                            <span class="qr-img"><img src="qr-code-148732_1280.webp"></span>
+                            <span>Lorem Ipsum</span>
+                        </p>
+                    </div>
+                    <div class="bank-info">
+                        <h4 class="block-head">Helpline No.</h4>
+                        <p><i class="mr-2"></i>+91 9874563210</p>
+                    </div>
+                </div>
+                <div class="payment-wrap">
+                    <div class="payment-type-wrap">
+                        <label class="card-con">
+                            Cards
+                            <input type="radio" name="radio" id="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="card-con">
+                            Chq/DD
+                            <input type="radio" name="radio" id="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="card-con">
+                            NEFT/UPI
+                            <input type="radio" name="radio" id="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="card-con">
+                            Cash
+                            <input type="radio" name="radio" id="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="paymnet-box" id="chq-dd">
+                        <div class="top-input">
+                            <label>Chq/DD No.</label>
+                            <input type="text" placeholder="Enter Chq/DD No.">
+                        </div>
+                        <div class="input-box">
+                            <label>Drawee Bank</label>
+                            <input type="text" placeholder="Enter Drawee Bank Name">
+                        </div>
+                        <div class="input-box">
+                            <label>Date</label>
+                            <input type="date">
+                        </div>
+                    </div>
+                    <div class="paymnet-box" id="neft-upi" style="display: block;">
+                        <div class="top-input">
+                            <label>Transaction Id</label>
+                            <input type="text" placeholder="Enter Transaction Id">
+                        </div>
+                        <div class="input-box">
+                            <label>Date</label>
+                            <input type="date">
+                        </div>
+                        <div class="input-box">
+                            <label>Image</label>
+                            <input type="file" id="upi" style="display: none;">
+                            <label for="upi" class="file-label">+</label>
+                        </div>
+                    </div>
+                    <div class="paymnet-box" id="cash">
+                        <div class="top-input">
+                            <label>Date</label>
+                            <input type="date">
+                        </div>
+                        <div class="input-box">
+                            <label>Image</label>
+                            <input type="file" id="cash" style="display: none;">
+                            <label for="cash" class="file-label">+</label>
+                        </div>
+                    </div>
+                    <button class="payment-button">Submit</button>
+                </div>
+                <div class="total-bill">
+                    <div class="bill-info-text">
+                        <p>Chq/DD should be posted to the address, mentioned below -</p>
+                        <p>c/o ISNEZCON 2024 Secretariat
+                            FD 386 Salt Lake Sec – III, Kolkata – 700106</p>
+                    </div>
+                    <div class="total-bill-amount">
+                        <h5>Total Payable Amount</h5>
+                        <h3>₹ 2000</h3>
+                    </div>
+                </div>
+                <div class="summery">
+                    <h4 class="block-head">Order Summery</h4>
+                    <ul>
+                        <li>
+                            <p class="order-image">
+                                <img
+                                    src="https://ruedakolkata.com/napcon2024/uploads/EMAIL.HEADER.FOOTER.IMAGE/ICON_0002_240913131957.png">
+                            </p>
+                            <p class="order-name">
+                                Registration - ICS Members
+                            </p>
+                            <p class="order-amount">
+                                ₹ 7500.00
+                            </p>
+                            <button class="order-dlt">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <p class="order-image">
+                                <img
+                                    src="https://ruedakolkata.com/napcon2024/uploads/EMAIL.HEADER.FOOTER.IMAGE/ICON_0002_240913131957.png">
+                            </p>
+                            <p class="order-name">
+                                Registration - ICS Members
+                            </p>
+                            <p class="order-amount">
+                                ₹ 7500.00
+                            </p>
+                            <button class="order-dlt">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <p class="order-image">
+                                <img
+                                    src="https://ruedakolkata.com/napcon2024/uploads/EMAIL.HEADER.FOOTER.IMAGE/ICON_0002_240913131957.png">
+                            </p>
+                            <p class="order-name">
+                                Registration - ICS Members
+                            </p>
+                            <p class="order-amount">
+                                ₹ 7500.00
+                            </p>
+                            <button class="order-dlt">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <p class="order-image">
+                                <img
+                                    src="https://ruedakolkata.com/napcon2024/uploads/EMAIL.HEADER.FOOTER.IMAGE/ICON_0002_240913131957.png">
+                            </p>
+                            <p class="order-name">
+                                Registration - ICS Members
+                            </p>
+                            <p class="order-amount">
+                                ₹ 7500.00
+                            </p>
+                            <button class="order-dlt">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <p class="order-image">
+                                <img
+                                    src="https://ruedakolkata.com/napcon2024/uploads/EMAIL.HEADER.FOOTER.IMAGE/ICON_0002_240913131957.png">
+                            </p>
+                            <p class="order-name">
+                                Registration - ICS Members
+                            </p>
+                            <p class="order-amount">
+                                ₹ 7500.00
+                            </p>
+                            <button class="order-dlt">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="qr-large">
+                <img src="qr-code-148732_1280.webp">
+                <button>
+                    X
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(".qr-img").click(function () {
+            $(".qr-large").show();
+            $(".checkout-main-wrap-box").addClass("blr");
+            $(".checkout-main-wrap-inner").addClass("overflow-hidden");
+        });
+        $(".qr-large button").click(function () {
+            $(".qr-large").hide();
+            $(".checkout-main-wrap-box").removeClass("blr");
+            $(".checkout-main-wrap-inner").removeClass("overflow-hidden");
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,4 @@
+<?php
+// Databse table names - USE TO PUT NEW TABLE NAME ONLY REQUIRED WITH IN THIS SCOPE
+?>
+

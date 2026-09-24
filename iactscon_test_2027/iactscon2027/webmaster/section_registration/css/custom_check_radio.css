@@ -1,0 +1,217 @@
+.cus_check {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    font-size: 12px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 37px;
+    flex: 1;
+}
+
+.cus_check input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.cus_check .checkmark {
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid var(--border1);
+    border-radius: 5px;
+    line-height: 34px;
+    text-align: center;
+    display: inline-block;
+}
+
+.cus_check:hover .checkmark {
+    background-color: #00000042
+}
+
+.cus_check .checkmark:after,
+.cus_check .checkmark:before {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.cus_check input:checked~.checkmark:after,
+.cus_check input:checked~.checkmark:before {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.cus_check .checkmark:after {
+    left: 8px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    border: 1px solid var(--border1);
+    -ms-transform: rotate(45deg);
+    display: none !important;
+    transform: translateY(-50%);
+    border-radius: 50px;
+}
+
+.cus_check .checkmark:before {
+    left: 8px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    border: 1px solid var(--border1);
+    -ms-transform: rotate(45deg);
+    display: none !important;
+    transform: translateY(-50%);
+    border-radius: 50px;
+}
+
+/* Style the checkmark/indicator */
+.cus_check.category_check {
+    flex: unset;
+    height: 42px;
+}
+
+.cus_check.category_check.workshop_check {
+    height: 47px;
+}
+
+.cus_check.category_check .checkmark,
+.cus_check.outfrm_radio .checkmark,
+.cus_check.outfrm_check .checkmark {
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    line-height: 40px;
+    padding-left: 31px;
+}
+
+.cus_check.outfrm_radio .checkmark,
+.cus_check.outfrm_check .checkmark {
+    line-height: 34px;
+}
+
+.cus_check.category_check.workshop_check .checkmark {
+    border: 0;
+    flex-direction: column;
+    line-height: 16px;
+    justify-content: center;
+}
+
+.cus_check.category_check .checkmark i {
+    font-style: normal;
+    color: white;
+}
+
+.cus_check.category_check.workshop_check .checkmark i {
+    font-size: 11px;
+}
+
+.cus_check.category_check .checkmark:after,
+.cus_check.outfrm_radio .checkmark:after,
+.cus_check.outfrm_check .checkmark:after {
+    display: block !important;
+    left: 8px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    border: 1px solid var(--border1);
+    transform: translateY(-50%);
+    border-radius: 50px;
+}
+
+.cus_check.category_check.workshop_check .checkmark:after,
+.cus_check.outfrm_check .checkmark:after {
+    border-radius: 3px;
+}
+
+.cus_check.category_check input:checked~.checkmark:after,
+.cus_check.outfrm_radio input:checked~.checkmark:after,
+.cus_check.outfrm_check input:checked~.checkmark:after {
+    border-color: #ffffff;
+}
+
+.cus_check.category_check input:checked~.checkmark:before,
+.cus_check.outfrm_radio input:checked~.checkmark:before,
+.cus_check.outfrm_check input:checked~.checkmark:before {
+    left: 10px;
+    display: block !important;
+    background: white;
+    width: 11px;
+    height: 11px;
+}
+
+.cus_check.category_check.workshop_check input:checked~.checkmark:before,
+.cus_check.outfrm_check input:checked~.checkmark:before {
+    border: solid white;
+    border-width: 0 1px 1px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg) translateY(-80%);
+    background: transparent;
+    width: 3px;
+    height: 7px;
+    border-radius: 0;
+}
+
+.cus_check_wrap {
+    display: flex;
+    gap: 5px;
+}
+
+.cus_check.gender_check input:checked~.checkmark {
+    background-color: var(--success1);
+    color: var(--success2);
+    border-color: var(--success1);
+}
+
+.cus_check.mode_check input:checked~.checkmark,
+.cus_check.category_check input:checked~.checkmark,
+.cus_check.pay_check input:checked~.checkmark {
+    background-color: var(--danger1);
+    color: var(--danger2);
+    border-color: var(--danger1);
+}
+
+.cus_check.category_check.workshop_check input:checked~.checkmark {
+    background-color: var(--info1);
+    color: var(--info2);
+}
+
+.cus_check.outfrm_radio input:checked~.checkmark,
+.cus_check.outfrm_check input:checked~.checkmark {
+    background-color: var(--default1);
+    color: var(--default2);
+}
+
+.table_wrap .check_select .cus_check.category_check.workshop_check {
+    height: 15px;
+    width: 15px;
+    margin: auto;
+}
+
+.table_wrap .check_select .cus_check.category_check .checkmark {
+    padding: 0;
+}
+
+.table_wrap .check_select .cus_check.category_check .checkmark:after {
+    left: 0;
+}
+
+.table_wrap .check_select .cus_check.category_check.workshop_check input:checked~.checkmark {
+    background-color: transparent;
+}
+
+.table_wrap .check_select .cus_check.category_check input:checked~.checkmark:before {
+    left: 2px;
+
+}

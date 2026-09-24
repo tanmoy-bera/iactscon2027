@@ -1,0 +1,284 @@
+.cus_check_wrap,
+.stay_wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.registration_right_body_sub_head .registration_right_body_head_right .cus_check_wrap {
+    background: var(--background);
+    border-radius: 5px;
+    padding: 4px;
+    flex-direction: row;
+    height: 32px;
+    gap: 4px;
+}
+
+.cus_check_wrap.g2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.cus_check {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    font-size: 12px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* height: 37px; */
+    flex: 1;
+}
+
+.cus_check input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.cus_check .checkmark,
+.stay_wrap li {
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid var(--border1);
+    border-radius: 5px;
+    line-height: 34px;
+    text-align: center;
+}
+
+.registration_right_body_sub_head .registration_right_body_head_right .cus_check_wrap .checkmark {
+    height: 100%;
+    display: inline-block;
+    width: 40px;
+    line-height: 24px;
+    border: none;
+    font-weight: 500;
+}
+
+.cus_check:hover .checkmark {
+    background-color: #00000042
+}
+
+
+
+.cus_check.regi_category,
+.cus_check.workshop_select,
+.cus_check.gender_check {
+    /* height: 60px; */
+    flex: unset;
+    font-size: 14px;
+}
+
+.cus_check.regi_category .checkmark,
+.cus_check.workshop_select .checkmark,
+.stay_wrap li,
+.cus_check.stay_select .checkmark,
+.cus_check.gender_check .checkmark {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--background1);
+    border: 1px solid var(--border1);
+    padding: 12px 15px;
+}
+
+.cus_check.gender_check .checkmark {
+    line-height: normal;
+    padding: 7px 15px;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.cus_check.regi_category .checkmark n,
+.cus_check.workshop_select .checkmark n,
+.stay_wrap li .stay_li_right n {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.cus_check.regi_category .checkmark n i,
+.cus_check.workshop_select .checkmark n i {
+    height: 34px;
+    min-width: 34px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background: #ffffff14;
+    border: 1px solid var(--border1);
+    color: #ffffff9e;
+}
+
+.cus_check.regi_category .checkmark n g,
+.cus_check.workshop_select .checkmark g,
+.stay_wrap li .stay_li_right n g {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    line-height: 16px;
+    gap: 2px;
+}
+
+.cus_check.regi_category .checkmark g ii,
+.cus_check.workshop_select .checkmark g ii,
+.stay_wrap li .stay_li_right g ii,
+.cus_check.workshop_select .checkmark g k {
+    font-size: 11px;
+    color: var(--text_op);
+}
+
+.cus_check.regi_category .checkmark h,
+.cus_check.workshop_select .checkmark h,
+.guest_wrap li h {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.cus_check.regi_category .checkmark h i,
+.cus_check.workshop_select .checkmark n iii,
+.stay_wrap li .stay_li_right n iii {
+    min-width: 18px;
+    height: 18px;
+    border: 1px solid var(--border1);
+    display: inline-block;
+    border-radius: 50px;
+    position: relative;
+}
+
+.cus_check.regi_category .checkmark h i::before,
+.cus_check.workshop_select .checkmark n iii::before,
+.stay_wrap li .stay_li_right n iii::before {
+    content: '';
+    position: absolute;
+    border: solid var(--dark-blue);
+    border-width: 0 1px 1px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg) translateY(-80%);
+    background: transparent;
+    width: 4px;
+    height: 9px;
+    border-radius: 0;
+    left: 1px;
+    top: 7px;
+    display: none;
+}
+
+.cus_check.workshop_select .checkmark {
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+}
+
+.cus_check.workshop_select .checkmark n,
+.cus_check.workshop_select .checkmark g,
+.stay_wrap li .stay_li_right n g {
+    width: 100%;
+    text-align: left;
+}
+
+.cus_check.workshop_select .checkmark h,
+.guest_wrap li h {
+    flex-direction: column;
+    align-items: start;
+    gap: 0 !important;
+    font-size: 11px !important;
+    line-height: 23px;
+    padding-top: 5px;
+    border-top: 1px solid var(--border1);
+    width: 100%;
+    font-weight: 300;
+}
+
+.cus_check.workshop_select.gala_select .checkmark h {
+    font-size: 14px !important;
+    line-height: 24px;
+    font-weight: 500;
+}
+
+.cus_check.workshop_select .checkmark h l i,
+.stay_wrap li .stay_li_right g ii i,
+.add_guest i,
+.cus_check.workshop_select .checkmark g i {
+    margin-right: 3px;
+}
+
+.cus_check.workshop_select .checkmark g ii {
+    color: var(--sky);
+}
+
+.cus_check.stay_select .checkmark {
+    flex-direction: column;
+    line-height: 18px;
+    color: var(--text_op);
+    background: var(--background);
+    font-size: 12px;
+    padding: 8px 20px;
+}
+
+.cus_check.stay_select .checkmark n {
+    gap: 5px;
+}
+
+.cus_check.regi_category input:checked~.checkmark,
+.cus_check.workshop_select input:checked~.checkmark,
+.cus_check.stay_select input:checked~.checkmark,
+.cus_check.gender_check input:checked~.checkmark {
+    border-color: var(--sky);
+    box-shadow: 0px 0px 10px #7efdff47;
+}
+
+.cus_check.regi_category:hover .checkmark,
+.cus_check.workshop_select:hover .checkmark {
+    background: #ffffff1f;
+}
+
+.cus_check.regi_category:hover .checkmark n i,
+.cus_check.regi_category:hover .checkmark g ii,
+.cus_check.workshop_select:hover.checkmark n i {
+    color: white;
+}
+
+.cus_check.regi_category input:checked~.checkmark n i,
+.cus_check.regi_category input:checked~.checkmark h i,
+.cus_check.workshop_select input:checked~.checkmark n i,
+.cus_check.workshop_select input:checked~.checkmark n iii,
+.registration_right_body_sub_head .registration_right_body_head_right .cus_check.hotel_night input:checked~.checkmark,
+.cus_check.stay_select:hover .checkmark,
+.cus_check.stay_select input:checked~.checkmark {
+    background: var(--sky);
+    color: var(--dark-blue);
+    box-shadow: 0px 3px 9px #7efdff5c;
+}
+
+.cus_check.regi_category input:checked~.checkmark h i::before,
+.cus_check.workshop_select input:checked~.checkmark n iii::before {
+    display: block;
+}
+
+.cus_check.regi_category .checkmark g ii {
+    text-align: left;
+}
+
+.cus_check.regi_category .checkmark {
+    gap: var(--gap);
+}
+.cus_check.regi_category .checkmark n i img{
+   
+}
+.cus_check.regi_category input:checked~.checkmark n i img {
+    filter: brightness(0.3);
+}

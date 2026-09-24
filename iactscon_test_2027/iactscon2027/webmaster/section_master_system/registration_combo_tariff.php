@@ -1,0 +1,199 @@
+<?php
+include_once('includes/init.php');
+
+page_header("Registration Tariff");
+
+$pageKey                       		       = "_pgn_";
+$pageKeyVal                    		       = ($_REQUEST[$pageKey] == "") ? 0 : $_REQUEST[$pageKey];
+
+@$searchString                 		       = "";
+$searchArray                   		       = array();
+
+$searchArray[$pageKey]         		       = $pageKeyVal;
+$searchArray['src_tariff_classification']  = trim($_REQUEST['src_tariff_classification']);
+
+foreach ($searchArray as $searchKey => $searchVal) {
+	if ($searchVal != "") {
+		$searchString .= "&" . $searchKey . "=" . $searchVal;
+	}
+}
+?>
+<div class="body_wrap">
+	<div class="body_content_box">
+		<?php
+		switch ($show) {
+
+			// TARIFF CLASSIFICATION EDIT FORM LAYOUT
+			case 'edit':
+				tariffClassificationEditFormLayout($cfg, $mycms);
+				break;
+
+			// TARIFF CLASSIFICATION LISTING LAYOUT
+			default:
+				tariffClassificationListingLayout($cfg, $mycms);
+				break;
+		}
+		?>
+	</div>
+</div>
+<?php
+
+page_footer();
+
+/**********************************************************************/
+/*                TARIFF CLASSIFICATION LISTING LAYOUT                */
+/**********************************************************************/
+function tariffClassificationListingLayout($cfg, $mycms)
+{
+?>
+	<form class="con_box-grd row" name="frmSearch" id="frmSearch" action="registration_tariff.process.php" method="post">
+		<input type="hidden" name="act" value="search_classification" />
+
+		<div class="form-group">
+			<h2> Registration Tariff</h2>
+
+		</div>
+		<div class="table_wrap">
+
+			<?
+
+			$sql['QUERY']	=	"SELECT cutoff.cutoff_title  
+											   FROM " . _DB_TARIFF_CUTOFF_ . " cutoff
+										      WHERE status = 'A'";
+			$res = $mycms->sql_select($sql);
+
+			$registrationDetails = getAllRegistrationComboTariffsPage();
+			//echo'<pre>';print_r($registrationDetails);echo'</pre>';
+			$currentCutoffId 	= getTariffCutoffId();
+			?>
+			<table width="100%">
+				<thead>
+					<tr class="theader">
+						<th width="30%">Registration Classification</th>
+						<?
+						foreach ($res as $k => $title) {
+						?>
+							<th width="100" align="right" style="width: 200px;"><?= strip_tags($title['cutoff_title']) ?></th>
+						<?
+						}
+						?>
+						<!-- <th width="7%" align="center">Action</th> -->
+					</tr>
+				</thead>
+				<tbody>
+
+					<?php
+					if ($registrationDetails) {
+						foreach ($registrationDetails as $key => $registrationDetailsVal) {
+							//echo '<pre>'; print_r($registrationDetailsVal[$key]);
+
+					?>
+							<tr class="tlisting">
+								<td ><?= getRegClsfComboName($key) ?></td>
+								<?
+								foreach ($registrationDetailsVal as $keyCutoff => $rowCutoff) {
+								?>
+									<td ><?= $rowCutoff['CURRENCY'] ?> <?= $rowCutoff['AMOUNT'] ?></td>
+								<?php
+								}
+								?>
+								<!-- <td align="center">
+												<a href="javascript:void(null);" onClick="redirectionOfLink(this)" ehref="registration_combo_tariff.php?show=edit&id=<?= $key ?>">
+												<span alt="Edit" title="Edit Record" class="icon-pen" /></a>
+										</td> -->
+							</tr>
+
+						<?
+
+						}
+					} else {
+						?>
+						<tr>
+							<td colspan="7" align="center">
+								<span class="mandatory">No Record Present.</span>
+							</td>
+						</tr>
+					<?php
+					}
+					?>
+				</tbody>
+			</table>
+			<div class="bbp-pagination">
+				<div class="bbp-pagination-count"><?= $mycms->paginateRecInfo(1) ?></div>
+				<span class="paginationDisplay"><?= $mycms->paginate(1, 'pagination') ?></span>
+			</div>
+
+		</div>
+
+	</form>
+
+	<script type="text/javascript">
+		function isNumber(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+				return false;
+			}
+			return true;
+		}
+	</script>
+<?php
+}
+
+/**************************************************************/
+/*                       EDIT TARIFF FORM                     */
+/**************************************************************/
+function tariffClassificationEditFormLayout($cfg, $mycms)
+{
+	$regClasfId    		 = $_REQUEST['id'];
+
+	$registrationDetails = getAllRegistrationComboTariffs();
+
+	$regClasfDetails	 = $registrationDetails[$regClasfId];
+?>
+	<form class="con_box-grd row" name="frmTariffEdit" id="frmTariffEdit" method="post" action="manage_reg_combo_classification.process.php" onsubmit="return onSubmitAction();">
+		<input type="hidden" name="act" id="act" value="updatetariff" />
+		<input type="hidden" name="classification_id" id="classification_id" value="<?= $regClasfId ?>" />
+		<div class="form-group">
+			<h2>Update Tariff</h2>
+		</div>
+		<div class="table_wrap">
+			
+				<table width="100%">
+					<tr>
+						<td width="50%" align="left" valign="top">Conference Registration</td>
+						<td align="left" valign="top"><?= getRegClsfComboName($regClasfId) ?></td>
+					</tr>
+					<?
+					foreach ($regClasfDetails as $key => $valRegClasfDetails) {
+						$title 		= getCutoffName($key);
+						$cutoffId 	= $key;
+					?>
+						<tr>
+							<td align="left" valign="top"><?= $title ?></td>
+							<td align="left" valign="top">
+								<?= $valRegClasfDetails['CURRENCY'] ?> &nbsp;&nbsp;
+								<input type="hidden" name="currency[<?= $cutoffId ?>]" id="currency_<?= $cutoffId ?>" value="<?= $valRegClasfDetails['CURRENCY'] ?>" />
+								<input type="text" name="tariff_cutoff_id[<?= $cutoffId ?>]" id="tariff_first_cutoff_id_<?= $cutoffId ?>"
+									value="<?= ($valRegClasfDetails['AMOUNT'] != '') ? $valRegClasfDetails['AMOUNT'] : '0.00'; ?>" style="width:80%;" required />
+							</td>
+						</tr>
+					<?
+					}
+					?>
+					<tr>
+						<td align="right"></td>
+						<td align="left">
+							<input name="back" type="button" class="btn btn-small btn-red" id="Back" value="Back"
+								onClick="location.href='registration_combo_tariff.php';" />
+							&nbsp;
+							<input type="submit" name="Save" id="Save" value="Update Tariff" class="btn btn-small btn-blue">
+						</td>
+					</tr>
+				</table>
+		</div>
+			
+	</form>
+<?php
+}
+?>

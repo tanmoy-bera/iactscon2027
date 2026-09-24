@@ -1,0 +1,1326 @@
+@media only screen and (min-width: 1000px) and (max-width: 1300px) {
+    .login_left ul {
+        gap: 38px;
+    }
+}
+
+@media only screen and (min-width: 300px) and (max-width: 999px) {
+    :root {
+        --p40: 20px;
+        --login-right: 330px;
+        --regiwidth: 97%;
+        --regileft: 195px;
+        --lftw: 264px;
+        --gap: 10px;
+    }
+
+    .con_logo {
+        width: 154px;
+    }
+
+    .login_left h2,
+    .abstratc_left h3 {
+        font-size: 22px;
+    }
+
+    .login_left p,
+    .abstratc_left p {
+        margin-bottom: 13px;
+        font-size: 10px;
+    }
+
+    .login_left ol {
+        gap: 11px;
+        margin-bottom: 15px;
+    }
+
+    .login_left ol li {
+        gap: 8px;
+    }
+
+    .login_left ol li h6 g {
+        font-size: 12px;
+    }
+
+    .login_left ol li h6 n {
+        font-size: 10px;
+    }
+
+    .login_left ol li span {
+        height: 29px;
+        min-width: 29px;
+        font-size: 13px;
+    }
+
+    .login_left ul {
+        gap: 22px;
+        padding-top: 15px;
+    }
+
+    .login_left ul li n {
+        font-size: 26px;
+        line-height: 31px;
+    }
+
+    .login_left ul li i {
+        font-size: 10px;
+    }
+
+    .speaker_head h2 {
+        font-size: 16px;
+    }
+
+    .speaker_head h2 span {
+        font-size: 11px;
+    }
+
+    .speaker_head a {
+        font-size: 11px;
+    }
+
+    .login_right {
+        padding: 20px;
+    }
+
+    .login_right h4,
+    .abstract_inner h5 {
+        font-size: 18px;
+    }
+
+    .login_right p {
+        font-size: 12px;
+    }
+
+    .login_head h6,
+    .abstract_inner h6 {
+        font-size: 11px;
+    }
+
+    .login_head h2 {
+        font-size: 33px;
+    }
+
+    .login_head p {
+        font-size: 12px;
+    }
+
+    .login_head {
+        gap: 2px;
+    }
+
+    .registration_left ul li {
+        font-size: 10px;
+        padding: 5px 12px;
+    }
+
+    .registration_left_bottom h5 {
+        font-size: 20px;
+    }
+
+    .registration_left_bottom h6 {
+        font-size: 11px;
+        margin-bottom: 4px;
+    }
+
+    .registration_right_head {
+        padding: 14px 25px;
+        font-size: 16px;
+        height: 53px;
+    }
+
+    .registration_right_bottom {
+        padding: 14px 25px;
+        height: 55px;
+    }
+
+    .registration_right_body {
+        padding: 14px 25px;
+        height: calc(100% - 108px);
+    }
+
+    .cus_check.regi_category .checkmark,
+    .cus_check.workshop_select .checkmark,
+    .stay_wrap li,
+    .cus_check.stay_select .checkmark,
+    .cus_check.gender_check .checkmark {
+        padding: 10px 12px;
+    }
+
+    .cus_check.regi_category .checkmark n,
+    .cus_check.workshop_select .checkmark n,
+    .stay_wrap li .stay_li_right n {
+        gap: 11px;
+    }
+
+    .cus_check.regi_category,
+    .cus_check.workshop_select,
+    .cus_check.gender_check {
+        font-size: 13px;
+    }
+
+    .cus_check.regi_category .checkmark g ii,
+    .cus_check.workshop_select .checkmark g ii,
+    .stay_wrap li .stay_li_right g ii {
+        font-size: 10px;
+    }
+
+    .cus_check.regi_category .checkmark n g,
+    .cus_check.workshop_select .checkmark g,
+    .stay_wrap li .stay_li_right n g {
+        line-height: 14px;
+    }
+
+    .cus_check.regi_category .checkmark n i,
+    .cus_check.workshop_select .checkmark n i {
+        height: 30px;
+        min-width: 30px;
+        font-size: 12px;
+    }
+
+    .cus_check.regi_category .checkmark h,
+    .cus_check.workshop_select .checkmark h {
+        font-size: 13px;
+        gap: 17px;
+    }
+
+    .cus_check.regi_category .checkmark h i,
+    .cus_check.workshop_select .checkmark n iii,
+    .stay_wrap li .stay_li_right n iii {
+        min-width: 16px;
+        height: 16px;
+    }
+
+    .cus_check.regi_category .checkmark h i::before,
+    .cus_check.workshop_select .checkmark n iii::before,
+    .stay_wrap li .stay_li_right n iii::before {
+        width: 4px;
+        height: 7px;
+        left: 1px;
+        top: 7px;
+    }
+
+    .cus_check.stay_select .checkmark {
+        line-height: 15px;
+        padding: 9px 12px;
+        font-size: 11px;
+    }
+
+    .stay_wrap li .stay_li_right .cus_check_wrap {
+        margin-top: 10px;
+    }
+
+    .stay_wrap li img {
+        min-width: 158px;
+        height: 124px;
+    }
+
+    .registration_right_body_head_left h5 {
+        font-size: 11px;
+    }
+
+    .registration_right_body_head_left h4 {
+        font-size: 16px;
+    }
+
+
+
+
+
+    .profile_body,
+    header {
+        left: 0;
+        width: 100%;
+
+    }
+
+    .profile_detail_content h2 {
+        margin-bottom: 3px;
+        font-size: 18px;
+    }
+
+    .profile_detail_content h5 {
+        margin-bottom: 11px;
+        font-size: 11px;
+    }
+
+    .profile_detail_content h6 span {
+        padding: 5px 9px;
+        gap: 6px;
+        font-size: 10px;
+    }
+
+    .profile_detail_img img {
+        height: 68px;
+        width: 68px;
+    }
+
+    .profile_detail_img label {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+    }
+
+    .profile_detail_right a,
+    .profile_top_right a {
+        font-size: 11px;
+        padding: 4px 9px;
+    }
+
+    .workshop_detail .profile_detaile_box_body ul li p,
+    .guest_detail .profile_detaile_box_body ul li p {
+        font-size: 11px;
+        line-height: 15px;
+        padding-right: 24px;
+    }
+
+    .workshop_detail .profile_detaile_box_body ul li p n,
+    .guest_detail .profile_detaile_box_body ul li p n {
+        font-size: 10px;
+    }
+
+    .workshop_detail .profile_detaile_box_body ul li a,
+    .guest_detail .profile_detaile_box_body ul li a {
+        display: block;
+    }
+
+    .accom_detail .profile_detaile_box_body h4 span {
+        padding: 5px 9px;
+        font-size: 10px;
+    }
+
+    .profile_top_left h2 {
+        font-size: 20px;
+    }
+
+    .profile_top_left h6 {
+        font-size: 10px;
+    }
+
+
+
+    #menu.is-moving {
+        transition: none;
+    }
+
+    #menu.open {
+        transition: .255s ease-out;
+        left: 0;
+    }
+
+
+    #touch-taget {
+        position: absolute;
+        left: 100%;
+        height: 150px;
+        width: 7px;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        top: 50%;
+        transform: translateY(-50%);
+        border-top-right-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+
+    .profile_bottom_box p {
+        font-size: 11px;
+        margin-bottom: 15px;
+    }
+
+    .profile_bottom_box a {
+        padding: 5px 9px;
+        font-size: 10px;
+    }
+
+    .profile_bottom_box h4 {
+        font-size: 12px;
+        margin-bottom: 7px;
+    }
+
+    .profile_detail .fa-shield-check {
+        font-size: 100px;
+    }
+
+    .hotel_box .hotel_box_right .stay_li_right {
+        padding: 10px 12px;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .guest_wrap_grp {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .guest_wrap_grp input {
+        width: 200px;
+        font-size: 11px;
+        padding: 5px 20px;
+        height: 37px;
+    }
+
+    .guest_wrap li .guest_wrap_grp h {
+        font-size: 12px !important;
+        line-height: 27px;
+    }
+
+    .profile_grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .span_grid {
+        grid-column: span 1 / span 1;
+    }
+
+    .profile_detail {
+        flex-direction: column;
+        gap: var(--gap);
+        align-items: start;
+    }
+
+    .help_top h4,
+    .help_bottom h4 {
+        font-size: 10px;
+    }
+
+    .help_top p,
+    .help_bottom p {
+        font-size: 10px;
+        margin-bottom: 10px;
+    }
+
+    .help_top h6,
+    .help_bottom h6 {
+        font-size: 11px;
+    }
+
+    .profile_detaile_box_head h3 span {
+        font-size: 11px;
+        height: 28px;
+        min-width: 28px;
+    }
+
+    .profile_detaile_box_head {
+        margin-bottom: 10px;
+    }
+
+    .profile_detaile_box_head h3 {
+        font-size: 12px;
+    }
+
+    .accom_detail .profile_accm_list li {
+        flex-direction: column;
+    }
+
+    .profile_accm_list_left,
+    .profile_accm_list_right {
+        width: 100%;
+    }
+
+    .ssl {
+        bottom: 38px;
+        width: 90px;
+        left: 5px;
+    }
+
+    .abstratc_left ul {
+        gap: 12px;
+    }
+
+    .abstratc_left ul li {
+        font-size: 11px;
+        padding-left: 15px;
+    }
+
+    .abstratc_left ul li::before {
+        font-size: 11px;
+    }
+
+    .abstract_inner {
+        padding: 20px;
+    }
+
+    #abstract_countdown li n {
+        padding: 8px;
+    }
+
+    #abstract_countdown li n {
+        font-size: 30px;
+        line-height: 31px;
+    }
+
+    #abstract_countdown li i {
+        font-size: 10px;
+    }
+
+    .abstract_review_grid li .frm_grp h6 {
+        font-size: 11px;
+    }
+
+    .abstract_review_grid li h4 {
+        font-size: 13px;
+    }
+
+    .abstract_top,
+    .abstract_inner,
+    .abstract_inner {
+        width: 60%;
+    }
+
+    .abstratc_left span {
+        font-size: 10px;
+        padding: 2px 9px;
+    }
+
+    .upload_photo_inner {
+        padding: 15px;
+    }
+
+    .upload_photography_heading h2,
+    .upload_photography_successfull h3 {
+        font-size: 24px;
+        margin-bottom: 3px;
+
+    }
+
+    .upload_photography_heading h5,
+    .upload_photography_successfull h5 {
+        font-size: 12px;
+    }
+
+    .upload_photo_right .registration_right_body_head_left h5 {
+        margin-bottom: 3px;
+        font-size: 9px;
+    }
+
+    .upload_photo_right .registration_right_body_head_left h4 {
+        font-size: 17px;
+    }
+
+    .upload_form_box .registration_right_body {
+        padding: 15px 0;
+    }
+
+    .upload_form_box .registration_right_body_head {
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+
+    .upload_photo_right .cus_check.workshop_select .checkmark g {
+        font-size: 15px;
+        line-height: 17px;
+    }
+
+    .upload_photo_right .cus_check.workshop_select .checkmark g ii {
+        font-size: 11px;
+    }
+
+    .upload_photo_right .cus_check.workshop_select .checkmark h {
+        line-height: 16px;
+        font-size: 11px !important;
+    }
+
+    .upload_access {
+        font-size: 10px;
+        padding: 7px 8px;
+    }
+
+    .upload_form_box .registration_right_body_head span {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    .review_left,
+    .review_right_box {
+        padding: 11px;
+    }
+
+    .review_left h4,
+    .review_right h4 {
+        font-size: 12px;
+        padding-bottom: 7px;
+        margin-bottom: 10px;
+    }
+
+    .review_left ol li g {
+        font-size: 12px;
+    }
+
+    .review_left ol li n,
+    .review_right ol li n {
+        font-size: 10px;
+    }
+
+    .review_right ol li h6 {
+        font-size: 11px;
+    }
+
+    .review_right ol li h5 {
+        font-size: 14px;
+    }
+
+    .review_right ol li g {
+        font-size: 10px;
+    }
+
+    .upload_form_box_review_check .cus_check.regi_category .checkmark {
+        align-items: start;
+    }
+
+    .upload_form_box_review_check .cus_check.regi_category .checkmark g {
+        text-align: left;
+    }
+
+    .form-stepper .label {
+        font-size: 9px;
+        margin-top: 4px;
+    }
+
+    ul.form-stepper li a .form-stepper-circle {
+        height: 28px;
+        font-size: 11px;
+    }
+
+    .upload_photo_head {
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+
+    .form-stepper a {
+        width: 40px;
+    }
+
+    .upload_photography_successfull h6,
+    .upload_photography_successfull_details_top_box n,
+    .upload_photography_successfull_details_mid_box n {
+        font-size: 10px;
+    }
+
+    .upload_photography_successfull span {
+        width: 40px;
+        margin-bottom: 14px;
+        font-size: 18px;
+    }
+
+    .upload_photography_successfull {
+        margin-top: 15px;
+    }
+
+    .upload_photography_successfull_details {
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    .upload_photography_successfull_details_top {
+        padding-bottom: 10px;
+    }
+
+    .upload_photography_successfull_details_top_box h5 {
+        font-size: 15px;
+    }
+
+    .upload_photography_successfull_details_top_box p {
+        font-size: 12px;
+    }
+
+    .upload_photography_successfull_details_mid {
+        margin: 10px 0;
+    }
+
+    .upload_photography_successfull_details_mid_box h4 {
+        font-size: 14px;
+    }
+
+    .upload_photography_successfull_details_mid_box p {
+        font-size: 12px;
+    }
+
+    .upload_photography_successfull_details_mid_box h6,
+    .upload_photography_successfull_details_bottom p g {
+        font-size: 11px;
+    }
+
+    .upload_photography_successfull_details_bottom p n {
+        font-size: 9px;
+    }
+    .upload_photography_successfull_button a {
+    font-size: 12px;
+}
+.upload_photography_successfull_button {
+    gap: 9px;
+}
+.upload_photo_head_right {
+    font-size: 14px;
+    padding: 5px 14px;
+    padding-left: 28px;
+    font-weight: 600;
+}
+.upload_photo_head_right::before {
+    width: 8px;
+    top: 11px;
+    left: 12px;
+}
+.upload_photo_head_left span {
+    width: 124px;
+    padding: 7px;
+}
+.upload_photo_head_left p n g, .upload_photo_head_left p n k {
+    font-size: 13px;
+}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 999px) {
+    #exibitorregistration .hotel_box .hotel_box_right .stay_li_right {
+        flex-direction: row;
+    }
+
+    #exibitorregistration .cus_check_wrap.g2 {
+        grid-template-columns: 1fr;
+    }
+
+    #exibitorregistration .stay_li_right .cus_check_wrap.g2,
+    #exibitorregistration .guest_wrap_grp .cus_check_wrap.g2 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #exibitorregistration .guest_wrap_box .guest_wrap_inner {
+        flex-direction: column;
+    }
+
+    #exibitorregistration .guest_wrap_grp input {
+        width: 100%;
+    }
+
+    .hote_box_inner_bottom_top,
+    .hotel_room_content_bottom h5 {
+        align-items: start;
+        flex-direction: column-reverse;
+        gap: 5px;
+    }
+
+}
+
+@media only screen and (min-width: 300px) and (max-width: 767px) {
+    .login_left {
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .login_wrap {
+        flex-direction: column;
+        gap: var(--p40);
+    }
+
+    .login_left ul,
+    .login_left ol {
+        justify-content: center;
+    }
+
+    .registration_left {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        position: relative;
+        padding: 12px;
+        padding-bottom: 48px;
+        height: 104px;
+    }
+
+    .registration_left ul {
+        position: absolute;
+        flex-direction: row;
+        bottom: 4px;
+        left: 1%;
+        width: 98%;
+        justify-content: space-between;
+    }
+
+    .registration_left ul li {
+        text-align: center;
+        font-size: 14px;
+        padding: 4px 11px;
+    }
+
+    .registration_left ul li i {
+        margin-right: 0;
+    }
+
+    .registration_left ul li span {
+        display: none;
+    }
+
+    .registration_inner {
+        flex-direction: column;
+        height: 90vh;
+    }
+
+    .registration_right {
+        width: 100%;
+        border-left: 0;
+        border-top: 1px solid var(--border);
+    }
+
+    .registration_left_bottom {
+        padding: 9px;
+        flex: 1;
+        text-align: right;
+    }
+
+    .registration_left_head {
+        flex: 2;
+    }
+
+    .registration_left_head h6 {
+        margin: 0;
+    }
+
+    .registration_right_head {
+        padding: 8px 12px;
+        font-size: 13px;
+        height: 37px;
+    }
+
+    .registration_right_body {
+        padding: 8px 12px;
+        height: calc(100% - 77px);
+    }
+
+    .registration_right_bottom {
+        padding: 8px 12px;
+        height: 40px;
+    }
+
+    .registration_right {
+        height: calc(100% - 104px);
+    }
+
+    .registration_right_bottom button {
+        padding: 5px 11px;
+        font-size: 11px;
+    }
+
+    .registration_right_body_head_left h4 {
+        font-size: 14px;
+    }
+
+    .registration_right_body_head_left h5 {
+        font-size: 11px;
+    }
+
+    .registration_left_bottom h5 {
+        font-size: 15px;
+    }
+
+    .registration_left_bottom h6 {
+        font-size: 9px;
+        margin-bottom: 2px;
+    }
+
+    .registration_left_head h5 {
+        margin-bottom: 2px;
+        font-size: 16px;
+    }
+
+    .registration_left_head h6 {
+        font-size: 10px;
+    }
+
+    .cus_check_wrap.g2 {
+        grid-template-columns: 1fr;
+    }
+
+    .hotel_box_right .cus_check_wrap.g2,
+    .guest_wrap_grp .cus_check_wrap.g2 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stay_wrap li {
+        flex-direction: column;
+    }
+
+    .stay_wrap li img {
+        min-width: 100%;
+    }
+
+    .stay_wrap li .stay_li_right .cus_check_wrap {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .review_wrap {
+        flex-direction: column;
+    }
+
+    .guest_wrap table .sl {
+        width: 40px;
+    }
+
+    .guest_wrap table .action {
+        width: 47px;
+    }
+
+    .guest_wrap table tbody td {
+        padding: 5px;
+        font-size: 11px;
+    }
+
+    .guest_wrap table thead th {
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    .add_guest {
+        padding: 6px;
+        font-size: 10px;
+    }
+
+
+
+
+
+    .profile_detail_content h2 {
+        /* text-align: center; */
+    }
+
+    .profile_detail,
+    .profile_top {
+        flex-direction: column;
+        gap: var(--gap);
+        align-items: start;
+    }
+
+    .profile_detail_left,
+    .accom_detail .profile_detaile_box_body,
+    .profile_bottom {
+        flex-direction: column;
+    }
+
+    .profile_detail_content h5 {
+        /* justify-content: center; */
+        /* flex-direction: column; */
+        /* gap: 1px; */
+    }
+
+    .profile_detail_content h6 span {
+        font-size: 9px;
+    }
+
+    /* .accom_detail .profile_detaile_box_body img {
+        min-width: 100%;
+    } */
+
+    .profile_detaile_box_head button {
+        font-size: 9px;
+    }
+
+    .profile_detaile_box_head h3 {
+        font-size: 12px;
+    }
+
+    .profile_detaile_box_head h3 span {
+        font-size: 11px;
+        height: 30px;
+        min-width: 30px;
+    }
+
+    .workshop_detail .profile_detaile_box_body ul li a,
+    .guest_detail .profile_detaile_box_body ul li a {
+        font-size: 12px;
+    }
+
+    header .header_right span {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    header .header_right span i {
+        font-size: 4px;
+    }
+
+    header .header_right {
+        gap: 5px;
+    }
+
+    header .header_right button {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+
+    .profile_top {
+        align-items: start;
+    }
+
+    .profile_detail .fa-shield-check {
+        top: 78%;
+    }
+
+    .hotel_box .hotel_box_inner {
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .hotel_box .hotel_box_right .stay_li_right {
+
+        flex-direction: row;
+    }
+
+    .hotel_box .hotel_box_left .hote_box_left_top {
+        width: 100%;
+    }
+
+    .hotel_box .hotel_box_left .hote_box_left_bottom {
+        margin-top: 10px;
+    }
+
+    .registration_right_body_sub_head {
+        flex-direction: column;
+        align-items: start;
+        gap: 10px;
+    }
+
+    .registration_right_body_sub_head .registration_right_body_head_right,
+    .registration_right_body_sub_head .registration_right_body_head_right .cus_check_wrap .checkmark {
+        width: 100%;
+    }
+
+    .guest_wrap_inner {
+        gap: 7px;
+        flex-direction: column;
+    }
+
+    .guest_wrap_grp input {
+        width: 100%;
+    }
+
+    .guest_wrap li {
+        padding: 8px 11px;
+        padding-right: 30px;
+    }
+
+    .guest_action {
+        width: 30px;
+    }
+
+    .registration_right_bottom button.skip-button {
+        right: 111px;
+    }
+
+    .profile_right_menu {
+        width: 100%;
+        height: auto;
+        overflow: unset;
+    }
+
+    .profile_left_menu {
+        z-index: 2;
+        left: calc(var(--lftw) / -1);
+        /* backdrop-filter: blur(20px); */
+        transition: .5s;
+        width: 100%;
+        height: auto;
+        overflow: unset;
+    }
+
+    .profile_body {
+        flex-direction: column;
+        /* height: auto; */
+        overflow: auto;
+    }
+
+    header .header_right a {
+        gap: 6px;
+        font-size: 10px;
+        padding: 5px 9px;
+    }
+
+    .con_logo {
+        width: 100px;
+    }
+
+    .profile_detail_list span {
+        font-size: 10px;
+    }
+
+    .profile_detail_list p {
+        font-size: 11px;
+    }
+
+    .profile_detail_list {
+        margin-top: 10px;
+    }
+
+    .span_0 {
+        grid-column: span 4 / span 4;
+    }
+
+    .abstratc_wrap {
+        padding: 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .abstratc_left,
+    .abstract_inner {
+        width: 100%;
+    }
+
+    .abstract_inner .abstract_frm_wrap {
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .abstract_inner .abstract_frm_wrap a {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .review_right {
+        max-width: 100%;
+    }
+
+    #exibitorregistration {
+        width: 100%;
+    }
+
+    #exibitorregistration .registration_right {
+        height: 100%;
+    }
+
+    #exibitorregistration .span_2 {
+        grid-column: span 4 / span 4;
+    }
+
+    #exibitorregistration .span_1mob {
+        grid-column: span 2 / span 2;
+    }
+
+    .form_exibitor_head {
+        gap: 7px;
+        margin-top: 0;
+        font-size: 12px;
+        padding: 0;
+        height: 31px;
+    }
+
+    #exibitorregistration .registration_right_body {
+        flex-direction: column;
+    }
+
+    .exibitor_box {
+        border-right: 0;
+        height: unset;
+        padding: 12px;
+        overflow: unset;
+    }
+
+    .spot_box_top,
+    .accm_top {
+        flex-direction: column;
+        gap: var(--gap);
+    }
+
+    .spot_name {
+        width: 100%;
+        border-right: 0;
+    }
+
+    .spot_details {
+        width: 100%;
+        align-items: start;
+        padding-left: 0;
+        flex-direction: column;
+    }
+
+    .spot_details_box,
+    .accm_details_box {
+        width: 100%;
+    }
+
+    .service_breakdown_wrap_ul li {
+        flex-direction: column;
+    }
+
+    .service_breakdown_wrap_ul li n {
+        width: 100%;
+    }
+
+    .service_breakdown_wrap_ul li g {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .registration_right_head p a {
+        font-size: 10px;
+        padding: 4px 12px;
+    }
+
+    #exibitorregistration .guest_wrap li {
+        padding-right: 11px;
+    }
+
+    .exibitor_list .registration_right_head form input {
+        font-size: 10px;
+        height: 26px;
+        padding: 5px;
+        width: 173px;
+    }
+
+    .exibitor_list .registration_right_head form input::placeholder {
+        font-size: 10px;
+    }
+
+    .spot_box_bottom_right {
+        flex-wrap: wrap;
+    }
+
+    .exibitor_list .registration_right_bottom h5 {
+        font-size: 14px;
+    }
+
+    .hotel_box .hotel_box_left {
+
+        width: 100%;
+    }
+
+    .accomdationprice_total li {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .accomdationprice_total li h5 {
+        /* flex-direction: row; */
+        width: 100%;
+        /* align-items: center; */
+        justify-content: space-between;
+        text-align: left;
+    }
+
+    .accommodation_body_head .registration_right_body_head_right .hotel_check.form_grid.g_3 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .registration_right_body_tab button {
+        font-size: 11px;
+        padding: 7px;
+    }
+
+    .registration_right_body_tab button.hotel_tab_btn span {
+        font-size: 9px;
+        padding: 3px 6px;
+    }
+
+    .registration_right_body_tab button.hotel_tab_btn span i {
+        font-size: 5px;
+    }
+
+    .hote_box_inner_top {
+        flex-direction: column;
+    }
+
+    .hotel_box_right h6 span {
+        font-size: 9px;
+    }
+
+    .hotel_box_right h6 n {
+        font-size: 10px;
+    }
+
+    .hote_box_inner_bottom_top,
+    .hotel_room_content_bottom h5 {
+        align-items: start;
+        flex-direction: column-reverse;
+        gap: 5px;
+    }
+
+    .hotel_room_ul_top h5 {
+        align-items: start;
+        gap: 7px;
+        flex-direction: column-reverse;
+    }
+
+    .hotel_room_content {
+        flex-direction: column;
+    }
+
+    .hotel_room_content_img {
+        width: 100%;
+    }
+
+    .hotel_room_right p {
+        grid-template-columns: 1fr;
+    }
+
+    .registration_right_body_head {
+        align-items: start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .hotel_link_owl.owl-carousel .owl-nav button.owl-next,
+    .hotel_link_owl.owl-carousel .owl-nav button.owl-prev {
+        height: 36px;
+        width: 21px;
+    }
+
+    .hotel_link_owl {
+        padding: 0 24px;
+    }
+
+    #addworkshop,
+    #addstay,
+    #addguest,
+    #cancelation,
+    #abstractdetails,
+    .profile_review {
+        width: 98%;
+    }
+
+    .abstract_submit_deadline {
+        width: 80%;
+    }
+
+    .upload_photo_inner {
+
+        padding: 15px;
+    }
+
+    ul.form-stepper {
+        width: 100%;
+    }
+
+    .form-stepper a {
+        width: 32px;
+    }
+
+    .upload_photo_head {
+        flex-direction: column;
+        gap: 8px;
+  
+    }
+
+    .upload_photography_successfull_details_mid {
+        grid-template-columns: 1fr;
+    }
+
+    .upload_photography_successfull_details_bottom p {
+        padding-right: 0;
+                width: 100%;
+    }
+    .upload_photography_successfull_details_bottom {
+    flex-direction: column;
+    align-items: start;
+    }
+ .upload_photography_successfull_details {
+    
+        width: 100%;
+ }
+ .upload_photo_head_left {
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.upload_photo_head_left p n {
+    align-items: center;
+}
+}

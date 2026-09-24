@@ -1,0 +1,13 @@
+<?php
+	$cfg['USER.PROFILE.IMAGE']				       = 'uploads/USER.PROFILE.IMAGE/';
+	$cfg['EMAIL_IMAGE']							   = 'uploads/EMAIL.IMAGE/';
+	$cfg['HOMEPAGE.SLIDER.IMAGES']				   = "uploads/HOMEPAGE.SLIDER.IMAGES/";
+	$cfg['FILES.ABSTRACT.REQUEST']				   = 'uploads/FILES.ABSTRACT.REQUEST/';
+	$cfg['FILES.ABSTRACT.REQUEST.TEMP']			   = 'uploads/FILES.ABSTRACT.REQUEST/TEMP/';
+	$cfg['SP.PARTICIPANT.DOC']				       = 'uploads/SP.PARTICIPANT.DOC/';
+	$cfg['SP.PARTICIPANT.PROFILE.IMAGE']		   = 'uploads/SP.PARTICIPANT.PROFILE.IMAGE/';
+	$cfg['EXHIBITOR.INVOICE.BILL.ATTACHMENT']      = 'uploads/EXHIBITOR.INVOICE.BILL.ATTATCHMENT/';
+	
+	$cfg['FILES.TEMP']				       		   = 'uploads/FILES.TEMP/';
+	$cfg['EMAIL.HEADER.FOOTER.IMAGE']			   ='uploads/EMAIL.HEADER.FOOTER.IMAGE/';
+?>

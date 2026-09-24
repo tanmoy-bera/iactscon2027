@@ -1,0 +1,332 @@
+[25-May-2019 07:02:44 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:02:46 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:02:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:02:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:02:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:02:56 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:02:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:02:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:02:59 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:02:59 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:03:00 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:03:22 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:03:31 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 07:03:57 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 11876
+[25-May-2019 14:01:02 Asia/Kolkata] PHP Fatal error:  Call to undefined function viewEditMasterWorkshop() in /home/ruedakolkata/public_html/aiccrcog2019_ver2/webmaster/section_registration/registration.php on line 326
+[05-Jun-2019 18:42:55 Asia/Kolkata] PHP Fatal error:  Call to undefined function getUserDetails() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/call_datalist.php on line 266
+[11-Jun-2019 09:21:03 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1973
+[13-Jun-2019 05:33:50 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 5394
+[13-Jun-2019 07:15:22 UTC] PHP Parse error:  syntax error, unexpected '$userDetail' (T_VARIABLE), expecting ',' or ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 6130
+[05-Jul-2019 19:00:31 Asia/Kolkata] PHP Fatal error:  Cannot use string offset as an array in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3568
+[06-Jul-2019 02:11:46 Asia/Kolkata] PHP Fatal error:  Call to a member function sql_select() on null in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14588
+[08-Jul-2019 13:07:38 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[08-Jul-2019 18:55:28 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[15-Jul-2019 13:16:01 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[15-Jul-2019 13:16:21 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[15-Jul-2019 13:16:37 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[23-Jul-2019 13:26:10 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[23-Jul-2019 13:26:50 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[23-Jul-2019 13:28:03 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[29-Jul-2019 10:13:32 Asia/Kolkata] PHP Fatal error:  Call to undefined function getDinnerOrderedDetailsOfDelegate() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 6158
+[29-Jul-2019 10:44:58 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 246
+[29-Jul-2019 05:59:28 UTC] PHP Parse error:  syntax error, unexpected ')' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 6173
+[29-Jul-2019 11:44:42 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 246
+[29-Jul-2019 11:33:12 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 11824
+[29-Jul-2019 11:34:01 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 11824
+[29-Jul-2019 11:39:51 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or ${ (T_DOLLAR_OPEN_CURLY_BRACES) or {$ (T_CURLY_OPEN) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1106
+[29-Jul-2019 11:39:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 7859
+[29-Jul-2019 11:40:00 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 9913
+[29-Jul-2019 11:40:01 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10692
+[29-Jul-2019 11:40:02 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 11824
+[29-Jul-2019 11:40:03 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 12631
+[29-Jul-2019 11:52:44 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1983
+[29-Jul-2019 11:58:46 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or ${ (T_DOLLAR_OPEN_CURLY_BRACES) or {$ (T_CURLY_OPEN) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1106
+[29-Jul-2019 11:58:49 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1516
+[29-Jul-2019 11:58:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1983
+[29-Jul-2019 11:58:57 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1983
+[29-Jul-2019 11:59:36 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 2394
+[29-Jul-2019 11:59:38 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 2394
+[29-Jul-2019 11:59:39 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 2394
+[29-Jul-2019 12:23:18 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 768
+[31-Jul-2019 16:23:41 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[31-Jul-2019 11:08:23 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1983
+[31-Jul-2019 17:11:49 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[08-Aug-2019 13:52:27 Asia/Kolkata] PHP Fatal error:  Call to undefined function getRegClsfName() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 977
+[08-Aug-2019 13:52:28 Asia/Kolkata] PHP Fatal error:  Call to undefined function getRegClsfName() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 977
+[08-Aug-2019 13:52:28 Asia/Kolkata] PHP Fatal error:  Call to undefined function getRegClsfName() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 977
+[08-Aug-2019 22:55:45 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[08-Aug-2019 22:58:56 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[08-Aug-2019 23:02:11 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 37
+[13-Aug-2019 07:42:37 UTC] PHP Warning:  Unterminated comment starting line 15299 in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15299
+[13-Aug-2019 07:42:37 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15378
+[13-Aug-2019 16:58:39 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:58:41 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:58:42 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:58:43 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:58:44 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:58:45 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:58:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:59:16 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:59:18 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:59:19 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 16:59:20 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 17:01:07 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 17:13:06 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 17:13:14 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10696
+[13-Aug-2019 17:34:24 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[13-Aug-2019 17:35:06 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[13-Aug-2019 17:36:03 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[13-Aug-2019 17:36:12 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 367
+[13-Aug-2019 17:36:16 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 2397
+[13-Aug-2019 17:52:07 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[13-Aug-2019 17:52:25 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or ${ (T_DOLLAR_OPEN_CURLY_BRACES) or {$ (T_CURLY_OPEN) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13399
+[13-Aug-2019 17:56:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[13-Aug-2019 18:02:52 UTC] PHP Parse error:  syntax error, unexpected ''delegate_id'],$rowFetchInvoic' (T_ENCAPSED_AND_WHITESPACE), expecting ']' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1128
+[13-Aug-2019 18:04:41 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[13-Aug-2019 18:49:48 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[14-Aug-2019 12:44:58 Asia/Kolkata] PHP Fatal error:  Call to undefined function getTotalAccompanyCount() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/report.accompany_details_listing.php on line 176
+[14-Aug-2019 12:48:00 Asia/Kolkata] PHP Fatal error:  Call to undefined function invoiceDetailsOfDelegate() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/report.accompany_details_listing.php on line 281
+[15-Aug-2019 05:03:12 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[15-Aug-2019 05:04:57 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[15-Aug-2019 05:05:47 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[15-Aug-2019 06:29:06 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[15-Aug-2019 07:09:04 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[16-Aug-2019 07:03:22 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[16-Aug-2019 09:24:55 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[16-Aug-2019 09:31:50 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[16-Aug-2019 16:07:35 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14934
+[16-Aug-2019 19:30:24 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 498
+[17-Aug-2019 17:38:21 Asia/Kolkata] PHP Fatal error:  Call to undefined function getRegClsfName() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1085
+[19-Aug-2019 06:38:06 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 06:50:31 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 06:53:21 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 06:54:03 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 06:54:39 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 06:55:44 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 06:55:48 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:02:03 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:08:22 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:09:05 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:09:34 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:22:43 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:22:44 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:27:20 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:27:50 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:43:30 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:45:32 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:46:37 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:49:06 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:49:12 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:03 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:07 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:17 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:22 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:25 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:29 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:31 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:33 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:46 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:50:51 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:51:03 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:51:34 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:51:51 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:52:00 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:52:25 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:53:12 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 07:53:25 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2862
+[19-Aug-2019 10:26:41 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:26:45 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:26:52 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:26:58 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:27:17 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:28:09 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:28:24 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:28:49 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:30:35 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:30:51 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:31:47 UTC] PHP Parse error:  syntax error, unexpected '?>' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 10:31:57 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 4415
+[19-Aug-2019 10:31:59 UTC] PHP Parse error:  syntax error, unexpected ''user_fu' (T_ENCAPSED_AND_WHITESPACE), expecting ']' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 7421
+[19-Aug-2019 10:32:01 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10665
+[19-Aug-2019 10:32:03 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 11413
+[19-Aug-2019 11:59:20 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 11:59:23 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:00:17 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:00:20 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:00:40 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 8241
+[19-Aug-2019 12:00:40 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 8668
+[19-Aug-2019 12:02:51 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 9085
+[19-Aug-2019 12:02:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 10664
+[19-Aug-2019 12:02:54 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting '(' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 12613
+[19-Aug-2019 12:02:55 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:02:56 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:02:57 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:02:58 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:02:59 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:00 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:01 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:01 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:02 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:03 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:04 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:06 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:07 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:09 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:10 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:16 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:17 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:18 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:19 UTC] PHP Parse error:  syntax error, unexpected ':' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 13221
+[19-Aug-2019 12:03:23 UTC] PHP Parse error:  syntax error, unexpected 'x' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 2792
+[19-Aug-2019 12:03:25 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 3587
+[19-Aug-2019 12:03:26 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 3587
+[19-Aug-2019 12:03:26 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 3995
+[19-Aug-2019 12:03:27 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 5265
+[19-Aug-2019 12:03:28 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 6558
+[19-Aug-2019 12:03:30 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 7828
+[19-Aug-2019 12:03:31 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 8668
+[19-Aug-2019 12:03:32 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 9882
+[19-Aug-2019 12:03:33 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 11081
+[19-Aug-2019 12:03:34 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 11780
+[19-Aug-2019 12:21:56 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 7828
+[19-Aug-2019 12:22:03 UTC] PHP Parse error:  syntax error, unexpected ''re' (T_ENCAPSED_AND_WHITESPACE), expecting ']' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 12958
+[19-Aug-2019 12:25:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 9085
+[19-Aug-2019 12:29:22 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 1487
+[19-Aug-2019 12:29:36 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14525
+[21-Aug-2019 06:36:08 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14852
+[21-Aug-2019 06:36:12 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14852
+[21-Aug-2019 06:36:57 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14852
+[21-Aug-2019 07:09:01 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14852
+[21-Aug-2019 07:09:13 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14852
+[21-Aug-2019 07:17:09 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14852
+[21-Aug-2019 07:42:11 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 14852
+[21-Aug-2019 16:34:44 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 246
+[21-Aug-2019 17:15:38 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 603
+[22-Aug-2019 19:47:44 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 1116
+[23-Aug-2019 18:43:41 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 1363
+[23-Aug-2019 18:43:53 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 1363
+[23-Aug-2019 18:44:07 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 1363
+[23-Aug-2019 20:05:56 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 589
+[23-Aug-2019 20:07:43 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 1116
+[24-Aug-2019 07:39:00 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 314
+[24-Aug-2019 07:39:02 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 8993
+[24-Aug-2019 15:54:10 Asia/Kolkata] PHP Fatal error:  Call to undefined function getAccomodationDetails() in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.invoice.php on line 1370
+[24-Aug-2019 16:09:39 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 0
+[28-Aug-2019 16:43:56 Asia/Kolkata] PHP Fatal error:  Function name must be a string in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 390
+[28-Aug-2019 16:44:00 Asia/Kolkata] PHP Fatal error:  Function name must be a string in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 390
+[01-Sep-2019 21:19:56 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 607
+[01-Sep-2019 21:21:02 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 3053
+[01-Sep-2019 21:30:03 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.registration.php on line 15113
+[02-Sep-2019 10:15:10 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 254
+[02-Sep-2019 10:18:48 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/engine/class.common.php on line 547
+[02-Sep-2019 10:27:37 Asia/Kolkata] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/ruedakolkata/public_html/aiccrcog2019/includes/function.registration.php on line 211
+[02-Sep-2019 06:27:11 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:27:57 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:27:59 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:28:01 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:28:40 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:28:42 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:43:20 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:43:23 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:43:38 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:44:18 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:48:15 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:48:19 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:48:20 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:48:33 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:48:51 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:49:21 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:49:50 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:50:33 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:50:36 UTC] PHP Fatal error:  Can't use function return value in write context in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15022
+[02-Sep-2019 06:51:40 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15246
+[02-Sep-2019 06:51:48 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15246
+[02-Sep-2019 06:52:02 UTC] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.php on line 15246
+[03-Sep-2019 19:35:26 Asia/Kolkata] PHP Fatal error:  Call to undefined function accessValidation() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/includes/admininit.php on line 36
+[03-Sep-2019 19:35:30 Asia/Kolkata] PHP Fatal error:  Call to undefined function accessValidation() in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/includes/admininit.php on line 36
+[07-Sep-2019 10:10:46 UTC] PHP Parse error:  syntax error, unexpected ''' (T_ENCAPSED_AND_WHITESPACE), expecting ']' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 501
+[07-Sep-2019 10:10:47 UTC] PHP Parse error:  syntax error, unexpected ''' (T_ENCAPSED_AND_WHITESPACE), expecting ']' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 501
+[07-Sep-2019 10:10:47 UTC] PHP Parse error:  syntax error, unexpected ''' (T_ENCAPSED_AND_WHITESPACE), expecting ']' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 501
+[07-Sep-2019 10:10:47 UTC] PHP Parse error:  syntax error, unexpected ''' (T_ENCAPSED_AND_WHITESPACE), expecting ']' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 501
+[07-Sep-2019 10:10:47 UTC] PHP Parse error:  syntax error, unexpected ''' (T_ENCAPSED_AND_WHITESPACE), expecting ']' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 501
+[07-Sep-2019 10:10:47 UTC] PHP Parse error:  syntax error, unexpected ''' (T_ENCAPSED_AND_WHITESPACE), expecting ']' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 501
+[07-Sep-2019 10:10:47 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:48 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:48 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:48 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:48 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:48 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:48 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:49 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:49 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:49 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:49 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 820
+[07-Sep-2019 10:10:49 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or '$' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1221
+[07-Sep-2019 10:10:50 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or '$' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1221
+[07-Sep-2019 10:10:50 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or '$' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1221
+[07-Sep-2019 10:10:50 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or '$' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1221
+[07-Sep-2019 10:10:50 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or '$' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1221
+[07-Sep-2019 10:10:50 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or '$' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1221
+[07-Sep-2019 10:10:50 UTC] PHP Parse error:  syntax error, unexpected ''	&nbsp;&nbsp;&nbsp;&nbsp;<i c' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1522
+[07-Sep-2019 10:10:51 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1835
+[07-Sep-2019 10:10:51 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1835
+[07-Sep-2019 10:10:51 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1835
+[07-Sep-2019 10:10:51 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1835
+[07-Sep-2019 10:10:51 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1835
+[07-Sep-2019 10:10:51 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 1835
+[07-Sep-2019 10:10:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2212
+[07-Sep-2019 10:10:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2212
+[07-Sep-2019 10:10:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2212
+[07-Sep-2019 10:10:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2212
+[07-Sep-2019 10:10:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2212
+[07-Sep-2019 10:10:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2212
+[07-Sep-2019 10:10:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2212
+[07-Sep-2019 10:10:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2614
+[07-Sep-2019 10:10:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2614
+[07-Sep-2019 10:10:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2614
+[07-Sep-2019 10:10:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2614
+[07-Sep-2019 10:10:53 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2614
+[07-Sep-2019 10:10:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:54 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:55 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:55 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:55 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:55 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:55 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:55 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:56 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:56 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:56 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 2946
+[07-Sep-2019 10:10:56 UTC] PHP Parse error:  syntax error, unexpected ''s' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3296
+[07-Sep-2019 10:10:56 UTC] PHP Parse error:  syntax error, unexpected ''s' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3296
+[07-Sep-2019 10:10:56 UTC] PHP Parse error:  syntax error, unexpected ''s' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3296
+[07-Sep-2019 10:10:57 UTC] PHP Parse error:  syntax error, unexpected ''s' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3296
+[07-Sep-2019 10:10:57 UTC] PHP Parse error:  syntax error, unexpected ''s' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3296
+[07-Sep-2019 10:10:57 UTC] PHP Parse error:  syntax error, unexpected ''s' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3296
+[07-Sep-2019 10:10:57 UTC] PHP Parse error:  syntax error, unexpected ''s' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3296
+[07-Sep-2019 10:10:57 UTC] PHP Parse error:  syntax error, unexpected ''s' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3296
+[07-Sep-2019 10:10:57 UTC] PHP Parse error:  syntax error, unexpected ''s' (T_ENCAPSED_AND_WHITESPACE) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3296
+[07-Sep-2019 10:10:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:58 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:59 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:59 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:59 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:59 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:59 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:10:59 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:11:00 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 3717
+[07-Sep-2019 10:11:00 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 4145
+[07-Sep-2019 10:11:00 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 4145
+[07-Sep-2019 10:11:00 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 4145
+[07-Sep-2019 10:11:00 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ',' or ';' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 4145
+[07-Sep-2019 10:11:02 UTC] PHP Parse error:  syntax error, unexpected '=', expecting ')' in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 4559
+[07-Sep-2019 10:11:03 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or ${ (T_DOLLAR_OPEN_CURLY_BRACES) or {$ (T_CURLY_OPEN) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 4888
+[07-Sep-2019 10:11:04 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or ${ (T_DOLLAR_OPEN_CURLY_BRACES) or {$ (T_CURLY_OPEN) in /home/ruedakolkata/public_html/aiccrcog2019/webmaster/section_registration/registration.process.php on line 6031
