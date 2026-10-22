@@ -26,8 +26,6 @@
 			$mail_inaugural_dinner_details = addslashes($_REQUEST['mail_inaugural_dinner_details']);
 			// $inclusion_conference_kit = addslashes($_REQUEST['inclusion_conference_kit']);
 			$id 			               = addslashes($_REQUEST['id']);
-			$Checkbox_description 	    = addslashes($_REQUEST['Checkbox_description']);
-			$title_description 	    = addslashes($_REQUEST['title_description']);
 
 			// ************************************************
 			// $inclusion_lunch_date 	       = $_REQUEST['inclusion_lunch_date'];
@@ -43,8 +41,6 @@
 									`seat_limit`			=	?,
 									`type`					=	?,
 									`currency`				=   ?,
-									 `title_description` = ?, 
-									`Checkbox_description` = ?, 
 									`mail_lunch_details`	=   ?,
 									`mail_dinner_details`	=   ?,
 									`mail_gala_dinner_details`	=   ?,
@@ -56,8 +52,6 @@
 			$sql['PARAM'][]	=	array('FILD' => 'seat_limit' , 			    'DATA' => $editseatlimit , 			'TYP' => 's');
 			$sql['PARAM'][]	=	array('FILD' => 'type' , 		   			'DATA' => $type, 					'TYP' => 's');
 			$sql['PARAM'][]	=	array('FILD' => 'currency' , 				'DATA' => $currency , 				'TYP' => 's');
-			$sql['PARAM'][]   = array('FILD' =>'title_description','DATA' =>$title_description,    'TYP' => 's');
-			$sql['PARAM'][]   = array('FILD' =>'Checkbox_description','DATA' =>$Checkbox_description,    'TYP' => 's');
 
 			$sql['PARAM'][]	=	array('FILD' => 'mail_lunch_details' , 		'DATA' => $mail_lunch_details , 				'TYP' => 's');
 			$sql['PARAM'][]	=	array('FILD' => 'mail_dinner_details' , 	'DATA' => $mail_dinner_details , 				'TYP' => 's');
@@ -68,7 +62,7 @@
 			// $sql['PARAM'][]   = array('FILD' => 'inclusion_conference_kit_date','DATA' =>$json_inclusion_conference_kit_date,    'TYP' => 's');
 			$sql['PARAM'][]	=	array('FILD' => 'sequence_by' , 			'DATA' => $sequence_by , 			'TYP' => 's');
 			$sql['PARAM'][]	=	array('FILD' => 'id' , 						'DATA' => $id , 					'TYP' => 's');
-			print_r($sql);die;
+			
 			$mycms->sql_update($sql);
 			
 			pageRedirection('manage_reg_classification.php', 2, "");
@@ -95,8 +89,7 @@
 			$inclusion_sci_hall 	    		 = $_REQUEST['inclusion_sci_hall'];
 			$inclusion_exb_area 	    		 = $_REQUEST['inclusion_exb_area'];
 			$inclusion_tea_coffee 	    		 = $_REQUEST['inclusion_tea_coffee'];
-			$Checkbox_description 	    = addslashes($_REQUEST['Checkbox_description']);
-
+			
 			$json_inclusion_lunch_date = json_encode($inclusion_lunch_date);
 			$json_inclusion_conference_kit_date = json_encode($inclusion_conference_kit_date);
 			//print_r($jsonSelectedDates);die;
@@ -110,7 +103,6 @@
 			$sql['QUERY'] = "INSERT INTO "._DB_REGISTRATION_CLASSIFICATION_." 
 				                SET  `classification_title`= ?, 
 								     `title_description` = ?, 
-									`Checkbox_description` = ?, 
 				                     `seat_limit`= ?, 
 				                     `type`= ?,
 									 `currency`= ?,
@@ -131,7 +123,6 @@
 								  	 `created_dateTime` = ?"; 
 			$sql['PARAM'][]   = array('FILD' =>'classification_title','DATA' =>$classification_title,    'TYP' => 's');
 			$sql['PARAM'][]   = array('FILD' =>'title_description','DATA' =>$title_description,    'TYP' => 's');
-			$sql['PARAM'][]   = array('FILD' =>'Checkbox_description','DATA' =>$Checkbox_description,    'TYP' => 's');
 			$sql['PARAM'][]   = array('FILD' =>'seat_limit','DATA' =>$editseatlimit,    'TYP' => 's');
 			$sql['PARAM'][]   = array('FILD' =>'type','DATA' =>$type,    'TYP' => 's');
 			$sql['PARAM'][]   = array('FILD' =>'currency','DATA' =>$currency,    'TYP' => 's');

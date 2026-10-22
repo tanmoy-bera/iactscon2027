@@ -672,7 +672,7 @@ include_once(__DIR__. "/../includes/function.abstract.php");
 								   // echo '<pre>'; print_r($rowAbstractDetails);
 							?>
 									<tr class="tlisting" <?=$rowStyleDecission?>>
-										<td align="center" valign="top" style="width:80px;"><?=$abstractCounter + ($_REQUEST['_pgn1_']*10)?></td>
+										<td align="center" valign="top"><?=$abstractCounter + ($_REQUEST['_pgn1_']*10)?></td>
 										<td align="left" valign="top"><?=$rowAbstractDetails['user_first_name']." ".$rowAbstractDetails['user_middle_name']." ".$rowAbstractDetails['user_last_name']." "?></td>
 										<td align="left" valign="top">
 											<?

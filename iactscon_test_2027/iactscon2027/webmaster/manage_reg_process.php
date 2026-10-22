@@ -30,7 +30,6 @@ switch ($action) {
 		$inclusion_exb_area 	    		 = $_REQUEST['inclusion_exb_area'];
 		$inclusion_tea_coffee 	    		 = $_REQUEST['inclusion_tea_coffee'];
 		$id 			            = addslashes($_REQUEST['id']);
-			$Checkbox_description 	    = addslashes($_REQUEST['Checkbox_description']);
 
 		$json_inclusion_lunch_date = json_encode($inclusion_lunch_date);
 		$json_inclusion_conference_kit_date = json_encode($inclusion_conference_kit_date);
@@ -41,7 +40,6 @@ switch ($action) {
 		$sql1['QUERY'] = "UPDATE " . _DB_REGISTRATION_CLASSIFICATION_ . " 
 				                SET  `classification_title`='" . $classification_title . "', 
 								      `title_description`='" . $title_description . "', 
-									  `Checkbox_description`='" . $Checkbox_description . "', 
 				                     `seat_limit`='" . $editseatlimit . "', 
 				                     `type`='" . $type . "',
 									 `currency`='" . $currency . "',

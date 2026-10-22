@@ -420,6 +420,7 @@ $rowParticipant     = $resultsListing[0];
         </div>
     </div>
     </div>
+    <?php include_once("includes/popup.php"); ?>
 </body>
 <?php include_once("includes/js-source.php"); ?>
 <script>

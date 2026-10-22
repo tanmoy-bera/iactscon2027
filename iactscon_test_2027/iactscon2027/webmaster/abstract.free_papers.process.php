@@ -25,7 +25,7 @@ if (isset($_POST['action']) && !empty($_POST['topic']) && $_POST['action'] === '
 	exit;
 }
 // category wise topic listing by weavers end
-
+   
 switch ($action) {
 
 	case 'search_abstract':
@@ -215,8 +215,45 @@ switch ($action) {
 
 
 
-
-
+    case 'get_subcategories':
+	
+        // Handle AJAX request for subcategories
+        header('Content-Type: application/json');
+         
+        if (isset($_POST['category_id']) && !empty($_POST['category_id'])) {
+            $category_id = $_POST['category_id'];
+            
+            $sqlSubCategory = array();
+            $sqlSubCategory['QUERY'] = "SELECT id, abstract_submission FROM " . _DB_ABSTRACT_SUBMISSION_ . " 
+                                        WHERE `status` IN ('A') 
+                                        AND `category` = '" . $category_id . "'
+                                        ORDER BY `abstract_submission` ASC";
+            
+            $resultSubCategory = $mycms->sql_select($sqlSubCategory);
+        	
+            $subCategories = array();
+            if ($resultSubCategory) {
+                foreach ($resultSubCategory as $row) {
+                    $subCategories[] = array(
+                        'id' => $row['id'],
+                        'abstract_submission' => $row['abstract_submission']
+                    );
+                }
+            }
+            
+            echo json_encode(array(
+                'success' => true,
+                'data' => $subCategories
+            ));
+        } else {
+            echo json_encode(array(
+                'success' => false,
+                'message' => 'No category selected'
+            ));
+        }
+        exit(); // Stop execution after AJAX response
+        
+     break;
 	default:
 		pageRedirection("abstract.free_papers.php", 5, "");
 		exit();
@@ -292,6 +329,7 @@ function edit_nomination($mycms, $cfg)
 										   SET  `award_name` = ? ,
 										    	`award_description` = ? ,
 										  		`related_topic_id` = ? ,
+												`related_subcategoryId` = ? ,
 										    	`related_category_id` = ? ,
 												`doc_upload`=?,
 												`suporting_document_name`=?,
@@ -306,6 +344,7 @@ function edit_nomination($mycms, $cfg)
 	$sqlEditNomination['PARAM'][]   = array('FILD' => 'award_name',            		 'DATA' => $_REQUEST['award_name'],  			 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]   = array('FILD' => 'award_description',           'DATA' => $_REQUEST['award_description'],  			 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]   = array('FILD' => 'related_topic_id',            'DATA' => $_REQUEST['related_topic_id'],  			 'TYP' => 's');
+	$sqlEditNomination['PARAM'][]   = array('FILD' => 'related_subcategoryId',            'DATA' => $_REQUEST['sub_category_id'],  			 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]   = array('FILD' => 'related_category_id',         'DATA' => $_REQUEST['related_category_id'],  			 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]		  =	array('FILD' => 'doc_upload',    	 'DATA' => $upload_doc, 		 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]		  =	array('FILD' => 'suporting_document_name',    	 'DATA' =>$_REQUEST['doc_type'], 		 'TYP' => 's');
@@ -338,6 +377,7 @@ function add_nomination($mycms, $cfg)
 										   SET  `award_name` = ? ,
 										    	`award_description` = ? ,
 										  		`related_topic_id` = ? ,
+												`related_subcategoryId` = ? ,
 										    	`related_category_id` = ? ,
 												`doc_upload`=?,
 												`suporting_document_name`=?,
@@ -351,6 +391,7 @@ function add_nomination($mycms, $cfg)
 	$sqlEditNomination['PARAM'][]   = array('FILD' => 'award_name',            		 'DATA' => $_REQUEST['award_name'],  			 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]   = array('FILD' => 'award_description',           'DATA' => $_REQUEST['award_description'],  			 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]   = array('FILD' => 'related_topic_id',            'DATA' => $_REQUEST['related_topic_id'],  			 'TYP' => 's');
+	$sqlEditNomination['PARAM'][]   = array('FILD' => 'related_subcategoryId',            'DATA' => $_REQUEST['sub_category_id'],  			 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]   = array('FILD' => 'related_category_id',         'DATA' => $_REQUEST['related_category_id'],  			 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]		  =	array('FILD' => 'doc_upload',    	 'DATA' => $upload_doc, 		 'TYP' => 's');
 	$sqlEditNomination['PARAM'][]		  =	array('FILD' => 'suporting_document_name',    	 'DATA' =>$_REQUEST['doc_type'], 		 'TYP' => 's');
@@ -830,34 +871,6 @@ function allocateAbstract()
 			$insert['PARAM'][] = array('FILD'=>'abstract_id','DATA'=>$abstract_id,'TYP'=>'i');
 			$insert['PARAM'][] = array('FILD'=>'review_user_id','DATA'=>$reviewerId,'TYP'=>'i');
 			$mycms->sql_insert($insert, false);
-
-			// 🔹 Deactivate previous review results (only for this reviewer)
-			$sqlFetchPrevReviewResult =  array();
-			$sqlFetchPrevReviewResult['QUERY'] = "
-				SELECT * FROM " . _DB_ABSTRACT_REVIEW_RESULT_ . " 
-				WHERE abstract_id = ? AND faculty_id = ?";
-			$sqlFetchPrevReviewResult['PARAM'][] = array('FILD'=>'abstract_id','DATA'=>$abstract_id,'TYP'=>'i');
-			$sqlFetchPrevReviewResult['PARAM'][] = array('FILD'=>'faculty_id','DATA'=>$reviewerId,'TYP'=>'i');
-
-			$resultFetchPrevReviewResult = $mycms->sql_select($sqlFetchPrevReviewResult);
-
-			if ($resultFetchPrevReviewResult) {
-				foreach ($resultFetchPrevReviewResult as $row) {
-					// Make review inactive
-					$update1 = array();
-					$update1['QUERY'] = "UPDATE " . _DB_ABSTRACT_REVIEW_RESULT_ . " 
-										SET status = 'A' WHERE id = ?";
-					$update1['PARAM'][] = array('FILD'=>'id','DATA'=>$row['id'],'TYP'=>'i');
-					$mycms->sql_update($update1);
-
-					// Make review details inactive
-					$update2 = array();
-					$update2['QUERY'] = "UPDATE " . _DB_ABSTRACT_REVIEW_RESULT_DETAILS_ . " 
-										SET status = 'A' WHERE review_result_id = ?";
-					$update2['PARAM'][] = array('FILD'=>'review_result_id','DATA'=>$row['id'],'TYP'=>'i');
-					$mycms->sql_update($update2);
-				}
-			}
 		}
 
 	} else {

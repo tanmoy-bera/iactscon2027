@@ -1,0 +1,57 @@
+@media only screen and (min-width: 1000px) and (max-width: 1599px) {
+  :root {
+    --logowrap: 70px;
+    --gap: 20px;
+  }
+
+  header {
+    gap: 20px;
+  }
+
+  header h3 {
+    font-size: 32px;
+  }
+
+  header h4 {
+    font-size: 16px;
+  }
+
+  header h5 {
+    font-size: 19px;
+  }
+
+  .quiz_head h4 {
+    font-size: 30px;
+  }
+
+  .quiz_head h6 {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .quiz_box ul label {
+    padding: 18px;
+    font-size: 22px;
+  }
+
+  .quiz_head {
+    padding: 18px;
+  }
+
+  .total_member div h5 {
+    font-size: 16px;
+  }
+
+  .total_member div p {
+    font-size: 18px;
+  }
+
+  .total_member div img {
+    width: 70px;
+    margin-top: -30px;
+  }
+
+  .total_member {
+    width: 521px;
+  }
+}

@@ -400,14 +400,6 @@
 								}
 							}
 						}
-					}else {
-						// group mode turned off -> remove leftover group-level faculty
-						$sqlDelLeft = array();
-						$sqlDelLeft['QUERY'] = "DELETE FROM " . _DB_SP_PARTICIPANT_SCHEDULE_ . "
-							WHERE `session_id` = '" . $session_id . "'
-							AND `theme_id` = '" . $lastInsertedThemeId . "'
-							AND (`topic_id` IS NULL OR `topic_id` = '')";
-						$mycms->sql_delete($sqlDelLeft);
 					}
 					
 					// UPDATE TOPICS FOR THIS THEME

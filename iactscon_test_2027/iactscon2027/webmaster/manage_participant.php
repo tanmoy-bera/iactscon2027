@@ -673,11 +673,6 @@ $buttonSpPrgAccessArray = array();
                                 <span>
                                     <?php email(); ?><?= $rowDetails['participant_email_id'] ?>
                                 </span>
-                                <? if($rowDetails['participant_alternative_email_id'] !=''){?>
-                                <span>
-                                     <?php email(); ?><?= $rowDetails['participant_alternative_email_id'] ?>
-                                </span>
-                                <?} ?>
                                 <?
                                 $sqlDuplicate = array();
                                 $sqlDuplicate['QUERY']	 = "SELECT id 

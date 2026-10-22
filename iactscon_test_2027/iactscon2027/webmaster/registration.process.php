@@ -1007,7 +1007,6 @@ function combinedEditRegistrationProcess($mycms, $cfg)
 	$user_city = addslashes(trim(strtoupper($_REQUEST['user_city'])));
 	$user_postal_code = addslashes(trim(strtoupper($_REQUEST['user_postal_code'])));
 	$user_food_preference = addslashes(trim(strtoupper($_REQUEST['user_food_preference'])));
-			// " . ($user_state != '' ? "user_state_id = ?," : "") . "
 
 
 	$sqlUpdate = [];
@@ -1024,6 +1023,7 @@ function combinedEditRegistrationProcess($mycms, $cfg)
 			user_institute_name = ?,
             user_address = ?,
             user_country_id = ?,
+            user_state_id = ?,
             user_city = ?,
             user_pincode = ?,
             user_food_preference = ?,
@@ -1034,31 +1034,28 @@ function combinedEditRegistrationProcess($mycms, $cfg)
         WHERE id = ?
     ";
 
-	$sqlUpdate['PARAM'] = [];
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_title', 'DATA' => $user_title, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_first_name', 'DATA' => $user_first_name, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_middle_name', 'DATA' => $user_middle_name, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_last_name', 'DATA' => $user_last_name, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_full_name', 'DATA' => $user_full_name, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_email_id', 'DATA' => $user_email_id, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_mobile_isd_code', 'DATA' => $user_usd_code, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_mobile_no', 'DATA' => $user_mobile, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_institute_name', 'DATA' => $user_institute_name, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_address', 'DATA' => $user_address, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_country_id', 'DATA' => $user_country, 'TYP' => 's');
-
-	// if ($user_state != '') {
-	// 	$sqlUpdate['PARAM'][] = array('FILD' => 'user_state_id', 'DATA' => $user_state, 'TYP' => 's');
-	// }
-
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_city', 'DATA' => $user_city, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_pincode', 'DATA' => $user_postal_code, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'user_food_preference', 'DATA' => $user_food_preference, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'modified_ip', 'DATA' => $modified_ip, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'modified_sessionId', 'DATA' => $modified_sessionId, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'modified_browser', 'DATA' => $modified_browser, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'modified_dateTime', 'DATA' => $modified_dateTime, 'TYP' => 's');
-	$sqlUpdate['PARAM'][] = array('FILD' => 'id', 'DATA' => $delegateId, 'TYP' => 'i');
+	$sqlUpdate['PARAM'] = [
+		['FILD' => 'user_title', 'DATA' => $user_title, 'TYP' => 's'],
+		['FILD' => 'user_first_name', 'DATA' => $user_first_name, 'TYP' => 's'],
+		['FILD' => 'user_middle_name', 'DATA' => $user_middle_name, 'TYP' => 's'],
+		['FILD' => 'user_last_name', 'DATA' => $user_last_name, 'TYP' => 's'],
+		['FILD' => 'user_full_name', 'DATA' => $user_full_name, 'TYP' => 's'],
+		['FILD' => 'user_email_id', 'DATA' => $user_email_id, 'TYP' => 's'],
+		['FILD' => 'user_mobile_isd_code', 'DATA' => $user_usd_code, 'TYP' => 's'],
+		['FILD' => 'user_mobile_no', 'DATA' => $user_mobile, 'TYP' => 's'],
+		['FILD' => 'user_institute_name', 'DATA' => $user_institute_name, 'TYP' => 's'],
+		['FILD' => 'user_address', 'DATA' => $user_address, 'TYP' => 's'],
+		['FILD' => 'user_country_id', 'DATA' => $user_country, 'TYP' => 'i'],
+		['FILD' => 'user_state_id', 'DATA' => $user_state, 'TYP' => 'i'],
+		['FILD' => 'user_city', 'DATA' => $user_city, 'TYP' => 's'],
+		['FILD' => 'user_pincode', 'DATA' => $user_postal_code, 'TYP' => 's'],
+		['FILD' => 'user_food_preference', 'DATA' => $user_food_preference, 'TYP' => 's'],
+		['FILD' => 'modified_ip', 'DATA' => ($_SERVER['REMOTE_ADDR'] ?? ''), 'TYP' => 's'],
+		['FILD' => 'modified_sessionId', 'DATA' => session_id(), 'TYP' => 's'],
+		['FILD' => 'modified_browser', 'DATA' => ($_SERVER['HTTP_USER_AGENT'] ?? ''), 'TYP' => 's'],
+		['FILD' => 'modified_dateTime', 'DATA' => date('Y-m-d H:i:s'), 'TYP' => 's'],
+		['FILD' => 'id', 'DATA' => $delegateId, 'TYP' => 'i'],
+	];
 	if($user_full_name!='' && $user_email_id!='' && $user_mobile!='' && $user_address!='' && $user_title!=''){
         $mycms->sql_update($sqlUpdate);
 		
@@ -1173,7 +1170,7 @@ function combinedEditRegistrationProcess($mycms, $cfg)
 
 			if($_REQUEST['invoice_generation_mode_edit'] == "COMPLIMENTARY")
 			{
-				complementaryPaymentConfirmationProcess($slip_id, $delegateId);
+				zeroValueInvoiceUpdate($invoiceIdConf,'ACCOMPANY', $slip_id);
 			}
 			else if($_REQUEST['invoice_generation_mode_edit'] == "ZERO_VALUE")
 			{
@@ -1199,56 +1196,51 @@ function combinedEditRegistrationProcess($mycms, $cfg)
 	if ($accompanyDetailsArray || (!empty($_REQUEST['workshop_id'])) || (!empty($_REQUEST['edit_package_id']))) {
 		$payment_mode = trim($accompanyDetails['registrationMode']);
 		$payment_array = array();
-		if ($_REQUEST['invoice_generation_mode_edit']!='COMPLIMENTARY' && $_REQUEST['invoice_generation_mode_edit']!='ZERO_VALUE') {
 
-			if ($payment_mode == "OFFLINE") {
-				//  if($payment_mode=='OFFLINE' && $_REQUEST['payment_mode_edit']=='Card' && $_REQUEST['cheque_number_edit']=='' && $_REQUEST['paymentstatus']!='PAID'){
-					// echo '<form id="paymentMode" 
-					// 	action="registration.process.php?act=changePaymentMode
-					// 	&delegateId='.$delegateId.'
-					// 	&slipId='.$slip_id.'
-					// 	&paymentId=
-					// 	&registrationMode=ONLINE"
-					// 	method="POST">';
-					// 	echo '</form>';
+		if ($payment_mode == "OFFLINE") {
+            //  if($payment_mode=='OFFLINE' && $_REQUEST['payment_mode_edit']=='Card' && $_REQUEST['cheque_number_edit']=='' && $_REQUEST['paymentstatus']!='PAID'){
+				// echo '<form id="paymentMode" 
+				// 	action="registration.process.php?act=changePaymentMode
+				// 	&delegateId='.$delegateId.'
+				// 	&slipId='.$slip_id.'
+				// 	&paymentId=
+				// 	&registrationMode=ONLINE"
+				// 	method="POST">';
+				// 	echo '</form>';
 
-					// 	echo '<script>
-					// 			document.getElementById("paymentMode").submit();
-					// 		</script>';
-					// }else{
-					$payment_array['payment_mode'] = trim($_REQUEST['payment_mode_edit']);
-					$payment_array['cash_deposit_date'] = trim($_REQUEST['cash_deposit_date_edit']);
-					$payment_array['cash_document'] = '';
-					$payment_array['cheque_number'] = trim($_REQUEST['cheque_number_edit']);
-					$payment_array['cheque_drawn_bank'] = trim($_REQUEST['cheque_drawn_ban_edit']);
-					$payment_array['cheque_date'] = trim($_REQUEST['cheque_date_edit']);
-					$payment_array['draft_number'] = trim($_REQUEST['draft_number_edit']);
-					$payment_array['draft_drawn_bank'] = trim($_REQUEST['draft_drawn_bank_edit']);
-					$payment_array['draft_date'] = trim($_REQUEST['draft_date_edit']);
-					$payment_array['neft_transaction_no'] = trim($_REQUEST['neft_transaction_no_edit']);
-					$payment_array['neft_bank_name'] = trim($_REQUEST['neft_bank_name_edit']);
-					$payment_array['neft_date'] = trim($_REQUEST['neft_date_edit']);
-					$payment_array['neft_document'] ='';
-					$payment_array['rtgs_transaction_no'] = trim($_REQUEST['rtgs_transaction_no_edit']);
-					$payment_array['rtgs_bank_name'] = trim($_REQUEST['rtgs_bank_name_edit']);
-					$payment_array['rtgs_date'] = trim($_REQUEST['rtgs_date_edit']);
-					//UPI Payment Option Added By Weavers start
-					$payment_array['discountAmountEdit'] = trim($_REQUEST['discountAmountEdit']);
-					$payment_array['paymentstatus'] = trim($_REQUEST['paymentstatus']);
-					$payment_array['upi_date'] = trim($_REQUEST['upi_date_edit']);
-					$payment_array['txn_no'] = trim($_REQUEST['txn_no_edit']);
-					$payment_array['card_number'] = trim($_REQUEST['card_number_edit']);
-					$payment_array['card_date'] = trim($_REQUEST['card_date_edit']);
-				// }
-			} else if ($payment_mode == "ONLINE") {
-				$payment_array['card_mode'] = trim($_REQUEST['card_mode_edit']);
-			}
-			if($payment_array['cash_deposit_date']!='' || $payment_array['card_date']!='' || $payment_array['rtgs_date']!='' || $payment_array['upi_date']!='' || $payment_array['cheque_date']|='' || $payment_array['draft_date']!='' || $payment_array['neft_date']!=''){
-				paymentProcessSetup($delegateId, $slip_id, $payment_mode, $payment_array,$_REQUEST['invoice_generation_mode_edit']);
-
-			}
-		}else{
-			paymentProcessSetup($delegateId, $slip_id, $payment_mode, $payment_array='',$_REQUEST['invoice_generation_mode_edit']);
+				// 	echo '<script>
+				// 			document.getElementById("paymentMode").submit();
+				// 		</script>';
+				// }else{
+				$payment_array['payment_mode'] = trim($_REQUEST['payment_mode_edit']);
+				$payment_array['cash_deposit_date'] = trim($_REQUEST['cash_deposit_date_edit']);
+				$payment_array['cash_document'] = '';
+				$payment_array['cheque_number'] = trim($_REQUEST['cheque_number_edit']);
+				$payment_array['cheque_drawn_bank'] = trim($_REQUEST['cheque_drawn_ban_edit']);
+				$payment_array['cheque_date'] = trim($_REQUEST['cheque_date_edit']);
+				$payment_array['draft_number'] = trim($_REQUEST['draft_number_edit']);
+				$payment_array['draft_drawn_bank'] = trim($_REQUEST['draft_drawn_bank_edit']);
+				$payment_array['draft_date'] = trim($_REQUEST['draft_date_edit']);
+				$payment_array['neft_transaction_no'] = trim($_REQUEST['neft_transaction_no_edit']);
+				$payment_array['neft_bank_name'] = trim($_REQUEST['neft_bank_name_edit']);
+				$payment_array['neft_date'] = trim($_REQUEST['neft_date_edit']);
+				$payment_array['neft_document'] ='';
+				$payment_array['rtgs_transaction_no'] = trim($_REQUEST['rtgs_transaction_no_edit']);
+				$payment_array['rtgs_bank_name'] = trim($_REQUEST['rtgs_bank_name_edit']);
+				$payment_array['rtgs_date'] = trim($_REQUEST['rtgs_date_edit']);
+				//UPI Payment Option Added By Weavers start
+				$payment_array['discountAmountEdit'] = trim($_REQUEST['discountAmountEdit']);
+				$payment_array['paymentstatus'] = trim($_REQUEST['paymentstatus']);
+				$payment_array['upi_date'] = trim($_REQUEST['upi_date_edit']);
+				$payment_array['txn_no'] = trim($_REQUEST['txn_no_edit']);
+				$payment_array['card_number'] = trim($_REQUEST['card_number_edit']);
+				$payment_array['card_date'] = trim($_REQUEST['card_date_edit']);
+			// }
+		} else if ($payment_mode == "ONLINE") {
+			$payment_array['card_mode'] = trim($_REQUEST['card_mode_edit']);
+		}
+        if($payment_array['cash_deposit_date']!='' || $payment_array['card_date']!='' || $payment_array['rtgs_date']!='' || $payment_array['upi_date']!='' || $payment_array['cheque_date']|='' || $payment_array['draft_date']!='' || $payment_array['neft_date']!=''){
+	    	paymentProcessSetup($delegateId, $slip_id, $payment_mode, $payment_array,$_REQUEST['invoice_generation_mode_edit']);
 
 		}
 	}
@@ -4626,14 +4618,14 @@ function applyWorkshop($mycms, $cfg)
 		$workshopReqId = insertingWorkshopDetails($workshopDetailArray);
 		foreach ($workshopReqId as $key => $reqId) {
 		    $invoiceIdWrkshp = insertingInvoiceDetails($reqId,'WORKSHOP',$_REQUEST['registration_request'], '','',$_REQUEST['paymentstatus']);
-			// if($_REQUEST['invoice_generation_mode_edit'] == "COMPLIMENTARY")
-			// {
-			// 	zeroValueInvoiceUpdate($invoiceIdWrkshp,'WORKSHOP', $slip_id);
-			// }
-			// else if($_REQUEST['invoice_generation_mode_edit'] == "ZERO_VALUE")
-			// {
-			// 	zeroValueInvoiceUpdate($invoiceIdWrkshp,'WORKSHOP', $slip_id);
-			// }
+			if($_REQUEST['invoice_generation_mode_edit'] == "COMPLIMENTARY")
+			{
+				zeroValueInvoiceUpdate($invoiceIdWrkshp,'WORKSHOP', $slip_id);
+			}
+			else if($_REQUEST['invoice_generation_mode_edit'] == "ZERO_VALUE")
+			{
+				zeroValueInvoiceUpdate($invoiceIdWrkshp,'WORKSHOP', $slip_id);
+			}
 		}
 		
 		$payment_mode = trim($_REQUEST['registrationMode']);
@@ -7008,14 +7000,14 @@ function additionalAccomodationRequestProcess($registrationType)
 			$accompReqRoomId	 = insertingAccomodationRoomDetails($accommRoomDetails);
 			
 			$invoiceIdConf = insertingInvoiceDetails($accompReqId,'ACCOMMODATION',$_REQUEST['registration_request'],'','',$_REQUEST['paymentstatus']);
-            // if($_REQUEST['invoice_generation_mode_edit'] == "COMPLIMENTARY")
-			// {
-			// 	zeroValueInvoiceUpdate($invoiceIdConf,'ACCOMMODATION', $slip_id);
-			// }
-			// else if($_REQUEST['invoice_generation_mode_edit'] == "ZERO_VALUE")
-			// {
-			// 	zeroValueInvoiceUpdate($invoiceIdConf,'ACCOMMODATION', $slip_id);
-			// }
+            if($_REQUEST['invoice_generation_mode_edit'] == "COMPLIMENTARY")
+			{
+				zeroValueInvoiceUpdate($invoiceIdConf,'ACCOMMODATION', $slip_id);
+			}
+			else if($_REQUEST['invoice_generation_mode_edit'] == "ZERO_VALUE")
+			{
+				zeroValueInvoiceUpdate($invoiceIdConf,'ACCOMMODATION', $slip_id);
+			}
 			
 		
 
@@ -7234,38 +7226,7 @@ function Trash($mycms, $cfg)
 	$sqlRemoveSlip['PARAM'][] = array('FILD' => 'status', 'DATA' => 'D', 'TYP' => 's');
 	$sqlRemoveSlip['PARAM'][] = array('FILD' => 'delegate_id', 'DATA' => $delegateId, 'TYP' => 's');
 	$mycms->sql_update($sqlRemoveSlip);
-    //    Remove Accomodation
-	$sqlRemoveAcco = array();
-	$sqlRemoveAcco['QUERY'] = "UPDATE " . _DB_REQUEST_ACCOMMODATION_ . " 
-										   SET `status_before_trash`  = `status` 
-										 WHERE `user_id` = ?";
-	$sqlRemoveAcco['PARAM'][] = array('FILD' => 'user_id', 'DATA' => $delegateId, 'TYP' => 's');
-	$mycms->sql_update($sqlRemoveAcco);
 
-	$sqlRemoveAcco = array();
-	$sqlRemoveAcco['QUERY'] = "UPDATE " . _DB_REQUEST_ACCOMMODATION_ . " 
-										   SET `status` = ? 
-										 WHERE `user_id` = ?";
-	$sqlRemoveAcco['PARAM'][] = array('FILD' => 'status', 'DATA' => 'D', 'TYP' => 's');
-	$sqlRemoveAcco['PARAM'][] = array('FILD' => 'user_id', 'DATA' => $delegateId, 'TYP' => 's');
-	$mycms->sql_update($sqlRemoveAcco);
-    // 
-	  //    Remove Workshop
-	$sqlRemoveWorkshop = array();
-	$sqlRemoveWorkshop['QUERY'] = "UPDATE " . _DB_REQUEST_WORKSHOP_ . " 
-										   SET `status_before_trash`  = `status` 
-										 WHERE `delegate_id` = ?";
-	$sqlRemoveWorkshop['PARAM'][] = array('FILD' => 'delegate_id', 'DATA' => $delegateId, 'TYP' => 's');
-	$mycms->sql_update($sqlRemoveWorkshop);
-
-	$sqlRemoveWorkshop = array();
-	$sqlRemoveWorkshop['QUERY'] = "UPDATE " . _DB_REQUEST_WORKSHOP_ . " 
-										   SET `status` = ? 
-										 WHERE `delegate_id` = ?";
-	$sqlRemoveWorkshop['PARAM'][] = array('FILD' => 'status', 'DATA' => 'D', 'TYP' => 's');
-	$sqlRemoveWorkshop['PARAM'][] = array('FILD' => 'delegate_id', 'DATA' => $delegateId, 'TYP' => 's');
-	$mycms->sql_update($sqlRemoveWorkshop);
-    // 
 	if ($userType == 'EXHIBITOR') {
 		// pageRedirection("exhibitor_listing.php", "1");
 		$mycms->redirect(_BASE_URL_ . 'webmaster/section_exhibitor/exhibitor_listing.php');
@@ -7475,7 +7436,7 @@ function makeComplemantaryAjax($mycms, $cfg)
 		if ($invoice['service_type'] == 'DELEGATE_CONFERENCE_REGISTRATION') {
 			$payment_status = 'COMPLIMENTARY';
 		} else {
-			$payment_status = 'COMPLIMENTARY';
+			$payment_status = 'ZERO_VALUE';
 		}
 
 
@@ -8236,23 +8197,6 @@ function Active($mycms, $cfg)
 											  SET `status` = `status_before_trash`
 										   WHERE `delegate_id`     = '" . $delegateId . "'";
 	$mycms->sql_update($sqlRemoveInvoice);
-
-	 //    Remove Accomodation
-	$sqlRemoveAcco = array();
-	$sqlRemoveAcco['QUERY'] = "UPDATE " . _DB_REQUEST_ACCOMMODATION_ . " 
-										   SET `status` = `status_before_trash`
-										 WHERE `user_id` =  '" . $delegateId . "'";
-	$mycms->sql_update($sqlRemoveAcco);
-
-    // 
-	  //    Remove Workshop
-	$sqlRemoveWorkshop = array();
-	$sqlRemoveWorkshop['QUERY'] = "UPDATE " . _DB_REQUEST_WORKSHOP_ . " 
-										   SET `status` = `status_before_trash`
-										WHERE `delegate_id`     = '" . $delegateId . "'";
-	$mycms->sql_update($sqlRemoveWorkshop);
-
-    // 
 
 	 $_SESSION['toaster'] = [
 			'type' => 'success', // 'success' or 'error'
