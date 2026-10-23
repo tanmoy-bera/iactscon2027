@@ -267,38 +267,36 @@ if ($groupId > 0) {
                     </div>
                 </div>
 
-                <!-- ================= BLOCK MODAL ================= -->
-                <div class="modal fade" id="blockMemberModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <form method="post" action="group_members_list.process.php" class="modal-content">
-                            <input type="hidden" name="act" value="block_member" />
-                            <input type="hidden" name="group_id" value="<?= $groupId ?>" />
-                            <input type="hidden" name="user_id" id="blockUserId" value="" />
-                            <input type="hidden" name="<?= $pageKey ?>" value="<?= $pageKeyVal ?>" />
-                            <input type="hidden" name="search_name" value="<?= htmlspecialchars($searchName) ?>" />
-                            <div class="modal-header">
-                                <h5 class="modal-title">Block <span id="blockUserName"></span> in <?= htmlspecialchars($groupRow['group_name']) ?></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="frm_grp mb-3">
-                                    <p class="frm-head">Restriction <span class="mandatory">*</span></p>
-                                    <select name="restriction" required>
-                                        <option value="read_only">View only - can see messages, cannot message or react</option>
-                                        <option value="no_chat">Cannot open this group's chat</option>
-                                    </select>
-                                </div>
-                                <div class="frm_grp">
-                                    <p class="frm-head">Reason (optional)</p>
-                                    <input type="text" name="reason" maxlength="255" />
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="badge_dark" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="badge_danger"><i class="fal fa-ban"></i> Block</button>
-                            </div>
-                        </form>
-                    </div>
+                <!-- ================= BLOCK POPUP (moved to <body> by JS so no parent can clip or cover it) ================= -->
+                <div id="blockOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);z-index:99999;align-items:center;justify-content:center;padding:15px;">
+                    <form method="post" action="group_members_list.process.php"
+                          style="background:#151515;color:#fff;border:1px solid #333;border-radius:12px;width:480px;max-width:100%;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,.6);">
+                        <input type="hidden" name="act" value="block_member" />
+                        <input type="hidden" name="group_id" value="<?= $groupId ?>" />
+                        <input type="hidden" name="user_id" id="blockUserId" value="" />
+                        <input type="hidden" name="<?= $pageKey ?>" value="<?= $pageKeyVal ?>" />
+                        <input type="hidden" name="search_name" value="<?= htmlspecialchars($searchName) ?>" />
+
+                        <h5 style="margin:0 0 4px 0;color:#fff;font-size:18px;">Block <span id="blockUserName"></span></h5>
+                        <p style="margin:0 0 18px 0;color:#aaa;font-size:13px;">Group: <?= htmlspecialchars($groupRow['group_name']) ?></p>
+
+                        <div class="frm_grp" style="margin-bottom:14px;">
+                            <p class="frm-head" style="color:#ddd;">Restriction <span class="mandatory">*</span></p>
+                            <select name="restriction" required style="width:100%;">
+                                <option value="read_only">View only - can see messages, cannot message or react</option>
+                                <option value="no_chat">Cannot open this group's chat</option>
+                            </select>
+                        </div>
+                        <div class="frm_grp" style="margin-bottom:20px;">
+                            <p class="frm-head" style="color:#ddd;">Reason (optional)</p>
+                            <input type="text" name="reason" maxlength="255" style="width:100%;" />
+                        </div>
+
+                        <div style="display:flex;justify-content:flex-end;gap:10px;">
+                            <button type="button" id="blockCancel" class="badge_dark">Cancel</button>
+                            <button type="submit" class="badge_danger"><i class="fal fa-ban"></i> Block</button>
+                        </div>
+                    </form>
                 </div>
 
                 <?php } ?>
@@ -320,10 +318,22 @@ if ($groupId > 0) {
     confirmGo('.promoteBtn', 'Promote this member to moderator?');
     confirmGo('.demoteBtn', 'Demote this moderator to regular member?');
 
+    // move popup to <body> so it sits above everything
+    $('#blockOverlay').appendTo('body');
+
+    function closeBlockPopup() { $('#blockOverlay').hide(); }
+
     $(document).on('click', '.blockMemberBtn', function () {
         $('#blockUserId').val($(this).data('user-id'));
         $('#blockUserName').text($(this).data('user-name'));
-        bootstrap.Modal.getOrCreateInstance(document.getElementById('blockMemberModal')).show();
+        $('#blockOverlay').css('display', 'flex');
+    });
+    $(document).on('click', '#blockCancel', closeBlockPopup);
+    $(document).on('click', '#blockOverlay', function (e) {
+        if (e.target === this) closeBlockPopup();
+    });
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Escape') closeBlockPopup();
     });
 
     (function () {
