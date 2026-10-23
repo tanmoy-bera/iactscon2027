@@ -289,6 +289,10 @@ function showAllGroups($cfg, $mycms)
                                             <button class="icon_hover badge_dark action-transparent dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><?php ellips(); ?></button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <a href="<?= $_SERVER['PHP_SELF'] ?>?show=edit&group_id=<?= $row['id'] ?><?= $searchString ?>" class="icon_hover badge_secondary action-transparent"><?php edit(); ?>Edit Details</a>
+                                                <?php if ($row['group_type'] == 'private' && $row['status'] == 'A') { ?>
+                                                <a href="group_invite.php?group_id=<?= (int)$row['id'] ?>" class="icon_hover badge_primary action-transparent"><i class="fal fa-user-plus"></i> Invite Users</a>
+                                                <?php } ?>
+                                                <a href="group_members_list.php?group_id=<?= (int)$row['id'] ?>" class="icon_hover badge_success action-transparent"><i class="fal fa-users"></i> Group Members</a>
                                                 <a href="javascript:void(0);" class="deleteGroupBtn icon_hover badge_danger action-transparent br-5 w-auto" data-href="group_list.process.php?act=Delete&id=<?= $row['id'] ?>">
                                                     <i class="fal fa-trash"></i> Delete Group
                                                 </a>
