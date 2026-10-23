@@ -1,6 +1,6 @@
 <?php
 include_once('./includes/init.php');
-include_once('./includes/fcm-helper.php');
+include_once(__DIR__ . '/includes/notification-helper.php'); // preference check + save + FCM push (loads fcm-helper itself)
 $adminId = $mycms->getLoggedUserId();
 if (!$adminId) {
     die('Access denied. Please login as admin.');
@@ -26,7 +26,7 @@ switch ($act) {
             $gsql['PARAM'] = [['FILD' => 'id', 'DATA' => $groupId, 'TYP' => 'i']];
             $group = $mycms->sql_select($gsql);
             if (empty($group)) {
-                throw new Exception("Group not found or not a private group.");
+                throw new Exception("Group not found or not available for invitations.");
             }
             $group = $group[0];
 
@@ -77,32 +77,34 @@ switch ($act) {
             ];
             $invitationId = $mycms->sql_insert($insSql);
 
-            // in-app notification log
-            $title = "Group Invitation";
-            $body  = "You have been invited to join \"" . $group['group_name'] . "\"";
-            $dataPayload = [
-                'type'          => 'group_invite',
-                'group_id'      => $groupId,
-                'invitation_id' => $invitationId
-            ];
+            // Notification: preference check -> save in rcg_notifications -> FCM push.
+            // The invitation above is always created; only the notification follows the user's saved preference.
+            $title  = "Group Invitation";
+            $body   = "You have been invited to join \"" . $group['group_name'] . "\"";
+            // Actionable notification: the app shows Accept / Decline buttons on it.
+            // Saved in additional_data as {"group_id":..,"invitation_id":..,"is_actionable":true,"action_status":"pending","actions":["accept","decline"]}
+            $notify = adminNotifyActionable($userId, 'group_invite', $title, $body, ['accept', 'decline'], [
+                'reference_id'    => $invitationId,
+                'created_by'      => $adminId,
+                'additional_data' => [
+                    'group_id'      => $groupId,
+                    'invitation_id' => $invitationId,
+                    'is_actionable' => true,
+                    'action_status' => 'pending'
+                ],
+                // 'setting_key'  => 'group_invitations', // only if the setting_key differs from the type 'group_invite'
+            ]);
 
-            $notifSql = [];
-            $notifSql['QUERY'] = "INSERT INTO `rcg_notifications`
-                                  SET user_id=?, type='group_invite', title=?, body=?, data=?";
-            $notifSql['PARAM'] = [
-                ['FILD' => 'user_id', 'DATA' => $userId, 'TYP' => 'i'],
-                ['FILD' => 'title',   'DATA' => $title,   'TYP' => 's'],
-                ['FILD' => 'body',    'DATA' => $body,    'TYP' => 's'],
-                ['FILD' => 'data',    'DATA' => json_encode($dataPayload), 'TYP' => 's']
-            ];
-            $mycms->sql_insert($notifSql);
-
-            // FCM push (silently fail করলেও invitation তৈরি থাকবে, push শুধু best-effort)
-            sendFcmToUser($mycms, $userId, $title, $body, $dataPayload);
-
-            pageRedirection("group_invite.php", 1); // 1 = invite sent
+            // 1 = invite sent, 3 = invite created but the user has turned this notification off (no alert sent)
+            if (!empty($notify['allowed'])) {
+                setAlert('success', 'Invitation sent successfully.');
+            } else {
+                setAlert('success', 'Invitation created. This user has turned off this notification, so no alert was sent.');
+            }
+            pageRedirection("group_invite.php", !empty($notify['allowed']) ? 1 : 3);
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_invite.php", 0);
         }
         exit();
 
@@ -115,19 +117,46 @@ switch ($act) {
 
             $upd = [];
             $upd['QUERY'] = "UPDATE `rcg_group_invitations`
-                             SET status='cancelled', responded_at=NOW()
-                             WHERE id=? AND status='pending'";
+                         SET status='cancelled', responded_at=NOW()
+                         WHERE id=? AND status='pending'";
             $upd['PARAM'] = [['FILD' => 'id', 'DATA' => $invitationId, 'TYP' => 'i']];
             $mycms->sql_update($upd);
 
+            // The invitation is cancelled, so remove its notification (soft delete: row_status = 'D').
+            // A failure here is logged and must not break the cancel itself.
+            try {
+                $nsql = [];
+                $nsql['QUERY'] = "UPDATE `rcg_notifications`
+                              SET `row_status`='D', `updated_at`=NOW(), `updated_by`=?
+                              WHERE `type`='group_invite' AND `reference_id`=? AND `row_status`='A'";
+                $nsql['PARAM'] = [
+                    ['FILD' => 'updated_by',   'DATA' => $adminId,             'TYP' => 'i'],
+                    ['FILD' => 'reference_id', 'DATA' => (string)$invitationId, 'TYP' => 's'],
+                ];
+                $mycms->sql_update($nsql);
+            } catch (Throwable $e) {
+                error_log('cancel_invite: notification row_status update failed - ' . $e->getMessage());
+            }
+
+            setAlert('success', 'Invitation cancelled.');
             pageRedirection("group_invite.php", 2); // 2 = cancelled
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_invite.php", 0);
         }
         exit();
 
     default:
         die('Invalid action.');
+}
+
+/*============== HELPER: FLASH ALERT (shown once on group_invite.php) ================*/
+function setAlert($type, $message)
+{
+    $_SESSION['invite_alert'] = [
+        'type'    => ($type === 'error') ? 'error' : 'success',
+        'message' => $message
+    ];
 }
 
 /*============== HELPER: PAGE REDIRECTION ================*/

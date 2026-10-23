@@ -7,12 +7,14 @@ $act = @$_REQUEST['act'];
 
 define('GROUP_COVER_URL', '/webmaster/uploads/groups/');
 define('GROUP_COVER_PATH', $_SERVER['DOCUMENT_ROOT'] . '/webmaster/uploads/groups/');
+
+/* This page manages PRIVATE groups only (group_type is fixed in the backend, never shown or chosen in the UI).
+   Public groups are managed from cardiac_talks_topics.php. */
 switch ($act) {
     case 'add_group':
         try {
             $group_name        = trim($_POST['group_name'] ?? '');
             $group_description = isset($_POST['group_description']) ? trim($_POST['group_description']) : null;
-            $group_type        = (($_POST['group_type'] ?? 'public') === 'private') ? 'private' : 'public';
             $status            = (($_POST['status'] ?? 'A') === 'I') ? 'I' : 'A';
             $created_by        = $loggedUserID;
 
@@ -23,38 +25,36 @@ switch ($act) {
             // Cover image (optional)
             $cover_image = uploadGroupCover('cover_image');
 
+            // private groups have no preference, so it is always stored as 'all'
             $sql = [];
             $sql['QUERY'] = "INSERT INTO `rcg_groups`
-                        SET group_name=?, group_description=?, group_type=?, cover_image=?,
+                        SET group_name=?, group_description=?, group_type='private', preference_type='all', cover_image=?,
                             created_by=?, total_members=?, status=?";
 
             $sql['PARAM'] = [
                 ['FILD' => 'group_name',        'DATA' => $group_name,        'TYP' => 's'],
                 ['FILD' => 'group_description', 'DATA' => $group_description, 'TYP' => 's'],
-                ['FILD' => 'group_type',        'DATA' => $group_type,        'TYP' => 's'],
                 ['FILD' => 'cover_image',       'DATA' => $cover_image,       'TYP' => 's'],
                 ['FILD' => 'created_by',        'DATA' => $created_by,        'TYP' => 'i'],
                 ['FILD' => 'total_members',     'DATA' => 0,                  'TYP' => 'i'],
                 ['FILD' => 'status',            'DATA' => $status,            'TYP' => 's']
             ];
 
-            $group_id = $mycms->sql_insert($sql);
+            $mycms->sql_insert($sql);
 
-            // Save preference mapping
-         saveGroupPreferences($mycms, $group_id, $_POST['pref_type'] ?? [], $_POST['pref_name'] ?? [], $loggedUserID);
-
+            setAlert('success', 'Group created successfully.');
             pageRedirection("group_list.php", 1);
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_list.php", 0, "&show=add");
         }
         exit();
 
     case 'edit_group':
+        $group_id = (int)($_POST['group_id'] ?? 0);
         try {
-            $group_id          = (int)($_POST['group_id'] ?? 0);
             $group_name        = trim($_POST['group_name'] ?? '');
             $group_description = isset($_POST['group_description']) ? trim($_POST['group_description']) : null;
-            $group_type        = (($_POST['group_type'] ?? 'public') === 'private') ? 'private' : 'public';
             $status            = (($_POST['status'] ?? 'A') === 'I') ? 'I' : 'A';
             $old_cover_image   = trim($_POST['old_cover_image'] ?? '');
             $updated_by        = $loggedUserID;
@@ -76,14 +76,13 @@ switch ($act) {
 
             $sql = [];
             $sql['QUERY'] = "UPDATE `rcg_groups`
-                        SET group_name=?, group_description=?, group_type=?, cover_image=?,
+                        SET group_name=?, group_description=?, cover_image=?,
                             status=?, updated_by=?, updated_at=NOW()
-                        WHERE id=? AND status != 'D'";
+                        WHERE id=? AND group_type='private' AND status != 'D'";
 
             $sql['PARAM'] = [
                 ['FILD' => 'group_name',        'DATA' => $group_name,        'TYP' => 's'],
                 ['FILD' => 'group_description', 'DATA' => $group_description, 'TYP' => 's'],
-                ['FILD' => 'group_type',        'DATA' => $group_type,        'TYP' => 's'],
                 ['FILD' => 'cover_image',       'DATA' => $cover_image,       'TYP' => 's'],
                 ['FILD' => 'status',            'DATA' => $status,            'TYP' => 's'],
                 ['FILD' => 'updated_by',        'DATA' => $updated_by,        'TYP' => 'i'],
@@ -92,17 +91,12 @@ switch ($act) {
 
             $mycms->sql_update($sql);
 
-            // Re-sync preference mapping
-            $del = [];
-            $del['QUERY'] = "DELETE FROM `rcg_group_preference_map` WHERE group_id = ?";
-            $del['PARAM'][] = ['FILD' => 'group_id', 'DATA' => $group_id, 'TYP' => 'i'];
-            $mycms->sql_delete($del);
-
-          saveGroupPreferences($mycms, $group_id, $_POST['pref_type'] ?? [], $_POST['pref_name'] ?? [], $loggedUserID);
-
+            setAlert('success', 'Group updated successfully.');
             pageRedirection("group_list.php", 2); // 2 = updated successfully
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            $back = ($group_id > 0) ? "&show=edit&group_id=" . $group_id : "";
+            pageRedirection("group_list.php", 0, $back);
         }
         exit();
 
@@ -119,7 +113,7 @@ switch ($act) {
             $sql = [];
             $sql['QUERY'] = "UPDATE `rcg_groups`
                          SET status=?, updated_by=?, updated_at=NOW()
-                         WHERE id=? AND status != 'D'";
+                         WHERE id=? AND group_type='private' AND status != 'D'";
 
             $sql['PARAM'] = [
                 ['FILD' => 'status',     'DATA' => 'D',         'TYP' => 's'],
@@ -129,132 +123,98 @@ switch ($act) {
 
             $mycms->sql_update($sql);
 
+            setAlert('success', 'Group deleted successfully.');
             pageRedirection("group_list.php", 3); // 3 = deleted
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_list.php", 0);
         }
         exit();
 
     case 'Active':
-        try {
-            if (empty($_REQUEST['id'])) {
-                throw new Exception("Missing Group ID to activate.");
-            }
-
-            $group_id   = (int)$_REQUEST['id'];
-            $updated_by = $loggedUserID;
-
-            $sql = [];
-            $sql['QUERY'] = "UPDATE `rcg_groups`
-                         SET status = ?, updated_at = NOW(), updated_by = ?
-                         WHERE id = ? AND status != 'D'";
-
-            $sql['PARAM'][] = ['FILD' => 'status',     'DATA' => 'A',         'TYP' => 's'];
-            $sql['PARAM'][] = ['FILD' => 'updated_by', 'DATA' => $updated_by, 'TYP' => 'i'];
-            $sql['PARAM'][] = ['FILD' => 'id',         'DATA' => $group_id,   'TYP' => 'i'];
-
-            $mycms->sql_update($sql);
-
-            pageRedirection("group_list.php", 2);
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-        }
-        exit();
-
     case 'Inactive':
         try {
             if (empty($_REQUEST['id'])) {
-                throw new Exception("Missing Group ID to inactivate.");
+                throw new Exception("Missing Group ID.");
             }
 
             $group_id   = (int)$_REQUEST['id'];
+            $newStatus  = ($act === 'Active') ? 'A' : 'I';
             $updated_by = $loggedUserID;
 
             $sql = [];
             $sql['QUERY'] = "UPDATE `rcg_groups`
                          SET status = ?, updated_at = NOW(), updated_by = ?
-                         WHERE id = ? AND status != 'D'";
+                         WHERE id = ? AND group_type='private' AND status != 'D'";
 
-            $sql['PARAM'][] = ['FILD' => 'status',     'DATA' => 'I',         'TYP' => 's'];
+            $sql['PARAM'][] = ['FILD' => 'status',     'DATA' => $newStatus,  'TYP' => 's'];
             $sql['PARAM'][] = ['FILD' => 'updated_by', 'DATA' => $updated_by, 'TYP' => 'i'];
             $sql['PARAM'][] = ['FILD' => 'id',         'DATA' => $group_id,   'TYP' => 'i'];
 
             $mycms->sql_update($sql);
 
+            setAlert('success', 'Group marked as ' . (($act === 'Active') ? 'active' : 'inactive') . ' successfully.');
             pageRedirection("group_list.php", 2);
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_list.php", 0);
+        }
+        exit();
+
+    case 'MultiAction':
+        try {
+            if (empty($_POST['ids']) || !is_array($_POST['ids'])) {
+                throw new Exception("No groups selected.");
+            }
+            if (empty($_POST['action'])) {
+                throw new Exception("Please choose an action.");
+            }
+
+            $ids       = array_map('intval', $_POST['ids']);
+            $action    = $_POST['action'];
+            $statusMap = ['Active' => 'A', 'Inactive' => 'I', 'Remove' => 'D'];
+
+            if (!isset($statusMap[$action])) {
+                throw new Exception("Invalid action selected.");
+            }
+
+            $count = 0;
+            foreach ($ids as $id) {
+                if ($id <= 0) {
+                    continue;
+                }
+                $sql = [];
+                $sql['QUERY'] = "UPDATE `rcg_groups`
+                                 SET status=?, updated_by=?, updated_at=NOW()
+                                 WHERE id=? AND group_type='private' AND status != 'D'";
+                $sql['PARAM'] = [
+                    ['FILD' => 'status',     'DATA' => $statusMap[$action], 'TYP' => 's'],
+                    ['FILD' => 'updated_by', 'DATA' => $loggedUserID,       'TYP' => 'i'],
+                    ['FILD' => 'id',         'DATA' => $id,                 'TYP' => 'i']
+                ];
+                $mycms->sql_update($sql);
+                $count++;
+            }
+
+            $verb = ['Active' => 'marked as active', 'Inactive' => 'marked as inactive', 'Remove' => 'removed'];
+            setAlert('success', $count . ' group(s) ' . $verb[$action] . ' successfully.');
+            pageRedirection("group_list.php", ($action === 'Remove') ? 3 : 2);
+        } catch (Exception $e) {
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_list.php", 0);
         }
         exit();
 }
 
-/*============== HELPER: SAVE PREFERENCE MAPPING ================*/
-function saveGroupPreferences($mycms, $group_id, $types, $names, $created_by)
+/*============== HELPER: FLASH ALERT (shown once on the list page) ================*/
+function setAlert($type, $message)
 {
-    if (!is_array($types) || !is_array($names)) {
-        return;
-    }
-
-    $allowedTypes = ['university', 'institute', 'specialty'];
-    $done         = [];
-
-    foreach ($names as $i => $name) {
-        $name = trim($name);
-        $name = function_exists('mb_substr') ? mb_substr($name, 0, 255) : substr($name, 0, 255);
-        $type = $types[$i] ?? '';
-
-        if ($name === '' || !in_array($type, $allowedTypes, true)) {
-            continue;
-        }
-
-        $key = $type . '|' . (function_exists('mb_strtolower') ? mb_strtolower($name) : strtolower($name));
-        if (isset($done[$key])) {
-            continue;
-        }
-        $done[$key] = true;
-
-        // 1) already exists?
-        $find = [];
-        $find['QUERY'] = "SELECT `id` FROM `rcg_group_preferences`
-                          WHERE `preference_type`=? AND `preference_name`=? AND `status` != 'D'
-                          LIMIT 1";
-        $find['PARAM'] = [
-            ['FILD' => 'preference_type', 'DATA' => $type, 'TYP' => 's'],
-            ['FILD' => 'preference_name', 'DATA' => $name, 'TYP' => 's']
-        ];
-        $found = $mycms->sql_select($find);
-
-        if (!empty($found)) {
-            $pref_id = (int)$found[0]['id'];
-        } else {
-            // 2) create it in rcg_group_preferences
-            $ins = [];
-            $ins['QUERY'] = "INSERT INTO `rcg_group_preferences`
-                             SET preference_type=?, preference_name=?, status=?, created_by=?";
-            $ins['PARAM'] = [
-                ['FILD' => 'preference_type', 'DATA' => $type,       'TYP' => 's'],
-                ['FILD' => 'preference_name', 'DATA' => $name,       'TYP' => 's'],
-                ['FILD' => 'status',          'DATA' => 'A',         'TYP' => 's'],
-                ['FILD' => 'created_by',      'DATA' => $created_by, 'TYP' => 'i']
-            ];
-            $pref_id = (int)$mycms->sql_insert($ins);
-        }
-
-        if ($pref_id <= 0) {
-            throw new Exception("Could not save preference: " . $type . " - " . $name);
-        }
-
-        // 3) link group with preference in rcg_group_preference_map
-        $map_sql = [];
-        $map_sql['QUERY'] = "INSERT INTO `rcg_group_preference_map`
-                             SET group_id=?, preference_id=?";
-        $map_sql['PARAM'] = [
-            ['FILD' => 'group_id',      'DATA' => $group_id, 'TYP' => 'i'],
-            ['FILD' => 'preference_id', 'DATA' => $pref_id,  'TYP' => 'i']
-        ];
-        $mycms->sql_insert($map_sql);
-    }
+    $_SESSION['group_alert'] = [
+        'type'    => ($type === 'error') ? 'error' : 'success',
+        'message' => $message
+    ];
 }
+
 /*============== HELPER: COVER IMAGE UPLOAD ================*/
 /* Returns new file name, or null if no file was uploaded */
 function uploadGroupCover($fieldName)
@@ -305,9 +265,9 @@ function pageRedirection($fileName, $messageCode, $additionalString = "")
     @$searchString = "";
 
     $searchArray = [
-        $pageKey      => $pageKeyVal,
-        'search_name' => isset($_REQUEST['search_name']) ? urlencode(trim($_REQUEST['search_name'])) : '',
-        'search_type' => isset($_REQUEST['search_type']) ? urlencode(trim($_REQUEST['search_type'])) : '',
+        $pageKey        => $pageKeyVal,
+        'search_name'   => isset($_REQUEST['search_name']) ? urlencode(trim($_REQUEST['search_name'])) : '',
+        'search_status' => isset($_REQUEST['search_status']) ? urlencode(trim($_REQUEST['search_status'])) : '',
     ];
 
     foreach ($searchArray as $key => $val) {

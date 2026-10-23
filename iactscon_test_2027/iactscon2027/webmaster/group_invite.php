@@ -25,6 +25,38 @@ if ($groupId > 0) {
         <h2>Group Invitations</h2>
         <?php include_once("./includes/header_right.php"); ?>
     </header>
+    <?php
+    // One-time flash alert set by group_invite.process.php
+    $flash = $_SESSION['invite_alert'] ?? null;
+    unset($_SESSION['invite_alert']);
+    ?>
+    <style>
+        .int_alert {
+            position: fixed; top: 20px; right: 20px; z-index: 99999;
+            min-width: 280px; max-width: 420px; padding: 14px 18px;
+            border-radius: 10px; border: 1px solid;
+            display: flex; gap: 14px; align-items: center; justify-content: space-between;
+            font-size: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .6);
+        }
+        .int_alert.success { color: #34d399; background: #0f1f1a; border-color: rgba(16, 185, 129, .45); }
+        .int_alert.error   { color: #f87171; background: #221212; border-color: rgba(239, 68, 68, .45); }
+        .int_alert button  { background: none; border: 0; color: inherit; font-size: 20px; line-height: 1; cursor: pointer; }
+        /* all column headings centered */
+        .table_wrap table thead th { text-align: center !important; }
+        /* Action column: center the action button (theme aligns it right / floats it by default) */
+        .table_wrap table td.action,
+        .table_wrap table th.action { text-align: center !important; }
+    </style>
+    <?php if (!empty($flash['message'])) { ?>
+    <div class="int_alert <?= htmlspecialchars($flash['type']) ?>" id="intAlert">
+        <span>
+            <i class="fal <?= ($flash['type'] === 'error') ? 'fa-exclamation-circle' : 'fa-check-circle' ?>"></i>
+            <?= htmlspecialchars($flash['message']) ?>
+        </span>
+        <button type="button" id="intAlertClose" aria-label="Close">&times;</button>
+    </div>
+    <?php } ?>
+
     <div class="body_wrap">
         <?php
         $pageKey    = "_pgn_";
@@ -39,22 +71,7 @@ if ($groupId > 0) {
         foreach ($searchArray as $searchKey => $searchVal) {
             $searchString .= "&" . $searchKey . "=" . urlencode($searchVal);
         }
-
-        // ================= SUCCESS / INFO MESSAGE (from redirect) =================
-        $msgCode = (int)($_REQUEST['m'] ?? 0);
-        $messages = [
-            1 => ['text' => 'Invitation sent successfully.', 'class' => 'badge_success'],
-            2 => ['text' => 'Invitation cancelled.',         'class' => 'badge_secondary'],
-        ];
         ?>
-
-        <?php if ($msgCode > 0 && isset($messages[$msgCode])): ?>
-            <div class="alert_msg_wrap mb-3" id="inviteFlashMsg">
-                <n class="badge_padding <?= $messages[$msgCode]['class'] ?> w-max-con text-uppercase">
-                    <i class="fal fa-check-circle"></i> <?= htmlspecialchars($messages[$msgCode]['text']) ?>
-                </n>
-            </div>
-        <?php endif; ?>
 
         <div class="page_top_wrap mb-3">
             <div class="page_top_wrap_left">
@@ -79,15 +96,15 @@ if ($groupId > 0) {
             <div class="com_info_right" style="width:100%;">
 
                 <?php if (!$groupRow) { ?>
-                    <span class="mandatory">Group not found, inactive, or not private. Please open this page from Manage Groups &rarr; Invite Users.</span>
+                    <span class="mandatory">Group not found or inactive. Please open this page from Manage Groups &rarr; Invite Users.</span>
                 <?php } else { ?>
 
-                <!-- ================= USER SEARCH + INVITE ================= -->
-                <div class="com_info_box active mb-3">
+                <!-- ================= SINGLE TABLE: USERS + INVITATION STATUS ================= -->
+                <div class="com_info_box active">
                     <div class="com_info_box_grid">
                         <div class="com_info_box_grid_box">
                             <h5 class="com_info_box_head">
-                                <n><span class="text_success"><i class="fal fa-user-plus"></i></span> Users available to invite</n>
+                                <n><span class="text_success"><i class="fal fa-user-plus"></i></span> Invite Users</n>
                             </h5>
                             <div class="com_info_box_inner">
 
@@ -107,15 +124,14 @@ if ($groupId > 0) {
 
                                 <?php
                                 // Placeholder order must match $params order:
-                                // 2 in SELECT (pending subqueries), 2 in WHERE (exclusions), then search words
+                                // 1 in FROM (latest invitation join), 2 in WHERE (exclusions), then search words
                                 $params = [
                                     ['FILD' => 'g1', 'DATA' => $groupId, 'TYP' => 'i'],
                                     ['FILD' => 'g2', 'DATA' => $groupId, 'TYP' => 'i'],
                                     ['FILD' => 'g3', 'DATA' => $groupId, 'TYP' => 'i'],
-                                    ['FILD' => 'g4', 'DATA' => $groupId, 'TYP' => 'i'],
                                 ];
 
-                                // users who are already active members OR have accepted an invite are NOT listed
+                                // active members and users who accepted an invite are NOT listed
                                 $where  = " WHERE u.status = 'A'
                                             AND NOT EXISTS (SELECT 1 FROM rcg_group_members gm
                                                             WHERE gm.group_id = ? AND gm.user_id = u.id AND gm.status = 'A')
@@ -141,143 +157,83 @@ if ($groupId > 0) {
                                     }
                                 }
 
+                                // each user with the LATEST invitation (if any) for this group
                                 $usql = [];
                                 $usql['QUERY'] = "
                                     SELECT u.id, u.user_full_name, u.user_email_id, u.user_mobile_no,
-                                        (SELECT gi.status FROM rcg_group_invitations gi
-                                         WHERE gi.group_id = ? AND gi.invited_user_id = u.id AND gi.status='pending'
-                                         ORDER BY gi.id DESC LIMIT 1) AS pending_status,
-                                        (SELECT gi.id FROM rcg_group_invitations gi
-                                         WHERE gi.group_id = ? AND gi.invited_user_id = u.id AND gi.status='pending'
-                                         ORDER BY gi.id DESC LIMIT 1) AS pending_invitation_id
+                                           gi.id AS invitation_id, gi.status AS invite_status,
+                                           gi.created_at AS invited_at, gi.responded_at
                                     FROM rcg_user_registration u
+                                    LEFT JOIN rcg_group_invitations gi
+                                           ON gi.id = (SELECT MAX(gl.id) FROM rcg_group_invitations gl
+                                                       WHERE gl.group_id = ? AND gl.invited_user_id = u.id)
                                     $where
-                                    ORDER BY u.id DESC
-                                    LIMIT 50
+                                    ORDER BY (gi.status = 'pending') DESC, u.id DESC
                                 ";
                                 foreach ($params as $p) { $usql['PARAM'][] = $p; }
 
-                                $users = $mycms->sql_select($usql);
+                                $users = $mycms->sql_select_paginated($indexVal, $usql, 50, $restrt);
+
+                                $badge = ['pending' => 'badge_dark', 'declined' => 'badge_danger', 'cancelled' => 'badge_secondary'];
                                 ?>
 
                                 <div class="table_wrap">
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th class="sl">#</th>
+                                                <th class="sl">Sl. No.</th>
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Mobile</th>
                                                 <th>Status</th>
-                                                <th class="action text-right">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if ($users): $i = 0; foreach ($users as $u): $i++; ?>
-                                            <tr>
-                                                <td class="sl"><?= $i ?></td>
-                                                <td><?= htmlspecialchars($u['user_full_name'] ?? '—') ?></td>
-                                                <td><?= htmlspecialchars($u['user_email_id'] ?? '—') ?></td>
-                                                <td><?= htmlspecialchars($u['user_mobile_no'] ?? '—') ?></td>
-                                                <td>
-                                                    <?php if ($u['pending_status'] === 'pending') { ?>
-                                                        <n class="badge_padding badge_dark w-max-con text-uppercase">Invite Pending</n>
-                                                    <?php } else { ?>
-                                                        <n class="badge_padding badge_secondary w-max-con text-uppercase">Not Invited</n>
-                                                    <?php } ?>
-                                                </td>
-                                                <td class="action text-right">
-                                                    <?php if ($u['pending_status'] === 'pending') { ?>
-                                                        <a href="javascript:void(0);" class="cancelInviteBtn badge_danger action-transparent br-5 w-auto"
-                                                           data-href="group_invite.process.php?act=cancel_invite&group_id=<?= $groupId ?><?= $searchString ?>&invitation_id=<?= (int)$u['pending_invitation_id'] ?>">
-                                                            <i class="fal fa-times"></i> Cancel Invitation
-                                                        </a>
-                                                    <?php } else { ?>
-                                                        <a href="javascript:void(0);" class="sendInviteBtn badge_primary action-transparent br-5 w-auto"
-                                                           data-href="group_invite.process.php?act=send_invite&group_id=<?= $groupId ?><?= $searchString ?>&user_id=<?= (int)$u['id'] ?>">
-                                                            <i class="fal fa-paper-plane"></i> Send Invite
-                                                        </a>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <?php endforeach; else: ?>
-                                            <tr><td colspan="6" align="center"><span class="mandatory">No users available to invite.</span></td></tr>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= INVITATIONS SENT FOR THIS GROUP ================= -->
-                <div class="com_info_box active">
-                    <div class="com_info_box_grid">
-                        <div class="com_info_box_grid_box">
-                            <h5 class="com_info_box_head">
-                                <n><span class="text_primary"><i class="fal fa-envelope"></i></span> Invitations Sent</n>
-                            </h5>
-                            <div class="com_info_box_inner">
-                                <?php
-                                $invsql = [];
-                                $invsql['QUERY'] = "SELECT gi.id, gi.status, gi.created_at, gi.responded_at,
-                                                            u.id AS invited_user_id, u.user_full_name, u.user_email_id
-                                                     FROM rcg_group_invitations gi
-                                                     INNER JOIN rcg_user_registration u ON u.id = gi.invited_user_id
-                                                     WHERE gi.group_id = ?
-                                                     ORDER BY gi.id DESC
-                                                     LIMIT 50";
-                                $invsql['PARAM'] = [['FILD' => 'group_id', 'DATA' => $groupId, 'TYP' => 'i']];
-                                $invites = $mycms->sql_select($invsql);
-                                ?>
-                                <div class="table_wrap">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th class="sl">#</th>
-                                                <th>User</th>
-                                                <th>Status</th>
-                                                <th>Sent On</th>
+                                                <th>Invited On</th>
                                                 <th>Responded On</th>
                                                 <th class="action text-right">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php if ($invites): $i = 0; foreach ($invites as $iv): $i++; ?>
+                                            <?php if ($users): $i = 0; foreach ($users as $u): $i++;
+                                                $st = $u['invite_status']; // null = never invited
+                                            ?>
                                             <tr>
-                                                <td class="sl"><?= $i ?></td>
-                                                <td><?= htmlspecialchars($iv['user_full_name']) ?> <br><small><?= htmlspecialchars($iv['user_email_id']) ?></small></td>
-                                                <td>
-                                                    <?php
-                                                    $badge = ['pending' => 'badge_dark', 'accepted' => 'badge_success', 'declined' => 'badge_danger', 'cancelled' => 'badge_secondary'];
-                                                    $cls = $badge[$iv['status']] ?? 'badge_secondary';
-                                                    ?>
-                                                    <n class="badge_padding <?= $cls ?> w-max-con text-uppercase"><?= htmlspecialchars($iv['status']) ?></n>
+                                                <td class="sl"><?= $i + ((int)$pageKeyVal * 50) ?></td>
+                                                <td><?= htmlspecialchars($u['user_full_name'] ?? '—') ?></td>
+                                                <td><?= htmlspecialchars($u['user_email_id'] ?? '—') ?></td>
+                                                <td><?= htmlspecialchars($u['user_mobile_no'] ?? '—') ?></td>
+                                                <td style="text-align:center;">
+                                                    <?php if ($st === null) { ?>
+                                                        <n class="badge_padding badge_secondary w-max-con text-uppercase">Not Invited</n>
+                                                    <?php } else { ?>
+                                                        <n class="badge_padding <?= $badge[$st] ?? 'badge_secondary' ?> w-max-con text-uppercase"><?= $st === 'pending' ? 'Invite Pending' : htmlspecialchars($st) ?></n>
+                                                    <?php } ?>
                                                 </td>
-                                                <td><?= date('d-m-Y H:i', strtotime($iv['created_at'])) ?></td>
-                                                <td><?= $iv['responded_at'] ? date('d-m-Y H:i', strtotime($iv['responded_at'])) : '—' ?></td>
-                                                <td class="action text-right">
-                                                    <?php if ($iv['status'] === 'pending') { ?>
+                                                <td style="text-align:center;"><?= $u['invited_at'] ? date('d-m-Y H:i', strtotime($u['invited_at'])) : '—' ?></td>
+                                                <td style="text-align:center;"><?= $u['responded_at'] ? date('d-m-Y H:i', strtotime($u['responded_at'])) : '—' ?></td>
+                                                <td class="action">
+                                                    <?php if ($st === 'pending') { ?>
                                                         <a href="javascript:void(0);" class="cancelInviteBtn badge_danger action-transparent br-5 w-auto"
-                                                           data-href="group_invite.process.php?act=cancel_invite&group_id=<?= $groupId ?><?= $searchString ?>&invitation_id=<?= (int)$iv['id'] ?>">
-                                                            <i class="fal fa-times"></i> Cancel
-                                                        </a>
-                                                    <?php } elseif ($iv['status'] === 'cancelled' || $iv['status'] === 'declined') { ?>
-                                                        <a href="javascript:void(0);" class="sendInviteBtn badge_primary action-transparent br-5 w-auto"
-                                                           data-href="group_invite.process.php?act=send_invite&group_id=<?= $groupId ?><?= $searchString ?>&user_id=<?= (int)$iv['invited_user_id'] ?>">
-                                                            <i class="fal fa-paper-plane"></i> Send Invite
+                                                           data-href="group_invite.process.php?act=cancel_invite&group_id=<?= $groupId ?><?= $searchString ?>&invitation_id=<?= (int)$u['invitation_id'] ?>">
+                                                            <i class="fal fa-times"></i> Cancel Invitation
                                                         </a>
                                                     <?php } else { ?>
-                                                        —
+                                                        <a href="javascript:void(0);" class="sendInviteBtn badge_primary action-transparent br-5 w-auto"
+                                                           data-href="group_invite.process.php?act=send_invite&group_id=<?= $groupId ?><?= $searchString ?>&user_id=<?= (int)$u['id'] ?>">
+                                                            <i class="fal fa-paper-plane"></i> <?= $st === null ? 'Send Invite' : 'Invite Again' ?>
+                                                        </a>
                                                     <?php } ?>
                                                 </td>
                                             </tr>
                                             <?php endforeach; else: ?>
-                                            <tr><td colspan="6" align="center"><span class="mandatory">No invitations sent yet.</span></td></tr>
+                                            <tr><td colspan="8" align="center"><span class="mandatory">No users available to invite.</span></td></tr>
                                             <?php endif; ?>
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="bbp-pagination">
+                                    <div class="bbp-pagination-count"><?= $mycms->paginateRecInfo($indexVal) ?></div>
+                                    <span class="paginationDisplay">
+                                        <div class="pagination"><a><?= $mycms->paginate($indexVal, 'pagination') ?></a></div>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -301,19 +257,15 @@ if ($groupId > 0) {
             window.location.href = $(this).data('href');
         }
     });
-</script>
-<script>
-    (function () {
-        var flashEl = document.getElementById('inviteFlashMsg');
-        if (flashEl) {
-            setTimeout(function () {
-                flashEl.style.transition = 'opacity 0.5s ease';
-                flashEl.style.opacity = '0';
-                setTimeout(function () {
-                    flashEl.style.display = 'none';
-                }, 500);
-            }, 3000);
+
+    // ---------- Flash alert: auto hide + close ----------
+    $(function () {
+        if ($('#intAlert').length) {
+            setTimeout(function () { $('#intAlert').fadeOut(300); }, 4000);
         }
-    })();
+    });
+    $(document).on('click', '#intAlertClose', function () {
+        $('#intAlert').fadeOut(200);
+    });
 </script>
 </html>

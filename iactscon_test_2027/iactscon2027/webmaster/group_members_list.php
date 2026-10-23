@@ -16,6 +16,13 @@ if ($groupId > 0) {
         $groupRow = $found[0];
     }
 }
+
+// role / chat status / block / promote / demote exist only for private groups.
+// Public groups (Cardiac Talks Topics) go back to their own list. Visibility itself is never displayed.
+$isPrivate   = ($groupRow && $groupRow['group_type'] === 'private');
+$backUrl     = ($groupRow && !$isPrivate) ? 'cardiac_talks_topics.php' : 'group_list.php';
+$backLabel   = ($groupRow && !$isPrivate) ? 'Back to Topics' : 'Back to Groups';
+$parentLabel = ($groupRow && !$isPrivate) ? 'Cardiac Talks Topics' : 'Manage Groups';
 ?>
 
 <body>
@@ -24,6 +31,47 @@ if ($groupId > 0) {
         <h2>Group Members</h2>
         <?php include_once("./includes/header_right.php"); ?>
     </header>
+    <?php
+    // One-time flash alert set by group_members_list.process.php
+    $flash = $_SESSION['members_alert'] ?? null;
+    unset($_SESSION['members_alert']);
+    ?>
+    <style>
+        .int_alert {
+            position: fixed; top: 20px; right: 20px; z-index: 99999;
+            min-width: 280px; max-width: 420px; padding: 14px 18px;
+            border-radius: 10px; border: 1px solid;
+            display: flex; gap: 14px; align-items: center; justify-content: space-between;
+            font-size: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .6);
+        }
+        .int_alert.success { color: #34d399; background: #0f1f1a; border-color: rgba(16, 185, 129, .45); }
+        .int_alert.error   { color: #f87171; background: #221212; border-color: rgba(239, 68, 68, .45); }
+        .int_alert button  { background: none; border: 0; color: inherit; font-size: 20px; line-height: 1; cursor: pointer; }
+        /* all column headings centered */
+        .table_wrap table thead th { text-align: center !important; }
+        /* Action column: center the "..." button (theme aligns it right / floats it by default) */
+        .table_wrap table td.action,
+        .table_wrap table th.action { text-align: center !important; }
+        .table_wrap table td.action .action_div {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center;
+            float: none !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 100%;
+        }
+    </style>
+    <?php if (!empty($flash['message'])) { ?>
+    <div class="int_alert <?= htmlspecialchars($flash['type']) ?>" id="intAlert">
+        <span>
+            <i class="fal <?= ($flash['type'] === 'error') ? 'fa-exclamation-circle' : 'fa-check-circle' ?>"></i>
+            <?= htmlspecialchars($flash['message']) ?>
+        </span>
+        <button type="button" id="intAlertClose" aria-label="Close">&times;</button>
+    </div>
+    <?php } ?>
+
     <div class="body_wrap">
         <?php
         $pageKey    = "_pgn_";
@@ -38,40 +86,22 @@ if ($groupId > 0) {
         foreach ($searchArray as $searchKey => $searchVal) {
             $searchString .= "&" . $searchKey . "=" . urlencode($searchVal);
         }
-
-        // ================= FLASH MESSAGE (from redirect) =================
-        $msgCode  = (int)($_REQUEST['m'] ?? 0);
-        $messages = [
-            1 => ['text' => 'Member removed from group.',    'class' => 'badge_danger'],
-            2 => ['text' => 'User blocked in this group.',   'class' => 'badge_danger'],
-            3 => ['text' => 'User unblocked.',               'class' => 'badge_success'],
-            4 => ['text' => 'Member promoted to moderator.', 'class' => 'badge_success'],
-            5 => ['text' => 'Moderator demoted to member.',  'class' => 'badge_secondary'],
-        ];
         ?>
-
-        <?php if ($msgCode > 0 && isset($messages[$msgCode])): ?>
-            <div class="alert_msg_wrap mb-3" id="membersFlashMsg">
-                <n class="badge_padding <?= $messages[$msgCode]['class'] ?> w-max-con text-uppercase">
-                    <i class="fal fa-check-circle"></i> <?= htmlspecialchars($messages[$msgCode]['text']) ?>
-                </n>
-            </div>
-        <?php endif; ?>
 
         <div class="page_top_wrap mb-3">
             <div class="page_top_wrap_left">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">Community</a></li>
-                        <li class="breadcrumb-item"><a href="group_list.php">Manage Groups</a></li>
+                        <li class="breadcrumb-item"><a href="<?= $backUrl ?>"><?= $parentLabel ?></a></li>
                         <li class="breadcrumb-item active" aria-current="page"><a href="#">Group Members</a></li>
                     </ol>
                 </nav>
                 <h2>Group Members<?= $groupRow ? ' — ' . htmlspecialchars($groupRow['group_name']) : '' ?></h2>
             </div>
             <div class="page_top_wrap_right">
-                <a href="group_list.php" class="badge_dark"><i class="fal fa-arrow-left"></i> Back to Groups</a>
-                <?php if ($groupRow && $groupRow['group_type'] == 'private') { ?>
+                <a href="<?= $backUrl ?>" class="badge_dark"><i class="fal fa-arrow-left"></i> <?= $backLabel ?></a>
+                <?php if ($isPrivate) { ?>
                     <a href="group_invite.php?group_id=<?= $groupId ?>" class="badge_primary"><i class="fal fa-user-plus"></i> Invite Users</a>
                 <?php } ?>
             </div>
@@ -159,12 +189,14 @@ if ($groupId > 0) {
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th class="sl">#</th>
+                                                <th class="sl">Sl. No.</th>
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Mobile</th>
+                                                <?php if ($isPrivate) { ?>
                                                 <th>Role</th>
                                                 <th>Chat Status</th>
+                                                <?php } ?>
                                                 <th>Joined On</th>
                                                 <th class="action text-right">Action</th>
                                             </tr>
@@ -182,7 +214,8 @@ if ($groupId > 0) {
                                                 <td><?= htmlspecialchars($m['user_full_name'] ?? '—') ?></td>
                                                 <td><?= htmlspecialchars($m['user_email_id'] ?? '—') ?></td>
                                                 <td><?= htmlspecialchars($m['user_mobile_no'] ?? '—') ?></td>
-                                                <td>
+                                                <?php if ($isPrivate) { ?>
+                                                <td style="text-align:center;">
                                                     <?php if ($isOwner) { ?>
                                                         <n class="badge_padding badge_dark w-max-con text-uppercase">Owner</n>
                                                     <?php } elseif ($m['role'] === 'moderator') { ?>
@@ -191,7 +224,7 @@ if ($groupId > 0) {
                                                         <n class="badge_padding badge_secondary w-max-con text-uppercase">Member</n>
                                                     <?php } ?>
                                                 </td>
-                                                <td>
+                                                <td style="text-align:center;">
                                                     <?php
                                                     $hasBadge = false;
                                                     if (!empty($m['group_block'])) {
@@ -207,37 +240,40 @@ if ($groupId > 0) {
                                                     }
                                                     ?>
                                                 </td>
-                                                <td><?= $m['joined_at'] ? date('d-m-Y H:i', strtotime($m['joined_at'])) : '—' ?></td>
-                                                <td class="action text-right">
+                                                <?php } ?>
+                                                <td style="text-align:center;"><?= $m['joined_at'] ? date('d-m-Y H:i', strtotime($m['joined_at'])) : '—' ?></td>
+                                                <td class="action">
                                                     <?php if ($isOwner) { ?>
                                                         <span class="mandatory">Group Owner</span>
                                                     <?php } else { ?>
                                                     <div class="action_div dropdown" role="menu" aria-label="Actions">
                                                         <button class="icon_hover badge_dark action-transparent dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><?php ellips(); ?></button>
                                                         <ul class="dropdown-menu">
-                                                            <?php if ($m['role'] === 'moderator') { ?>
-                                                                <a href="javascript:void(0);" class="demoteBtn icon_hover badge_secondary action-transparent"
-                                                                   data-href="group_members_list.process.php?act=demote_member&group_id=<?= $groupId ?><?= $searchString ?>&user_id=<?= (int)$m['user_id'] ?>">
-                                                                    <i class="fal fa-arrow-down"></i> Demote to Member
-                                                                </a>
-                                                            <?php } else { ?>
-                                                                <a href="javascript:void(0);" class="promoteBtn icon_hover badge_primary action-transparent"
-                                                                   data-href="group_members_list.process.php?act=promote_member&group_id=<?= $groupId ?><?= $searchString ?>&user_id=<?= (int)$m['user_id'] ?>">
-                                                                    <i class="fal fa-arrow-up"></i> Promote to Moderator
-                                                                </a>
-                                                            <?php } ?>
+                                                            <?php if ($isPrivate) { ?>
+                                                                <?php if ($m['role'] === 'moderator') { ?>
+                                                                    <a href="javascript:void(0);" class="demoteBtn icon_hover badge_secondary action-transparent"
+                                                                       data-href="group_members_list.process.php?act=demote_member&group_id=<?= $groupId ?><?= $searchString ?>&user_id=<?= (int)$m['user_id'] ?>">
+                                                                        <i class="fal fa-arrow-down"></i> Demote to Member
+                                                                    </a>
+                                                                <?php } else { ?>
+                                                                    <a href="javascript:void(0);" class="promoteBtn icon_hover badge_primary action-transparent"
+                                                                       data-href="group_members_list.process.php?act=promote_member&group_id=<?= $groupId ?><?= $searchString ?>&user_id=<?= (int)$m['user_id'] ?>">
+                                                                        <i class="fal fa-arrow-up"></i> Promote to Moderator
+                                                                    </a>
+                                                                <?php } ?>
 
-                                                            <?php if (!empty($m['group_block'])) { ?>
-                                                                <a href="javascript:void(0);" class="unblockBtn icon_hover badge_success action-transparent"
-                                                                   data-href="group_members_list.process.php?act=unblock_member&group_id=<?= $groupId ?><?= $searchString ?>&user_id=<?= (int)$m['user_id'] ?>">
-                                                                    <i class="fal fa-unlock"></i> Unblock
-                                                                </a>
-                                                            <?php } else { ?>
-                                                                <a href="javascript:void(0);" class="blockMemberBtn icon_hover badge_danger action-transparent"
-                                                                   data-user-id="<?= (int)$m['user_id'] ?>"
-                                                                   data-user-name="<?= htmlspecialchars($m['user_full_name'] ?? '') ?>">
-                                                                    <i class="fal fa-ban"></i> Block
-                                                                </a>
+                                                                <?php if (!empty($m['group_block'])) { ?>
+                                                                    <a href="javascript:void(0);" class="unblockBtn icon_hover badge_success action-transparent"
+                                                                       data-href="group_members_list.process.php?act=unblock_member&group_id=<?= $groupId ?><?= $searchString ?>&user_id=<?= (int)$m['user_id'] ?>">
+                                                                        <i class="fal fa-unlock"></i> Unblock
+                                                                    </a>
+                                                                <?php } else { ?>
+                                                                    <a href="javascript:void(0);" class="blockMemberBtn icon_hover badge_danger action-transparent"
+                                                                       data-user-id="<?= (int)$m['user_id'] ?>"
+                                                                       data-user-name="<?= htmlspecialchars($m['user_full_name'] ?? '') ?>">
+                                                                        <i class="fal fa-ban"></i> Block
+                                                                    </a>
+                                                                <?php } ?>
                                                             <?php } ?>
 
                                                             <a href="javascript:void(0);" class="removeMemberBtn icon_hover badge_danger action-transparent"
@@ -253,14 +289,16 @@ if ($groupId > 0) {
                                                 }
                                             } else {
                                             ?>
-                                            <tr><td colspan="8" align="center"><span class="mandatory">No members found.</span></td></tr>
+                                            <tr><td colspan="<?= $isPrivate ? 8 : 6 ?>" align="center"><span class="mandatory">No members found.</span></td></tr>
                                             <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="paginationDisplay">
-                                    <span class="paginationRecDisplay"><?= $mycms->paginateRecInfo($indexVal) ?></span>
-                                    <span class="paginationDisplay"><?= $mycms->paginate($indexVal, 'pagination') ?></span>
+                                <div class="bbp-pagination">
+                                    <div class="bbp-pagination-count"><?= $mycms->paginateRecInfo($indexVal) ?></div>
+                                    <span class="paginationDisplay">
+                                        <div class="pagination"><a><?= $mycms->paginate($indexVal, 'pagination') ?></a></div>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -336,15 +374,14 @@ if ($groupId > 0) {
         if (e.key === 'Escape') closeBlockPopup();
     });
 
-    (function () {
-        var flashEl = document.getElementById('membersFlashMsg');
-        if (flashEl) {
-            setTimeout(function () {
-                flashEl.style.transition = 'opacity 0.5s ease';
-                flashEl.style.opacity = '0';
-                setTimeout(function () { flashEl.style.display = 'none'; }, 500);
-            }, 3000);
+    // ---------- Flash alert: auto hide + close ----------
+    $(function () {
+        if ($('#intAlert').length) {
+            setTimeout(function () { $('#intAlert').fadeOut(300); }, 4000);
         }
-    })();
+    });
+    $(document).on('click', '#intAlertClose', function () {
+        $('#intAlert').fadeOut(200);
+    });
 </script>
 </html>

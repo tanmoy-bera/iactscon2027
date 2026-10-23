@@ -48,9 +48,11 @@ switch ($act) {
                 "You have been removed from \"" . $group['group_name'] . "\"",
                 ['type' => 'group_removed', 'group_id' => $groupId]);
 
+            setAlert('success', 'Member removed from group.');
             pageRedirection("group_members_list.php", 1);
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_members_list.php", 0);
         }
         exit();
 
@@ -63,7 +65,7 @@ switch ($act) {
             $reason      = trim((string)($_POST['reason'] ?? ''));
             $reason      = $reason !== '' ? mb_substr($reason, 0, 255) : null;
 
-            $group = getGroupOrFail($mycms, $groupId, $userId);
+            $group = getGroupOrFail($mycms, $groupId, $userId, true);
             assertActiveMember($mycms, $groupId, $userId);
 
             if (!in_array($restriction, ['no_chat', 'read_only'], true)) {
@@ -112,9 +114,11 @@ switch ($act) {
                 $mycms->sql_insert($ins);
             }
 
+            setAlert('success', 'User blocked in this group.');
             pageRedirection("group_members_list.php", 2);
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_members_list.php", 0);
         }
         exit();
 
@@ -123,7 +127,7 @@ switch ($act) {
         try {
             $groupId = (int)($_REQUEST['group_id'] ?? 0);
             $userId  = (int)($_REQUEST['user_id'] ?? 0);
-            getGroupOrFail($mycms, $groupId, $userId);
+            getGroupOrFail($mycms, $groupId, $userId, true);
 
             $upd = [];
             $upd['QUERY'] = "UPDATE `rcg_chat_blocks`
@@ -136,9 +140,11 @@ switch ($act) {
             ];
             $mycms->sql_update($upd);
 
+            setAlert('success', 'User unblocked.');
             pageRedirection("group_members_list.php", 3);
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_members_list.php", 0);
         }
         exit();
 
@@ -147,7 +153,7 @@ switch ($act) {
         try {
             $groupId = (int)($_REQUEST['group_id'] ?? 0);
             $userId  = (int)($_REQUEST['user_id'] ?? 0);
-            $group   = getGroupOrFail($mycms, $groupId, $userId);
+            $group   = getGroupOrFail($mycms, $groupId, $userId, true);
             $member  = assertActiveMember($mycms, $groupId, $userId);
 
             if ($member['role'] === 'moderator') {
@@ -169,9 +175,11 @@ switch ($act) {
             notifyUser($mycms, $userId, 'group_promoted', $title, $body, $payload);
             sendFcmToUser($mycms, $userId, $title, $body, $payload); // best-effort
 
+            setAlert('success', 'Member promoted to moderator.');
             pageRedirection("group_members_list.php", 4);
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_members_list.php", 0);
         }
         exit();
 
@@ -180,7 +188,7 @@ switch ($act) {
         try {
             $groupId = (int)($_REQUEST['group_id'] ?? 0);
             $userId  = (int)($_REQUEST['user_id'] ?? 0);
-            $group   = getGroupOrFail($mycms, $groupId, $userId);
+            $group   = getGroupOrFail($mycms, $groupId, $userId, true);
 
             if ((int)$userId === (int)$group['created_by']) {
                 throw new Exception("The group owner's role cannot be changed.");
@@ -202,9 +210,11 @@ switch ($act) {
                 "You are no longer a moderator of \"" . $group['group_name'] . "\"",
                 ['type' => 'group_demoted', 'group_id' => $groupId]);
 
+            setAlert('success', 'Moderator demoted to member.');
             pageRedirection("group_members_list.php", 5);
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            setAlert('error', $e->getMessage());
+            pageRedirection("group_members_list.php", 0);
         }
         exit();
 
@@ -213,17 +223,29 @@ switch ($act) {
 }
 
 /*============== HELPERS ================*/
-function getGroupOrFail($mycms, $groupId, $userId)
+/* One-time flash alert, shown on group_members_list.php */
+function setAlert($type, $message)
+{
+    $_SESSION['members_alert'] = [
+        'type'    => ($type === 'error') ? 'error' : 'success',
+        'message' => $message
+    ];
+}
+
+function getGroupOrFail($mycms, $groupId, $userId, $privateOnly = false)
 {
     if ($groupId <= 0 || $userId <= 0) {
         throw new Exception("group_id and user_id are required.");
     }
     $q = [];
-    $q['QUERY'] = "SELECT `id`, `group_name`, `created_by` FROM `rcg_groups` WHERE `id`=? AND `status` != 'D'";
+    $q['QUERY'] = "SELECT `id`, `group_name`, `group_type`, `created_by` FROM `rcg_groups` WHERE `id`=? AND `status` != 'D'";
     $q['PARAM'] = [['FILD' => 'id', 'DATA' => $groupId, 'TYP' => 'i']];
     $g = $mycms->sql_select($q);
     if (empty($g)) {
         throw new Exception("Group not found.");
+    }
+    if ($privateOnly && $g[0]['group_type'] !== 'private') {
+        throw new Exception("This action is not available for this group.");
     }
     return $g[0];
 }
