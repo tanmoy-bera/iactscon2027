@@ -94,8 +94,6 @@ function cqCollect()
     return [
         'quiz_id'          => $quizId,
         'question_text'    => $text,
-        'round'            => max(1, (int)($_POST['round'] ?? 1)),
-        'level'            => max(1, (int)($_POST['level'] ?? 1)),
         'timer_override'   => max(0, (int)($_POST['timer_override'] ?? 0)),
         'is_last_question' => (strtolower(trim($_POST['is_last_question'] ?? '')) === 'yes') ? 1 : 0,
         'media_type'       => $mediaType,
@@ -205,13 +203,11 @@ switch ($act) {
 
             $sql = [];
             $sql['QUERY'] = "INSERT INTO `rcg_cardiac_talk_quiz_questions`
-                             SET quiz_id=?, level=?, round=?, question_text=?, media_type=?, media_description=?, media_url=?,
+                             SET quiz_id=?, question_text=?, media_type=?, media_description=?, media_url=?,
                                  option_a=?, option_b=?, option_c=?, option_d=?, correct_option=?,
                                  timer_override=?, status='active', created_by=?, row_status='A', is_last_question=?";
             $sql['PARAM'] = [
                 ['FILD' => 'quiz_id',           'DATA' => $d['quiz_id'],        'TYP' => 'i'],
-                ['FILD' => 'level',             'DATA' => $d['level'],          'TYP' => 'i'],
-                ['FILD' => 'round',             'DATA' => $d['round'],          'TYP' => 'i'],
                 ['FILD' => 'question_text',     'DATA' => $d['question_text'],  'TYP' => 's'],
                 ['FILD' => 'media_type',        'DATA' => $mediaType,           'TYP' => 's'],
                 ['FILD' => 'media_description', 'DATA' => $mediaDesc,           'TYP' => 's'],
@@ -300,13 +296,11 @@ switch ($act) {
 
             $sql = [];
             $sql['QUERY'] = "UPDATE `rcg_cardiac_talk_quiz_questions`
-                             SET level=?, round=?, question_text=?, media_type=?, media_description=?, media_url=?,
+                             SET question_text=?, media_type=?, media_description=?, media_url=?,
                                  option_a=?, option_b=?, option_c=?, option_d=?, correct_option=?,
                                  timer_override=?, updated_by=?, is_last_question=?
                              WHERE id=? AND quiz_id=? AND row_status!='D'";
             $sql['PARAM'] = [
-                ['FILD' => 'level',             'DATA' => $d['level'],          'TYP' => 'i'],
-                ['FILD' => 'round',             'DATA' => $d['round'],          'TYP' => 'i'],
                 ['FILD' => 'question_text',     'DATA' => $d['question_text'],  'TYP' => 's'],
                 ['FILD' => 'media_type',        'DATA' => $mediaType,           'TYP' => 's'],
                 ['FILD' => 'media_description', 'DATA' => $mediaDesc,           'TYP' => 's'],

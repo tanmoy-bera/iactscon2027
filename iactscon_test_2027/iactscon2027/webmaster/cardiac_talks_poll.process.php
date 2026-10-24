@@ -7,14 +7,13 @@ date_default_timezone_set('Asia/Kolkata');
 
 /*
  * TABLES
- *  public_rcg_polls        : id, group_id, title, description, is_active, is_published, allow_multiple, max_choices,
- *                            start_time, end_time, created_by, created_at, updated_at (auto), updated_by,
- *                            is_deleted, deleted_by, deleted_at
- *  public_rcg_poll_options : id, poll_id, option_text, vote_count, created_at
+ *  rcg_cardiac_talks_polls        : id, group_id, title, is_active, is_published,
+ *                                   start_time, end_time, created_by, created_at, updated_at (auto), updated_by,
+ *                                   is_deleted, deleted_by, deleted_at
+ *  rcg_cardiac_talks_poll_options : id, poll_id, option_text, vote_count, created_at
  *
  * FORM FIELDS (add/edit):
- *  poll_id (edit only), group_id, title, description, start_time, end_time,
- *  allow_multiple (0/1), max_choices, is_published (0/1),
+ *  poll_id (edit only), group_id, title, start_time, end_time, is_published (0/1),
  *  options[]  and  option_ids[]  (option_ids[] = existing option id, or empty/0 for a new option)
  */
 
@@ -22,7 +21,7 @@ date_default_timezone_set('Asia/Kolkata');
 function pollCollect()
 {
     $groupId = (int)($_POST['group_id'] ?? 0);
-    if ($groupId <= 0) throw new Exception("Please select a group.");
+    if ($groupId <= 0) throw new Exception("Please select a topic.");
 
     $title = trim($_POST['title'] ?? '');
     if ($title === '') throw new Exception("Poll title is required.");
@@ -38,23 +37,17 @@ function pollCollect()
     if (count($options) < 2) throw new Exception("At least 2 options are required.");
 
     $start = !empty($_POST['start_time']) ? date('Y-m-d H:i:s', strtotime($_POST['start_time'])) : date('Y-m-d H:i:s');
-    $end   = !empty($_POST['end_time'])   ? date('Y-m-d H:i:s', strtotime($_POST['end_time']))   : null;
-    if ($end !== null && strtotime($end) <= strtotime($start)) {
+    if (empty($_POST['end_time'])) throw new Exception("End time is required.");
+    $end   = date('Y-m-d H:i:s', strtotime($_POST['end_time']));
+    if (strtotime($end) <= strtotime($start)) {
         throw new Exception("End time must be after start time.");
     }
-
-    $allowMultiple = !empty($_POST['allow_multiple']) ? 1 : 0;
-    $maxChoices    = $allowMultiple ? max(1, (int)($_POST['max_choices'] ?? 1)) : 1;
-    if ($maxChoices > count($options)) $maxChoices = count($options);
 
     return [
         'group_id'       => $groupId,
         'title'          => $title,
-        'description'    => (isset($_POST['description']) && trim($_POST['description']) !== '') ? trim($_POST['description']) : null,
         'start_time'     => $start,
         'end_time'       => $end,
-        'allow_multiple' => $allowMultiple,
-        'max_choices'    => $maxChoices,
         'is_published'   => !empty($_POST['is_published']) ? 1 : 0,
         'options'        => $options,
     ];
@@ -68,16 +61,13 @@ switch ($act) {
             $d = pollCollect();
 
             $sql = [];
-            $sql['QUERY'] = "INSERT INTO `public_rcg_polls`
-                             SET group_id=?, title=?, description=?, is_active=1, is_published=?, allow_multiple=?, max_choices=?,
+            $sql['QUERY'] = "INSERT INTO `rcg_cardiac_talks_polls`
+                             SET group_id=?, title=?, is_active=1, is_published=?,
                                  start_time=?, end_time=?, created_by=?, is_deleted=0";
             $sql['PARAM'] = [
                 ['FILD' => 'group_id',       'DATA' => $d['group_id'],       'TYP' => 'i'],
-                ['FILD' => 'title',          'DATA' => $d['title'],          'TYP' => 's'],
-                ['FILD' => 'description',    'DATA' => $d['description'],    'TYP' => 's'],
+                ['FILD' => 'title',         'DATA' => $d['title'],          'TYP' => 's'],
                 ['FILD' => 'is_published',   'DATA' => $d['is_published'],   'TYP' => 'i'],
-                ['FILD' => 'allow_multiple', 'DATA' => $d['allow_multiple'], 'TYP' => 'i'],
-                ['FILD' => 'max_choices',    'DATA' => $d['max_choices'],    'TYP' => 'i'],
                 ['FILD' => 'start_time',     'DATA' => $d['start_time'],     'TYP' => 's'],
                 ['FILD' => 'end_time',       'DATA' => $d['end_time'],       'TYP' => 's'],
                 ['FILD' => 'created_by',     'DATA' => $loggedUserID,        'TYP' => 'i'],
@@ -86,7 +76,7 @@ switch ($act) {
 
             if ($pollId <= 0) {                         // fallback if it does not
                 $f = [];
-                $f['QUERY']   = "SELECT MAX(id) AS id FROM `public_rcg_polls` WHERE created_by = ?";
+                $f['QUERY']   = "SELECT MAX(id) AS id FROM `rcg_cardiac_talks_polls` WHERE created_by = ?";
                 $f['PARAM'][] = ['FILD' => 'created_by', 'DATA' => $loggedUserID, 'TYP' => 'i'];
                 $r = $mycms->sql_select($f);
                 $pollId = (int)($r[0]['id'] ?? 0);
@@ -95,7 +85,7 @@ switch ($act) {
 
             foreach ($d['options'] as $opt) {
                 $o = [];
-                $o['QUERY'] = "INSERT INTO `public_rcg_poll_options` SET poll_id=?, option_text=?, vote_count=0";
+                $o['QUERY'] = "INSERT INTO `rcg_cardiac_talks_poll_options` SET poll_id=?, option_text=?, vote_count=0";
                 $o['PARAM'] = [
                     ['FILD' => 'poll_id',     'DATA' => $pollId,      'TYP' => 'i'],
                     ['FILD' => 'option_text', 'DATA' => $opt['text'], 'TYP' => 's'],
@@ -119,17 +109,14 @@ switch ($act) {
             $d = pollCollect();
 
             $sql = [];
-            $sql['QUERY'] = "UPDATE `public_rcg_polls`
-                             SET group_id=?, title=?, description=?, is_published=?, allow_multiple=?, max_choices=?,
+            $sql['QUERY'] = "UPDATE `rcg_cardiac_talks_polls`
+                             SET group_id=?, title=?, is_published=?,
                                  start_time=?, end_time=?, updated_by=?
                              WHERE id=? AND is_deleted=0";
             $sql['PARAM'] = [
                 ['FILD' => 'group_id',       'DATA' => $d['group_id'],       'TYP' => 'i'],
-                ['FILD' => 'title',          'DATA' => $d['title'],          'TYP' => 's'],
-                ['FILD' => 'description',    'DATA' => $d['description'],    'TYP' => 's'],
+                ['FILD' => 'title',         'DATA' => $d['title'],          'TYP' => 's'],
                 ['FILD' => 'is_published',   'DATA' => $d['is_published'],   'TYP' => 'i'],
-                ['FILD' => 'allow_multiple', 'DATA' => $d['allow_multiple'], 'TYP' => 'i'],
-                ['FILD' => 'max_choices',    'DATA' => $d['max_choices'],    'TYP' => 'i'],
                 ['FILD' => 'start_time',     'DATA' => $d['start_time'],     'TYP' => 's'],
                 ['FILD' => 'end_time',       'DATA' => $d['end_time'],       'TYP' => 's'],
                 ['FILD' => 'updated_by',     'DATA' => $loggedUserID,        'TYP' => 'i'],
@@ -142,7 +129,7 @@ switch ($act) {
             foreach ($d['options'] as $opt) {
                 if ($opt['id'] > 0) {
                     $u = [];
-                    $u['QUERY'] = "UPDATE `public_rcg_poll_options` SET option_text=? WHERE id=? AND poll_id=?";
+                    $u['QUERY'] = "UPDATE `rcg_cardiac_talks_poll_options` SET option_text=? WHERE id=? AND poll_id=?";
                     $u['PARAM'] = [
                         ['FILD' => 'option_text', 'DATA' => $opt['text'], 'TYP' => 's'],
                         ['FILD' => 'id',          'DATA' => $opt['id'],   'TYP' => 'i'],
@@ -152,7 +139,7 @@ switch ($act) {
                     $keepIds[] = $opt['id'];
                 } else {
                     $n = [];
-                    $n['QUERY'] = "INSERT INTO `public_rcg_poll_options` SET poll_id=?, option_text=?, vote_count=0";
+                    $n['QUERY'] = "INSERT INTO `rcg_cardiac_talks_poll_options` SET poll_id=?, option_text=?, vote_count=0";
                     $n['PARAM'] = [
                         ['FILD' => 'poll_id',     'DATA' => $id,          'TYP' => 'i'],
                         ['FILD' => 'option_text', 'DATA' => $opt['text'], 'TYP' => 's'],
@@ -166,7 +153,7 @@ switch ($act) {
             // Also catch options whose text was blanked out in the form
             $existing = [];
             $q = [];
-            $q['QUERY']   = "SELECT id FROM `public_rcg_poll_options` WHERE poll_id = ?";
+            $q['QUERY']   = "SELECT id FROM `rcg_cardiac_talks_poll_options` WHERE poll_id = ?";
             $q['PARAM'][] = ['FILD' => 'poll_id', 'DATA' => $id, 'TYP' => 'i'];
             $rows = $mycms->sql_select($q);
             if ($rows) foreach ($rows as $r) $existing[] = (int)$r['id'];
@@ -175,7 +162,7 @@ switch ($act) {
             $toDelete = array_intersect($toDelete, $submitted);
             foreach ($toDelete as $delId) {
                 $x = [];
-                $x['QUERY'] = "DELETE FROM `public_rcg_poll_options` WHERE id=? AND poll_id=?";
+                $x['QUERY'] = "DELETE FROM `rcg_cardiac_talks_poll_options` WHERE id=? AND poll_id=?";
                 $x['PARAM'] = [
                     ['FILD' => 'id',      'DATA' => $delId, 'TYP' => 'i'],
                     ['FILD' => 'poll_id', 'DATA' => $id,    'TYP' => 'i'],
@@ -199,7 +186,7 @@ switch ($act) {
             $id = (int)$_GET['id'];
 
             $sql = [];
-            $sql['QUERY'] = "UPDATE `public_rcg_polls` SET is_deleted=1, deleted_by=?, deleted_at=NOW()
+            $sql['QUERY'] = "UPDATE `rcg_cardiac_talks_polls` SET is_deleted=1, deleted_by=?, deleted_at=NOW()
                              WHERE id=? AND is_deleted=0";
             $sql['PARAM'] = [
                 ['FILD' => 'deleted_by', 'DATA' => $loggedUserID, 'TYP' => 'i'],
@@ -228,7 +215,7 @@ switch ($act) {
             $val = ($act == 'Active' || $act == 'Publish') ? 1 : 0;
 
             $sql = [];
-            $sql['QUERY'] = "UPDATE `public_rcg_polls` SET $col=?, updated_by=? WHERE id=? AND is_deleted=0";
+            $sql['QUERY'] = "UPDATE `rcg_cardiac_talks_polls` SET $col=?, updated_by=? WHERE id=? AND is_deleted=0";
             $sql['PARAM'] = [
                 ['FILD' => $col,         'DATA' => $val,          'TYP' => 'i'],
                 ['FILD' => 'updated_by', 'DATA' => $loggedUserID, 'TYP' => 'i'],
@@ -261,7 +248,7 @@ switch ($act) {
                 switch ($action) {
                     case 'Active':
                     case 'Inactive':
-                        $sql['QUERY'] = "UPDATE `public_rcg_polls` SET is_active=?, updated_by=? WHERE id=? AND is_deleted=0";
+                        $sql['QUERY'] = "UPDATE `rcg_cardiac_talks_polls` SET is_active=?, updated_by=? WHERE id=? AND is_deleted=0";
                         $sql['PARAM'] = [
                             ['FILD' => 'is_active',  'DATA' => ($action == 'Active' ? 1 : 0), 'TYP' => 'i'],
                             ['FILD' => 'updated_by', 'DATA' => $loggedUserID,                 'TYP' => 'i'],
@@ -270,7 +257,7 @@ switch ($act) {
                         break;
                     case 'Publish':
                     case 'Unpublish':
-                        $sql['QUERY'] = "UPDATE `public_rcg_polls` SET is_published=?, updated_by=? WHERE id=? AND is_deleted=0";
+                        $sql['QUERY'] = "UPDATE `rcg_cardiac_talks_polls` SET is_published=?, updated_by=? WHERE id=? AND is_deleted=0";
                         $sql['PARAM'] = [
                             ['FILD' => 'is_published', 'DATA' => ($action == 'Publish' ? 1 : 0), 'TYP' => 'i'],
                             ['FILD' => 'updated_by',   'DATA' => $loggedUserID,                  'TYP' => 'i'],
@@ -278,7 +265,7 @@ switch ($act) {
                         ];
                         break;
                     case 'Remove':
-                        $sql['QUERY'] = "UPDATE `public_rcg_polls` SET is_deleted=1, deleted_at=NOW(), deleted_by=? WHERE id=? AND is_deleted=0";
+                        $sql['QUERY'] = "UPDATE `rcg_cardiac_talks_polls` SET is_deleted=1, deleted_at=NOW(), deleted_by=? WHERE id=? AND is_deleted=0";
                         $sql['PARAM'] = [
                             ['FILD' => 'deleted_by', 'DATA' => $loggedUserID, 'TYP' => 'i'],
                             ['FILD' => 'id',         'DATA' => $id,           'TYP' => 'i'],
@@ -307,7 +294,7 @@ switch ($act) {
             $pollId = (int)$_REQUEST['poll_id'];
 
             $sql = [];
-            $sql['QUERY']   = "UPDATE `public_rcg_poll_options` SET vote_count=0 WHERE poll_id=?";
+            $sql['QUERY']   = "UPDATE `rcg_cardiac_talks_poll_options` SET vote_count=0 WHERE poll_id=?";
             $sql['PARAM'][] = ['FILD' => 'poll_id', 'DATA' => $pollId, 'TYP' => 'i'];
             $mycms->sql_update($sql);
 

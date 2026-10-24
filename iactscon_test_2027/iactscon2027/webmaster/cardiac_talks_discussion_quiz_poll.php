@@ -115,10 +115,63 @@ if (!function_exists('qmsel')) {
             .group_tabs a { padding: 9px 16px; font-size: 13px; }
         }
 
+        /* ===== Date-time inputs: make the native calendar icon visible on the dark theme ===== */
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: .85;
+            cursor: pointer;
+        }
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover,
+        input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+
         /* ===== Poll result row (expands under a poll) ===== */
         .poll_result_row { display: none; }
         .poll_result_row.open { display: table-row; }
         .poll_result_row td { background: #12141a; }
+
+        /* ===== Discussion: media modal ===== */
+        #discMediaModal .modal-content {
+            background: #14161c;
+            color: #e2e8f0;
+            border: 1px solid #262a35;
+            border-radius: 12px;
+        }
+        #discMediaModal .modal-header,
+        #discMediaModal .modal-footer { border-color: #262a35; }
+        #discMediaModal .modal-title { font-size: 16px; font-weight: 600; }
+        #discMediaModal .disc_close_btn {
+            background: none; border: 0; color: #94a3b8;
+            font-size: 24px; line-height: 1; cursor: pointer;
+        }
+        #discMediaModal .disc_close_btn:hover { color: #fff; }
+        .disc_modal_content {
+            white-space: pre-wrap; word-break: break-word;
+            background: #12141a; border: 1px solid #262a35;
+            border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 14px;
+        }
+        .disc_media_grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .disc_media_item {
+            background: #0f1116; border: 1px solid #262a35;
+            border-radius: 10px; overflow: hidden;
+        }
+        .disc_media_item a { display: block; }
+        .disc_media_item img,
+        .disc_media_item video {
+            display: block; width: 100%; height: 200px; object-fit: contain; background: #000;
+        }
+        .disc_media_item .disc_media_cap {
+            height: 34px; line-height: 22px; padding: 6px 10px; font-size: 12px; color: #94a3b8;
+            text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .disc_counts span { white-space: nowrap; }
+        #discMediaModal { z-index: 100001; }
+        .modal-backdrop { z-index: 100000; background: #000; }
+        .modal-backdrop.show { opacity: .75; }
     </style>
     <?php if (!empty($flash['message'])) { ?>
     <div class="int_alert <?= htmlspecialchars($flash['type']) ?>" id="intAlert">
@@ -155,6 +208,7 @@ if (!function_exists('qmsel')) {
         $searchArray[$pageKey]    = $pageKeyVal;
         $searchArray['src_title'] = $_REQUEST['src_title'] ?? '';
         $searchArray['start_date'] = $_REQUEST['start_date'] ?? '';
+        $searchArray['src_group'] = $_REQUEST['src_group'] ?? '';
 
         foreach ($searchArray as $searchKey => $searchVal) {
             $searchString .= "&" . $searchKey . "=" . urlencode($searchVal);
@@ -170,15 +224,15 @@ if (!function_exists('qmsel')) {
         if ($activeTab == 'quiz') {
             $pageTitle = 'Manage Quiz';
             $pageHead  = $isFormView ? ((($_REQUEST['edit_quiz'] ?? '') !== '') ? 'Edit Quiz' : 'Create New Quiz') : 'Quiz Listing';
-            $pageSub   = 'Manage gamified quizzes, halls, rounds and participation settings.';
+            $pageSub   = 'Manage quizzes, halls, topics and participation settings.';
         } elseif ($activeTab == 'poll') {
             $pageTitle = 'Manage Polls';
             $pageHead  = $isFormView ? ((($_REQUEST['edit_poll'] ?? '') !== '') ? 'Edit Poll' : 'Create New Poll') : 'Poll Listing';
-            $pageSub   = 'Manage live audience polls, options and voting results.';
+            $pageSub   = 'Manage live audience polls, topics, options and voting results.';
         } else {
             $pageTitle = 'Manage Discussion';
             $pageHead  = 'Discussion Listing';
-            $pageSub   = 'Moderate group posts and comments.';
+            $pageSub   = 'View group posts and change their status.';
         }
         ?>
 
@@ -321,18 +375,9 @@ if (!function_exists('qmsel')) {
         renumberPollOptions();
     });
 
-    $('#allow_multiple').on('change', function () {
-        if ($(this).val() === '1') {
-            $('#maxChoicesWrap').show();
-        } else {
-            $('#maxChoicesWrap').hide();
-            $('#max_choices').val(1);
-        }
-    });
-
     function onSubmitPoll() {
         if ($('#poll_group_id').val() === '') {
-            alert('Please select a group.');
+            alert('Please select a topic.');
             return false;
         }
         if ($.trim($('#poll_title').val()) === '') {
@@ -351,29 +396,14 @@ if (!function_exists('qmsel')) {
 
         var st = $('#poll_start_time').val();
         var en = $('#poll_end_time').val();
-        if (st && en && new Date(en) <= new Date(st)) {
+        if (!st) { alert('Please select the start time.'); return false; }
+        if (!en) { alert('Please select the end time.'); return false; }
+        if (new Date(en) <= new Date(st)) {
             alert('End time must be after start time.');
             return false;
         }
-
-        if ($('#allow_multiple').val() === '1') {
-            var mc = parseInt($('#max_choices').val(), 10);
-            if (isNaN(mc) || mc < 1) {
-                alert('Max choices must be at least 1.');
-                return false;
-            }
-            if (mc > filled) {
-                alert('Max choices cannot be more than the number of options.');
-                return false;
-            }
-        }
         return true;
     }
-
-    // ---------- Result row toggle ----------
-    $(document).on('click', '.togglePollResult', function () {
-        $('#pollResult_' + $(this).data('id')).toggleClass('open');
-    });
 
     $(document).on('click', '#check_all_poll', function () {
         $('.checkBoxPoll').prop('checked', this.checked);
@@ -414,12 +444,6 @@ if (!function_exists('qmsel')) {
         $('#check_all_disc').prop('checked', $('.checkBoxDisc').length === $('.checkBoxDisc:checked').length);
     });
 
-    $(document).on('click', '.deleteDiscBtn', function () {
-        if (confirm('Do you really want to remove this?')) {
-            window.location.href = $(this).data('href');
-        }
-    });
-
     $(document).on('click', '#applyDiscMultiActionBtn', function () {
         var action = $('#discMultiOperationSelector').val();
         var selected = $('.checkBoxDisc:checked').map(function () { return $(this).val(); }).get();
@@ -429,12 +453,53 @@ if (!function_exists('qmsel')) {
 
         if (confirm('Are you sure you want to ' + action + ' the selected posts?')) {
             $.ajax({
-                url: 'manage_discussion.process.php',
+                url: 'cardiac_talks_discussion.process.php',
                 type: 'POST',
+                dataType: 'text',
                 data: { act: 'MultiAction', action: action, ids: selected },
-                complete: function () { window.location.href = '<?= $_SERVER['PHP_SELF'] ?>?tab=discussion'; }
+                success: function () {
+                    window.location.href = window.location.href.split('#')[0];
+                },
+                error: function (xhr) {
+                    alert('Bulk update failed (HTTP ' + xhr.status + '). Check cardiac_talks_discussion.process.php.');
+                }
             });
         }
+    });
+
+    // ---------- View media / post content in modal ----------
+    function discOpenModal() {
+        var el = document.getElementById('discMediaModal');
+        if (el.parentNode !== document.body) { document.body.appendChild(el); }
+        if (window.bootstrap && window.bootstrap.Modal) {
+            window.bootstrap.Modal.getOrCreateInstance(el).show();
+        } else if ($.fn.modal) {
+            $(el).modal('show');
+        }
+    }
+    function discCloseModal() {
+        var el = document.getElementById('discMediaModal');
+        if (window.bootstrap && window.bootstrap.Modal) {
+            var inst = window.bootstrap.Modal.getInstance(el);
+            if (inst) inst.hide();
+        } else if ($.fn.modal) {
+            $(el).modal('hide');
+        }
+    }
+    $(document).on('click', '.viewDiscMediaBtn', function () {
+        var id  = $(this).data('post-id');
+        var src = document.getElementById('discMediaSrc_' + id);
+        if (!src) return;
+        $('#discMediaModalTitle').text('Post #' + id + ' - Content & Media');
+        $('#discMediaModalBody').html(src.innerHTML);
+        discOpenModal();
+    });
+    $(document).on('click', '.discCloseBtn', function () {
+        discCloseModal();
+    });
+    // stop any playing video and free the body when the modal is closed
+    $(document).on('hidden.bs.modal', '#discMediaModal', function () {
+        $('#discMediaModalBody').empty();
     });
 </script>
 <?php } ?>
@@ -442,7 +507,7 @@ if (!function_exists('qmsel')) {
 <?php
 
 /*==================================================================
-   Public groups for the Group dropdown
+   Public groups for the Group / Topic dropdown
 ==================================================================*/
 function getPublicGroups($mycms)
 {
@@ -475,7 +540,9 @@ function manageQuizList($cfg, $mycms)
     }
 
     $sql = [];
-    $sql['QUERY'] = "SELECT q.*, h.hall_title, g.group_name
+    $sql['QUERY'] = "SELECT q.*, h.hall_title, g.group_name,
+            (SELECT COUNT(*) FROM `rcg_cardiac_talk_quiz_participation` AS pp
+              WHERE pp.quiz_id = q.id AND pp.status = 'Applied' AND pp.row_status = 'A') AS pending_applicants
         FROM `rcg_cardiac_talk_quizzes` AS q
         LEFT JOIN `rcg_program_schedule_hall` AS h ON q.hall_id = h.id
         LEFT JOIN `rcg_groups` AS g ON q.group_id = g.id
@@ -522,8 +589,7 @@ function manageQuizList($cfg, $mycms)
                                     <th style="width:36px;text-align:center;"><input name="check_all" id="check_all" type="checkbox" /></th>
                                     <th class="sl">Sl. No.</th>
                                     <th>Title</th>
-                                    <th>Type</th>
-                                    <th>Group</th>
+                                    <th>Topic</th>
                                     <th>Hall</th>
                                     <th>Start Time</th>
                                     <th>Joining</th>
@@ -544,7 +610,6 @@ function manageQuizList($cfg, $mycms)
                                     <td style="text-align:center;"><input type="checkbox" name="selected_ids[]" class="checkBoxListing" value="<?= $qid ?>" /></td>
                                     <td class="sl"><?= $sl ?></td>
                                     <td><?= htmlspecialchars($row['title']) ?></td>
-                                    <td style="text-align:center;"><?= htmlspecialchars(ucwords($row['quiz_type'] ?? 'default')) ?></td>
                                     <td><?= htmlspecialchars($row['group_name'] ?? '--') ?></td>
                                     <td><?= htmlspecialchars($row['hall_title'] ?? '--') ?></td>
                                     <td style="text-align:center;"><?= !empty($row['start_time']) ? date('d-m-Y H:i', strtotime($row['start_time'])) : '--' ?></td>
@@ -575,7 +640,13 @@ function manageQuizList($cfg, $mycms)
                                                 <a href="cardiac_talks_quiz.process.php?act=Active&id=<?= $qid ?><?= $searchString ?>" class="icon_hover badge_success action-transparent"><i class="fal fa-check"></i> Make Active</a>
                                                 <?php } ?>
                                                 <a href="cardiac_talks_quiz.process.php?act=reset_quiz&quiz_id=<?= $qid ?><?= $searchString ?>" class="icon_hover badge_secondary action-transparent" onclick="return confirm('Reset this quiz?');"><i class="fal fa-redo"></i> Reset Quiz</a>
-                                                <a href="participants.php?quiz_id=<?= $qid ?>" class="icon_hover badge_secondary action-transparent"><i class="fal fa-users"></i> Participants</a>
+                                                <a href="cardiac_talks_quiz_participants.php?quiz_id=<?= $qid ?>" class="icon_hover badge_secondary action-transparent"><i class="fal fa-users"></i> Participants</a>
+                                                <?php if (($row['join_type'] ?? 'open') == 'approval') { ?>
+                                                <a href="cardiac_talks_quiz_applicants.php?quiz_id=<?= $qid ?>" class="icon_hover badge_secondary action-transparent"><i class="fal fa-user-clock"></i> Applicants<?= ((int)($row['pending_applicants'] ?? 0) > 0) ? ' (' . (int)$row['pending_applicants'] . ' pending)' : '' ?></a>
+                                                <?php } ?>
+                                                <?php if (($row['status'] ?? '') == 'completed') { ?>
+                                                <a href="cardiac_talks_quiz_leaderboard.php?quiz_id=<?= $qid ?>" class="icon_hover badge_secondary action-transparent"><i class="fal fa-trophy"></i> Leader Board</a>
+                                                <?php } ?>
                                                 <a href="javascript:void(0);" class="deleteQuizBtn icon_hover badge_danger action-transparent br-5 w-auto" data-href="cardiac_talks_quiz.process.php?act=Remove&id=<?= $qid ?><?= $searchString ?>">
                                                     <i class="fal fa-trash"></i> Delete Quiz
                                                 </a>
@@ -588,7 +659,7 @@ function manageQuizList($cfg, $mycms)
                                 } else {
                                 ?>
                                 <tr>
-                                    <td colspan="11" align="center">
+                                    <td colspan="10" align="center">
                                         <span class="mandatory">No Record.</span>
                                     </td>
                                 </tr>
@@ -652,8 +723,6 @@ function manageQuizForm($cfg, $mycms)
     }
     $isEdit = !empty($qmRow);
 
-    $qmQuizType     = strtolower($qmRow['quiz_type'] ?? 'default');
-    $qmHideOptional = ($qmQuizType == 'panel discussion') ? 'none' : '';
     ?>
     <div class="com_info_box active" id="quizForm">
         <form name="frmquiz" method="post" action="cardiac_talks_quiz.process.php" id="frmquiz" onsubmit="return onSubmitAction();">
@@ -683,9 +752,9 @@ function manageQuizForm($cfg, $mycms)
                             </div>
 
                             <div class="frm_grp span_3">
-                                <p class="frm-head">Group <span class="mandatory">*</span></p>
+                                <p class="frm-head">Topic <span class="mandatory">*</span></p>
                                 <select name="group_id" id="quiz_group_id" required>
-                                    <option value=""> - Select Group - </option>
+                                    <option value=""> - Select Topic - </option>
                                     <?php foreach ($qmGroups as $g) { ?>
                                         <option value="<?= (int)$g['id'] ?>" <?= (($qmRow['group_id'] ?? '') == $g['id']) ? 'selected' : '' ?>><?= htmlspecialchars($g['group_name']) ?></option>
                                     <?php } ?>
@@ -700,22 +769,18 @@ function manageQuizForm($cfg, $mycms)
                                     <?php } } ?>
                                 </select>
                             </div>
-                            <div class="frm_grp span_3 optionalData" style="display: <?= $qmHideOptional ?>;">
-                                <p class="frm-head">Rounds <span class="mandatory">*</span></p>
-                                <input type="number" name="rounds" id="rounds" class="validate[required]" value="<?= (($qmRow['rounds'] ?? 0) > 0) ? (int)$qmRow['rounds'] : 1 ?>" required />
-                            </div>
-                            <div class="frm_grp span_3 optionalData" style="display: <?= $qmHideOptional ?>;">
-                                <p class="frm-head">Levels <span class="mandatory">*</span></p>
-                                <input type="number" name="levels" id="levels" class="validate[required]" value="<?= (($qmRow['levels'] ?? 0) > 0) ? (int)$qmRow['levels'] : 1 ?>" required />
-                            </div>
 
                             <div class="frm_grp span_3">
                                 <p class="frm-head">Start Time <span class="mandatory">*</span></p>
                                 <input type="datetime-local" name="start_time" id="start_time" value="<?= qmdt($qmRow['start_time'] ?? '') ?>" required />
                             </div>
                             <div class="frm_grp span_3">
-                                <p class="frm-head">Answer Time (in sec.) <span class="mandatory">*</span></p>
-                                <input type="number" name="answer_time" id="answer_time" value="<?= qmv($qmRow, 'answer_time') ?>" required />
+                                <p class="frm-head">Quiz Status <span class="mandatory">*</span></p>
+                                <select name="quiz_status" id="quiz_status" required>
+                                    <option value="draft" <?= qmsel($qmRow, 'status', 'draft', true) ?>>Draft</option>
+                                    <option value="active" <?= qmsel($qmRow, 'status', 'active') ?>>Active</option>
+                                    <option value="completed" <?= qmsel($qmRow, 'status', 'completed') ?>>Completed</option>
+                                </select>
                             </div>
 
                             <div class="frm_grp span_3">
@@ -728,14 +793,6 @@ function manageQuizForm($cfg, $mycms)
                             </div>
 
                             <div class="frm_grp span_3">
-                                <p class="frm-head">Quiz Status <span class="mandatory">*</span></p>
-                                <select name="quiz_status" id="quiz_status" required>
-                                    <option value="draft" <?= qmsel($qmRow, 'status', 'draft', true) ?>>Draft</option>
-                                    <option value="active" <?= qmsel($qmRow, 'status', 'active') ?>>Active</option>
-                                    <option value="completed" <?= qmsel($qmRow, 'status', 'completed') ?>>Completed</option>
-                                </select>
-                            </div>
-                            <div class="frm_grp span_3">
                                 <p class="frm-head">View Leader Board <span class="mandatory">*</span></p>
                                 <select name="view_answer" id="view_answer" required>
                                     <option value="end" <?= qmsel($qmRow, 'view_answer', 'end', true) ?>>At The End of The Quiz</option>
@@ -744,28 +801,27 @@ function manageQuizForm($cfg, $mycms)
                                     <option value="round" <?= qmsel($qmRow, 'view_answer', 'round') ?>>After Each Round</option>
                                 </select>
                             </div>
-
-                            <div class="frm_grp span_2">
-                                <p class="frm-head">Seat Limit <span class="mandatory">*</span></p>
-                                <input type="number" name="seat_limit" id="seat_limit" value="<?= qmv($qmRow, 'seat_limit', '0') ?>" required />
-                            </div>
-                            <div class="frm_grp span_2">
-                                <p class="frm-head">Application Closing Time <span class="mandatory">*</span></p>
-                                <input type="datetime-local" name="application_close_time" id="application_close_time" value="<?= qmdt($qmRow['application_close_time'] ?? '') ?>" required />
-                            </div>
-                            <div class="frm_grp span_2">
-                                <p class="frm-head">Application Status <span class="mandatory">*</span></p>
-                                <select name="application_status" id="application_status" required>
-                                    <option value="active" <?= qmsel($qmRow, 'application_status', 'active', true) ?>>Active</option>
-                                    <option value="closed" <?= qmsel($qmRow, 'application_status', 'closed') ?>>Closed</option>
-                                </select>
-                            </div>
-
                             <div class="frm_grp span_3">
                                 <p class="frm-head">Joining Access <span class="mandatory">*</span></p>
                                 <select name="join_type" id="join_type" required>
                                     <option value="open" <?= qmsel($qmRow, 'join_type', 'open', true) ?>>Anyone can join</option>
                                     <option value="approval" <?= qmsel($qmRow, 'join_type', 'approval') ?>>Approval needed</option>
+                                </select>
+                            </div>
+
+                            <div class="frm_grp span_2">
+                                <p class="frm-head">Seat Limit <span class="mandatory">*</span></p>
+                                <input type="number" name="seat_limit" id="seat_limit" value="<?= qmv($qmRow, 'seat_limit', '0') ?>" required />
+                            </div>
+                            <div class="frm_grp span_2 approval-only">
+                                <p class="frm-head">Application Closing Time <span class="mandatory">*</span></p>
+                                <input type="datetime-local" name="application_close_time" id="application_close_time" value="<?= qmdt($qmRow['application_close_time'] ?? '') ?>" required />
+                            </div>
+                            <div class="frm_grp span_2 approval-only">
+                                <p class="frm-head">Application Status <span class="mandatory">*</span></p>
+                                <select name="application_status" id="application_status" required>
+                                    <option value="active" <?= qmsel($qmRow, 'application_status', 'active', true) ?>>Active</option>
+                                    <option value="closed" <?= qmsel($qmRow, 'application_status', 'closed') ?>>Closed</option>
                                 </select>
                             </div>
                         </div>
@@ -774,11 +830,43 @@ function manageQuizForm($cfg, $mycms)
             </div>
         </form>
     </div>
+    <script>
+        // Joining Access = open  ->  hide Application Closing Time / Application Status and make them non-mandatory
+        (function () {
+            function toggleApplicationFields() {
+                var sel = document.getElementById('join_type');
+                if (!sel) return;
+                var isApproval = sel.value === 'approval';
+                var groups = document.querySelectorAll('#frmquiz .approval-only');
+                for (var i = 0; i < groups.length; i++) {
+                    if (isApproval) groups[i].style.removeProperty('display');
+                    else groups[i].style.setProperty('display', 'none', 'important');
+                }
+                ['application_close_time', 'application_status'].forEach(function (id) {
+                    var el = document.getElementById(id);
+                    if (!el) return;
+                    el.disabled = !isApproval;   // disabled = not validated, not posted
+                    el.required = isApproval;
+                });
+            }
+            function init() {
+                var sel = document.getElementById('join_type');
+                if (sel) {
+                    sel.addEventListener('change', toggleApplicationFields);
+                    if (window.jQuery) window.jQuery(sel).on('change', toggleApplicationFields);
+                }
+                toggleApplicationFields();
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+            else init();
+        })();
+    </script>
     <?php
 }
 
 /*==================================================================
    POLL  -  LIST (table) : read / status toggle / publish / reset / remove / multi action
+   Tables: rcg_cardiac_talks_polls, rcg_cardiac_talks_poll_options, rcg_cardiac_talks_poll_votes
 ==================================================================*/
 function managePollList($cfg, $mycms)
 {
@@ -786,14 +874,37 @@ function managePollList($cfg, $mycms)
 
     $qmSelf = $_SERVER['PHP_SELF'];
 
+    /* ---------- Search filters ---------- */
+    $plSrcTitle = trim($_REQUEST['src_title'] ?? '');
+    $plSrcGroup = (int)($_REQUEST['src_group'] ?? 0);
+    $plSrcStart = $_REQUEST['start_date'] ?? '';
+    $plGroups   = getPublicGroups($mycms);
+
+    $plCon    = "";
+    $plParams = [];
+    if ($plSrcTitle !== '') {
+        $plCon .= " AND p.`title` LIKE ?";
+        $plParams[] = ['FILD' => 'title', 'DATA' => '%' . $plSrcTitle . '%', 'TYP' => 's'];
+    }
+    if ($plSrcGroup > 0) {
+        $plCon .= " AND p.`group_id` = ?";
+        $plParams[] = ['FILD' => 'group_id', 'DATA' => $plSrcGroup, 'TYP' => 'i'];
+    }
+    if (!empty($plSrcStart)) {
+        $plCon .= " AND DATE(p.`start_time`) >= ?";
+        $plParams[] = ['FILD' => 'start_date', 'DATA' => $plSrcStart, 'TYP' => 's'];
+    }
+
     /* ---------- Poll listing (with total votes via subquery) ---------- */
     $sqlPL = [];
     $sqlPL['QUERY'] = "SELECT p.*, g.group_name,
-            (SELECT COALESCE(SUM(o.vote_count), 0) FROM `public_rcg_poll_options` o WHERE o.poll_id = p.id) AS total_votes
-        FROM `public_rcg_polls` AS p
+            (SELECT COALESCE(SUM(o.vote_count), 0) FROM `rcg_cardiac_talks_poll_options` o WHERE o.poll_id = p.id) AS total_votes
+        FROM `rcg_cardiac_talks_polls` AS p
         LEFT JOIN `rcg_groups` AS g ON p.group_id = g.id
         WHERE p.`is_deleted` = 0
+        $plCon
         ORDER BY p.id DESC";
+    foreach ($plParams as $pp) { $sqlPL['PARAM'][] = $pp; }
     $plList = $mycms->sql_select_paginated($indexVal, $sqlPL, 15, $restrt);
     $sl     = is_numeric($restrt ?? null) ? (int)$restrt : 0;
 
@@ -802,7 +913,7 @@ function managePollList($cfg, $mycms)
     if ($plList) {
         $plIds = implode(',', array_map('intval', array_column($plList, 'id')));
         $sqlOL = [];
-        $sqlOL['QUERY'] = "SELECT id, poll_id, option_text, vote_count FROM `public_rcg_poll_options` WHERE poll_id IN ($plIds) ORDER BY id ASC";
+        $sqlOL['QUERY'] = "SELECT id, poll_id, option_text, vote_count FROM `rcg_cardiac_talks_poll_options` WHERE poll_id IN ($plIds) ORDER BY id ASC";
         $resOL = $mycms->sql_select($sqlOL);
         if ($resOL) {
             foreach ($resOL as $o) { $plOptMap[$o['poll_id']][] = $o; }
@@ -817,21 +928,50 @@ function managePollList($cfg, $mycms)
                 </h5>
                 <div class="com_info_box_inner">
 
+                    <!-- Search / filter -->
+                    <form method="get" action="<?= $qmSelf ?>" class="mb-3">
+                        <input type="hidden" name="tab" value="poll" />
+                        <div class="form_grid g_4">
+                            <div class="frm_grp">
+                                <p class="frm-head">Poll Title</p>
+                                <input type="text" name="src_title" value="<?= htmlspecialchars($plSrcTitle) ?>" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Topic</p>
+                                <select name="src_group">
+                                    <option value="0"> - All Topics - </option>
+                                    <?php foreach ($plGroups as $g) { ?>
+                                        <option value="<?= (int)$g['id'] ?>" <?= ($plSrcGroup == $g['id']) ? 'selected' : '' ?>><?= htmlspecialchars($g['group_name']) ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Start Date From</p>
+                                <input type="date" name="start_date" value="<?= htmlspecialchars($plSrcStart) ?>" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">&nbsp;</p>
+                                <button type="submit" class="badge_primary"><i class="fal fa-search"></i> Search</button>
+                                <a href="<?= $qmSelf ?>?tab=poll" class="badge_dark"><i class="fal fa-redo"></i> Reset</a>
+                            </div>
+                        </div>
+                    </form>
+
                     <div class="table_wrap">
                         <table>
                             <thead>
                                 <tr>
                                     <th style="width:36px;text-align:center;"><input name="check_all_poll" id="check_all_poll" type="checkbox" /></th>
-                                    <th class="sl">Sl. No.</th>
-                                    <th>Question</th>
-                                    <th>Group</th>
-                                    <th>Start</th>
-                                    <th>End</th>
-                                    <th>Phase</th>
-                                    <th>Choice</th>
-                                    <th>Votes</th>
-                                    <th>Published</th>
-                                    <th>Status</th>
+                                    <th class="sl">Sl No</th>
+                                    <th>Poll Title</th>
+                                    <th>Topic</th>
+                                    <th>Is Active</th>
+                                    <th>Is Published</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Total Votes</th>
+                                    <th>Result</th>
+                                    <th>Reset</th>
                                     <th class="action text-right">Action</th>
                                 </tr>
                             </thead>
@@ -842,30 +982,14 @@ function managePollList($cfg, $mycms)
                                         $sl++;
                                         $pid   = (int)$prow['id'];
                                         $total = (int)$prow['total_votes'];
-                                        $now   = time();
                                         $stTs  = !empty($prow['start_time']) ? strtotime($prow['start_time']) : 0;
                                         $enTs  = !empty($prow['end_time']) ? strtotime($prow['end_time']) : 0;
-                                        if ($stTs && $now < $stTs)     { $phase = 'Upcoming'; }
-                                        elseif ($enTs && $now > $enTs) { $phase = 'Ended'; }
-                                        else                           { $phase = 'Live'; }
                                 ?>
                                 <tr>
                                     <td style="text-align:center;"><input type="checkbox" name="poll_selected_ids[]" class="checkBoxPoll" value="<?= $pid ?>" /></td>
                                     <td class="sl"><?= $sl ?></td>
                                     <td><?= htmlspecialchars($prow['title']) ?></td>
                                     <td><?= htmlspecialchars($prow['group_name'] ?? '--') ?></td>
-                                    <td style="text-align:center;"><?= $stTs ? date('d-m-Y H:i', $stTs) : '--' ?></td>
-                                    <td style="text-align:center;"><?= $enTs ? date('d-m-Y H:i', $enTs) : '--' ?></td>
-                                    <td style="text-align:center;"><?= $phase ?></td>
-                                    <td style="text-align:center;"><?= $prow['allow_multiple'] ? 'Multiple (max ' . (int)$prow['max_choices'] . ')' : 'Single' ?></td>
-                                    <td style="text-align:center;"><?= $total ?></td>
-                                    <td style="text-align:center;">
-                                        <?php if ($prow['is_published']) { ?>
-                                            <n class="badge_padding badge_success w-max-con text-uppercase">Published</n>
-                                        <?php } else { ?>
-                                            <n class="badge_padding badge_dark w-max-con text-uppercase">Unpublished</n>
-                                        <?php } ?>
-                                    </td>
                                     <td style="text-align:center;">
                                         <?php if ($prow['is_active']) { ?>
                                             <n class="badge_padding badge_success w-max-con text-uppercase">Active</n>
@@ -873,11 +997,29 @@ function managePollList($cfg, $mycms)
                                             <n class="badge_padding badge_danger w-max-con text-uppercase">Inactive</n>
                                         <?php } ?>
                                     </td>
+                                    <td style="text-align:center;">
+                                        <?php if ($prow['is_published']) { ?>
+                                            <n class="badge_padding badge_success w-max-con text-uppercase">Published</n>
+                                        <?php } else { ?>
+                                            <n class="badge_padding badge_dark w-max-con text-uppercase">Unpublished</n>
+                                        <?php } ?>
+                                    </td>
+                                    <td style="text-align:center;"><?= $stTs ? date('d-m-Y', $stTs) . '<br>' . date('H:i:s', $stTs) : '--' ?></td>
+                                    <td style="text-align:center;"><?= $enTs ? date('d-m-Y', $enTs) . '<br>' . date('H:i:s', $enTs) : '--' ?></td>
+                                    <td style="text-align:center;"><?= $total ?></td>
+                                    <td>
+                                        <?php foreach (($plOptMap[$pid] ?? []) as $o) {
+                                            $pct = $total > 0 ? round(($o['vote_count'] / $total) * 100) : 0; ?>
+                                            <div><?= htmlspecialchars($o['option_text']) ?> (<?= $pct ?>%)</div>
+                                        <?php } ?>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <a href="cardiac_talks_poll.process.php?act=reset_poll&poll_id=<?= $pid ?><?= $searchString ?>" class="badge_dark" onclick="return confirm('Reset all votes of this poll?');">Reset Poll</a>
+                                    </td>
                                     <td class="action">
                                         <div class="action_div dropdown" role="menu" aria-label="Actions">
                                             <button class="icon_hover badge_dark action-transparent dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><?php ellips(); ?></button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a href="javascript:void(0);" class="togglePollResult icon_hover badge_secondary action-transparent" data-id="<?= $pid ?>"><i class="fal fa-chart-bar"></i> View Results</a>
                                                 <a href="<?= $qmSelf ?>?tab=poll&edit_poll=<?= $pid ?><?= $searchString ?>" class="icon_hover badge_secondary action-transparent"><?php edit(); ?>Edit Details</a>
                                                 <?php if ($prow['is_published']) { ?>
                                                 <a href="cardiac_talks_poll.process.php?act=Unpublish&id=<?= $pid ?><?= $searchString ?>" class="icon_hover badge_dark action-transparent"><i class="fal fa-eye-slash"></i> Unpublish</a>
@@ -889,33 +1031,11 @@ function managePollList($cfg, $mycms)
                                                 <?php } else { ?>
                                                 <a href="cardiac_talks_poll.process.php?act=Active&id=<?= $pid ?><?= $searchString ?>" class="icon_hover badge_success action-transparent"><i class="fal fa-check"></i> Make Active</a>
                                                 <?php } ?>
-                                                <a href="cardiac_talks_poll.process.php?act=reset_poll&poll_id=<?= $pid ?><?= $searchString ?>" class="icon_hover badge_secondary action-transparent" onclick="return confirm('Reset all votes of this poll?');"><i class="fal fa-redo"></i> Reset Votes</a>
                                                 <a href="javascript:void(0);" class="deletePollBtn icon_hover badge_danger action-transparent br-5 w-auto" data-href="cardiac_talks_poll.process.php?act=Remove&id=<?= $pid ?><?= $searchString ?>">
                                                     <i class="fal fa-trash"></i> Delete Poll
                                                 </a>
                                             </ul>
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr class="poll_result_row" id="pollResult_<?= $pid ?>">
-                                    <td colspan="12">
-                                        <ul class="quizques quizliveprew">
-                                            <?php foreach (($plOptMap[$pid] ?? []) as $o) {
-                                                $pct = $total > 0 ? round(($o['vote_count'] / $total) * 100) : 0; ?>
-                                                <li class="p-0 border-0 bg-transparent">
-                                                    <div class="progress-bar-wrap">
-                                                        <div class="progress-value"><?= htmlspecialchars($o['option_text']) ?><l>
-                                                                <n><?= $pct ?>%</n> (<?= (int)$o['vote_count'] ?>)
-                                                            </l>
-                                                        </div>
-                                                        <div class="progress">
-                                                            <div class="progress-done bg_secondary" data-progress="<?= $pct ?>" style="width: <?= $pct ?>%; opacity: 1;"></div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            <?php } ?>
-                                            <li class="p-0 border-0 bg-transparent"><small>Total votes: <?= $total ?></small></li>
-                                        </ul>
                                     </td>
                                 </tr>
                                 <?php
@@ -970,7 +1090,7 @@ function managePollForm($cfg, $mycms)
     $qmSelf   = $_SERVER['PHP_SELF'];
     $plEditId = $_REQUEST['edit_poll'] ?? '';
 
-    /* ---------- Public groups ---------- */
+    /* ---------- Public groups (shown as Topic) ---------- */
     $plGroups = getPublicGroups($mycms);
 
     /* ---------- Poll edit mode: row + options ---------- */
@@ -978,14 +1098,14 @@ function managePollForm($cfg, $mycms)
     $plOptions = [];
     if ($plEditId !== '') {
         $sqlP = [];
-        $sqlP['QUERY']   = "SELECT * FROM `public_rcg_polls` WHERE `id` = ? AND `is_deleted` = 0";
+        $sqlP['QUERY']   = "SELECT * FROM `rcg_cardiac_talks_polls` WHERE `id` = ? AND `is_deleted` = 0";
         $sqlP['PARAM'][] = ['FILD' => 'id', 'DATA' => (int)$plEditId, 'TYP' => 'i'];
         $resP  = $mycms->sql_select($sqlP);
         $plRow = $resP ? $resP[0] : [];
 
         if (!empty($plRow)) {
             $sqlO = [];
-            $sqlO['QUERY']   = "SELECT id, option_text FROM `public_rcg_poll_options` WHERE `poll_id` = ? ORDER BY id ASC";
+            $sqlO['QUERY']   = "SELECT id, option_text FROM `rcg_cardiac_talks_poll_options` WHERE `poll_id` = ? ORDER BY id ASC";
             $sqlO['PARAM'][] = ['FILD' => 'poll_id', 'DATA' => (int)$plEditId, 'TYP' => 'i'];
             $plOptions = $mycms->sql_select($sqlO) ?: [];
         }
@@ -994,8 +1114,6 @@ function managePollForm($cfg, $mycms)
     if (!$plIsEdit || empty($plOptions)) {
         $plOptions = [['id' => '', 'option_text' => ''], ['id' => '', 'option_text' => '']];
     }
-    $plAllowMultiple = (int)($plRow['allow_multiple'] ?? 0);
-    $plMaxChoices    = max(1, (int)($plRow['max_choices'] ?? 1));
     $plStartVal = $plIsEdit ? qmdt($plRow['start_time'] ?? '') : date('Y-m-d\TH:i');
     $plEndVal   = $plIsEdit ? qmdt($plRow['end_time'] ?? '') : '';
     ?>
@@ -1027,46 +1145,29 @@ function managePollForm($cfg, $mycms)
                             </div>
 
                             <div class="frm_grp span_6">
-                                <p class="frm-head">Group <span class="mandatory">*</span></p>
+                                <p class="frm-head">Topic <span class="mandatory">*</span></p>
                                 <select name="group_id" id="poll_group_id" required>
-                                    <option value=""> - Select Group - </option>
+                                    <option value=""> - Select Topic - </option>
                                     <?php foreach ($plGroups as $g) { ?>
                                         <option value="<?= (int)$g['id'] ?>" <?= (($plRow['group_id'] ?? '') == $g['id']) ? 'selected' : '' ?>><?= htmlspecialchars($g['group_name']) ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
 
-                            <div class="frm_grp span_6">
-                                <p class="frm-head">Description</p>
-                                <textarea name="description" id="poll_description" rows="2"><?= qmv($plRow, 'description') ?></textarea>
-                            </div>
-
-                            <div class="frm_grp span_3">
-                                <p class="frm-head">Start Time <span class="mandatory">*</span></p>
-                                <input type="datetime-local" name="start_time" id="poll_start_time" value="<?= $plStartVal ?>" required />
-                            </div>
-                            <div class="frm_grp span_3">
-                                <p class="frm-head">End Time</p>
-                                <input type="datetime-local" name="end_time" id="poll_end_time" value="<?= $plEndVal ?>" />
-                            </div>
-
                             <div class="frm_grp span_2">
-                                <p class="frm-head">Allow Multiple Choices <span class="mandatory">*</span></p>
-                                <select name="allow_multiple" id="allow_multiple" required>
-                                    <option value="0" <?= $plAllowMultiple == 0 ? 'selected' : '' ?>>No (Single choice)</option>
-                                    <option value="1" <?= $plAllowMultiple == 1 ? 'selected' : '' ?>>Yes (Multiple choices)</option>
-                                </select>
-                            </div>
-                            <div class="frm_grp span_2" id="maxChoicesWrap" style="display: <?= $plAllowMultiple ? '' : 'none' ?>;">
-                                <p class="frm-head">Max Choices <span class="mandatory">*</span></p>
-                                <input type="number" name="max_choices" id="max_choices" min="1" value="<?= $plMaxChoices ?>" />
-                            </div>
-                            <div class="frm_grp span_2">
-                                <p class="frm-head">Publish Status <span class="mandatory">*</span></p>
+                                <p class="frm-head">Publish <span class="mandatory">*</span></p>
                                 <select name="is_published" id="is_published" required>
                                     <option value="0" <?= ($plIsEdit && (int)$plRow['is_published'] === 0) ? 'selected' : '' ?>>Unpublished</option>
                                     <option value="1" <?= (!$plIsEdit || (int)$plRow['is_published'] === 1) ? 'selected' : '' ?>>Published</option>
                                 </select>
+                            </div>
+                            <div class="frm_grp span_2">
+                                <p class="frm-head">Start Time <span class="mandatory">*</span></p>
+                                <input type="datetime-local" name="start_time" id="poll_start_time" value="<?= $plStartVal ?>" required />
+                            </div>
+                            <div class="frm_grp span_2">
+                                <p class="frm-head">End Time <span class="mandatory">*</span></p>
+                                <input type="datetime-local" name="end_time" id="poll_end_time" value="<?= $plEndVal ?>" required />
                             </div>
 
                             <div class="frm_grp span_6">
@@ -1095,16 +1196,86 @@ function managePollForm($cfg, $mycms)
 }
 
 /*==================================================================
-   DISCUSSION  (post list + comments moderation)
+   DISCUSSION helpers
+==================================================================*/
+/* Full URL of an uploaded discussion file.
+   Stored value may be just a file name, a relative path or a full URL. */
+function discMediaUrl($url)
+{
+    global $discMediaBase;
+    $url = trim((string)$url);
+    if ($url === '') {
+        return '';
+    }
+    if (preg_match('#^(https?:)?//#i', $url)) {
+        return $url;                                   // already absolute
+    }
+    $url = ltrim($url, '/');
+    if (strpos($url, 'App/api/uploads/') === 0) {
+        return $discMediaBase . $url;                  // already has the folder
+    }
+    return $discMediaBase . 'App/api/uploads/discussion/posts/' . rawurlencode(basename($url));
+}
+
+/* Is this media row a video? (by media_type, falling back to file extension) */
+function discIsVideo($m)
+{
+    $type = strtolower((string)($m['media_type'] ?? ''));
+    if (strpos($type, 'video') !== false) {
+        return true;
+    }
+    if (strpos($type, 'image') !== false || strpos($type, 'photo') !== false || strpos($type, 'sticker') !== false || strpos($type, 'gif') !== false) {
+        return false;
+    }
+    $path = strtolower((string)parse_url((string)($m['media_url'] ?? ''), PHP_URL_PATH));
+    return (bool)preg_match('/\.(mp4|mov|webm|m4v|3gp|mkv|avi)$/', $path);
+}
+
+/* HTML placed inside the modal for one post: full content + all media */
+function discRenderModalHtml($content, $mediaList)
+{
+    $html  = '<div class="disc_modal_content">' . ($content !== '' ? nl2br(htmlspecialchars($content)) : '<span class="mandatory">No text content.</span>') . '</div>';
+
+    if (!$mediaList) {
+        return $html . '<span class="mandatory">No media attached to this post.</span>';
+    }
+
+    $html .= '<div class="disc_media_grid">';
+    foreach ($mediaList as $m) {
+        $url = discMediaUrl($m['media_url'] ?? '');
+        $html .= '<div class="disc_media_item">';
+        if ($url === '') {
+            $html .= '<div class="disc_media_cap">' . htmlspecialchars($m['media_type'] ?? 'media')
+                   . (!empty($m['sticker_id']) ? ' #' . (int)$m['sticker_id'] : '') . ' - no file</div>';
+        } elseif (discIsVideo($m)) {
+            $html .= '<video controls preload="none" src="' . htmlspecialchars($url) . '"></video>'
+                   . '<div class="disc_media_cap">Video &middot; <a href="' . htmlspecialchars($url) . '" target="_blank" rel="noopener">Open</a></div>';
+        } else {
+            $html .= '<a href="' . htmlspecialchars($url) . '" target="_blank" rel="noopener"><img src="' . htmlspecialchars($url) . '" alt="media" loading="lazy" /></a>'
+                   . '<div class="disc_media_cap">' . htmlspecialchars($m['media_type'] ?? 'Image') . '</div>';
+        }
+        $html .= '</div>';
+    }
+    $html .= '</div>';
+    return $html;
+}
+
+/*==================================================================
+   DISCUSSION  (post list - status change + media modal)
 ==================================================================*/
 function manageDiscussion($cfg, $mycms)
 {
+    /* Base URL that contains the "App" folder (site root of this project).
+       Change this one line if your base URL is stored elsewhere, e.g. $cfg['BASE_URL']. */
+    global $discMediaBase;
+    $discScheme    = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $discMediaBase = rtrim($cfg['BASE_URL'] ?? ($discScheme . '://' . $_SERVER['HTTP_HOST'] . dirname(dirname($_SERVER['PHP_SELF']))), '/') . '/';
+
     $qmSelf   = $_SERVER['PHP_SELF'];
     $qmPg     = (int)($_REQUEST['_pgn_'] ?? 0);
     $fGroup   = (int)($_REQUEST['f_group'] ?? 0);
     $fStatus  = $_REQUEST['f_status'] ?? '';
     $fSearch  = trim($_REQUEST['f_search'] ?? '');
-    $viewPost = (int)($_REQUEST['view_post'] ?? 0);
 
     /* ---------- Public groups ---------- */
     $qmGroups = getPublicGroups($mycms);
@@ -1125,10 +1296,11 @@ function manageDiscussion($cfg, $mycms)
         $params[] = ['FILD' => 'content', 'DATA' => '%' . $fSearch . '%', 'TYP' => 's'];
     }
 
-    /* ---------- Post listing ---------- */
+    /* ---------- Post listing (live like / comment counts) ---------- */
     $sql = [];
     $sql['QUERY'] = "SELECT p.*, g.group_name, u.user_full_name,
-            (SELECT COUNT(*) FROM `rcg_discussion_post_media` m WHERE m.post_id = p.id AND m.status = 'A') AS media_count
+            (SELECT COUNT(*) FROM `rcg_discussion_post_likes` pl WHERE pl.post_id = p.id AND pl.status = 'A') AS live_like_count,
+            (SELECT COUNT(*) FROM `rcg_discussion_comments` cm WHERE cm.post_id = p.id AND cm.status = 'A') AS live_comment_count
         FROM `rcg_discussion_posts` AS p
         LEFT JOIN `rcg_groups` AS g ON g.id = p.group_id
         LEFT JOIN `rcg_user_registration` AS u ON u.id = p.user_id
@@ -1141,44 +1313,24 @@ function manageDiscussion($cfg, $mycms)
     $dList  = $mycms->sql_select_paginated($indexVal, $sql, 15, $restrt);
     $sl     = is_numeric($restrt ?? null) ? (int)$restrt : 0;
 
-    /* ---------- Selected post: detail + media + comments ---------- */
-    $vPost = []; $vMedia = []; $vComments = [];
-    if ($viewPost > 0) {
-        $sqlV = [];
-        $sqlV['QUERY'] = "SELECT p.*, g.group_name, u.user_full_name
-            FROM `rcg_discussion_posts` AS p
-            LEFT JOIN `rcg_groups` AS g ON g.id = p.group_id
-            LEFT JOIN `rcg_user_registration` AS u ON u.id = p.user_id
-            WHERE p.id = ? AND p.status != 'D'";
-        $sqlV['PARAM'][] = ['FILD' => 'id', 'DATA' => $viewPost, 'TYP' => 'i'];
-        $resV  = $mycms->sql_select($sqlV);
-        $vPost = $resV ? $resV[0] : [];
-
-        if ($vPost) {
-            $sqlM = [];
-            $sqlM['QUERY'] = "SELECT media_type, media_url FROM `rcg_discussion_post_media`
-                WHERE post_id = ? AND status = 'A' ORDER BY sort_order ASC, id ASC";
-            $sqlM['PARAM'][] = ['FILD' => 'post_id', 'DATA' => $viewPost, 'TYP' => 'i'];
-            $vMedia = $mycms->sql_select($sqlM) ?: [];
-
-            $sqlC = [];
-            $sqlC['QUERY'] = "SELECT c.*, u.user_full_name
-                FROM `rcg_discussion_comments` AS c
-                LEFT JOIN `rcg_user_registration` AS u ON u.id = c.user_id
-                WHERE c.post_id = ? AND c.status != 'D'
-                ORDER BY c.id ASC";
-            $sqlC['PARAM'][] = ['FILD' => 'post_id', 'DATA' => $viewPost, 'TYP' => 'i'];
-            $vComments = $mycms->sql_select($sqlC) ?: [];
+    /* ---------- Media of the posts on this page (images / videos) ---------- */
+    $dMediaMap = [];
+    if ($dList) {
+        $dIds = implode(',', array_map('intval', array_column($dList, 'id')));
+        $sqlMM = [];
+        $sqlMM['QUERY'] = "SELECT id, post_id, media_type, media_url, sticker_id
+            FROM `rcg_discussion_post_media`
+            WHERE post_id IN ($dIds) AND status = 'A'
+            ORDER BY sort_order ASC, id ASC";
+        $resMM = $mycms->sql_select($sqlMM);
+        if ($resMM) {
+            foreach ($resMM as $mm) { $dMediaMap[(int)$mm['post_id']][] = $mm; }
         }
     }
 
-    // Return URL (keeps filters + page). Always starts with "public_group.php?"
-    $back = 'public_group.php?tab=discussion&f_group=' . $fGroup . '&f_status=' . urlencode($fStatus)
+    // Return URL (keeps filters + page). Always starts with "<this page>.php?"
+    $back = basename($qmSelf) . '?tab=discussion&f_group=' . $fGroup . '&f_status=' . urlencode($fStatus)
           . '&f_search=' . urlencode($fSearch) . '&_pgn_=' . $qmPg;
-
-    // Link to open a post on this page (keeps filters + page)
-    $viewBase = $qmSelf . '?tab=discussion&f_group=' . $fGroup . '&f_status=' . urlencode($fStatus)
-              . '&f_search=' . urlencode($fSearch) . '&_pgn_=' . $qmPg;
     ?>
 
     <!-- ============ FILTER ============ -->
@@ -1197,9 +1349,9 @@ function manageDiscussion($cfg, $mycms)
                     <div class="com_info_box_inner">
                         <div class="form_grid g_6">
                             <div class="frm_grp span_3">
-                                <p class="frm-head">Group</p>
+                                <p class="frm-head">Topic</p>
                                 <select name="f_group">
-                                    <option value="0"> - All Groups - </option>
+                                    <option value="0"> - All Topics - </option>
                                     <?php foreach ($qmGroups as $g) { ?>
                                         <option value="<?= (int)$g['id'] ?>" <?= ($fGroup == $g['id']) ? 'selected' : '' ?>><?= htmlspecialchars($g['group_name']) ?></option>
                                     <?php } ?>
@@ -1239,9 +1391,11 @@ function manageDiscussion($cfg, $mycms)
                                     <th style="width:36px;text-align:center;"><input name="check_all_disc" id="check_all_disc" type="checkbox" /></th>
                                     <th class="sl">Sl. No.</th>
                                     <th>Posted By</th>
-                                    <th>Group</th>
+                                    <th>Topic</th>
                                     <th>Post</th>
                                     <th>Media</th>
+                                    <th>Likes</th>
+                                    <th>Comments</th>
                                     <th>Status</th>
                                     <th>Posted On</th>
                                     <th class="action text-right">Action</th>
@@ -1249,10 +1403,23 @@ function manageDiscussion($cfg, $mycms)
                             </thead>
                             <tbody>
                                 <?php
+                                $dHidden = ''; // hidden modal sources, printed after the table
                                 if ($dList) {
                                     foreach ($dList as $drow) {
                                         $sl++;
-                                        $did = (int)$drow['id'];
+                                        $did     = (int)$drow['id'];
+                                        $dActive = ($drow['status'] == 'A');
+                                        $dMedia  = $dMediaMap[$did] ?? [];
+
+                                        $imgCnt = 0; $vidCnt = 0;
+                                        foreach ($dMedia as $mm) {
+                                            if (empty($mm['media_url'])) { continue; }
+                                            if (discIsVideo($mm)) { $vidCnt++; } else { $imgCnt++; }
+                                        }
+
+                                        $dHidden .= '<div id="discMediaSrc_' . $did . '" style="display:none;">'
+                                                  . discRenderModalHtml((string)($drow['content'] ?? ''), $dMedia)
+                                                  . '</div>';
                                 ?>
                                 <tr>
                                     <td style="text-align:center;"><input type="checkbox" name="disc_selected_ids[]" class="checkBoxDisc" value="<?= $did ?>" /></td>
@@ -1260,9 +1427,16 @@ function manageDiscussion($cfg, $mycms)
                                     <td><?= htmlspecialchars($drow['user_full_name'] ?? ('User #' . (int)$drow['user_id'])) ?></td>
                                     <td><?= htmlspecialchars($drow['group_name'] ?? '--') ?></td>
                                     <td><?= htmlspecialchars(mb_strimwidth((string)($drow['content'] ?? ''), 0, 90, '...')) ?></td>
-                                    <td style="text-align:center;"><?= (int)$drow['media_count'] ?></td>
+                                    <td style="text-align:center;" class="disc_counts">
+                                        <?php if ($imgCnt + $vidCnt > 0) { ?>
+                                            <?php if ($imgCnt > 0) { ?><span><i class="fal fa-image"></i> <?= $imgCnt ?></span><?php } ?>
+                                            <?php if ($vidCnt > 0) { ?><span><i class="fal fa-video"></i> <?= $vidCnt ?></span><?php } ?>
+                                        <?php } else { ?>--<?php } ?>
+                                    </td>
+                                    <td style="text-align:center;"><?= (int)$drow['live_like_count'] ?></td>
+                                    <td style="text-align:center;"><?= (int)$drow['live_comment_count'] ?></td>
                                     <td style="text-align:center;">
-                                        <?php if ($drow['status'] == 'A') { ?>
+                                        <?php if ($dActive) { ?>
                                             <n class="badge_padding badge_success w-max-con text-uppercase">Active</n>
                                         <?php } else { ?>
                                             <n class="badge_padding badge_danger w-max-con text-uppercase">Inactive</n>
@@ -1273,7 +1447,12 @@ function manageDiscussion($cfg, $mycms)
                                         <div class="action_div dropdown" role="menu" aria-label="Actions">
                                             <button class="icon_hover badge_dark action-transparent dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><?php ellips(); ?></button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a href="<?= $viewBase ?>&view_post=<?= $did ?>#discussionPost" class="icon_hover badge_secondary action-transparent"><i class="fal fa-comments"></i> View &amp; Moderate</a>
+                                                <a href="javascript:void(0);" class="viewDiscMediaBtn icon_hover badge_secondary action-transparent" data-post-id="<?= $did ?>"><i class="fal fa-photo-video"></i> View Media</a>
+                                                <?php if ($dActive) { ?>
+                                                <a href="cardiac_talks_discussion.process.php?act=PostInactive&id=<?= $did ?>&back=<?= urlencode($back) ?>" class="icon_hover badge_dark action-transparent"><i class="fal fa-ban"></i> Make Inactive</a>
+                                                <?php } else { ?>
+                                                <a href="cardiac_talks_discussion.process.php?act=PostActive&id=<?= $did ?>&back=<?= urlencode($back) ?>" class="icon_hover badge_success action-transparent"><i class="fal fa-check"></i> Make Active</a>
+                                                <?php } ?>
                                             </ul>
                                         </div>
                                     </td>
@@ -1283,7 +1462,7 @@ function manageDiscussion($cfg, $mycms)
                                 } else {
                                 ?>
                                 <tr>
-                                    <td colspan="9" align="center">
+                                    <td colspan="11" align="center">
                                         <span class="mandatory">No Record.</span>
                                     </td>
                                 </tr>
@@ -1299,7 +1478,6 @@ function manageDiscussion($cfg, $mycms)
                                 <option value="">Choose an action...</option>
                                 <option value="Active">Make Active</option>
                                 <option value="Inactive">Make Inactive</option>
-                                <option value="Remove">Remove</option>
                             </select>
                         </div>
                         <button type="button" class="badge_primary" id="applyDiscMultiActionBtn"><i class="fal fa-check"></i> Apply to selected</button>
@@ -1316,74 +1494,24 @@ function manageDiscussion($cfg, $mycms)
         </div>
     </div>
 
-    <?php if ($vPost) { ?>
-    <!-- ============ POST DETAIL / COMMENTS ============ -->
-    <div class="com_info_box active mt-3" id="discussionPost">
-        <div class="com_info_box_grid">
-            <div class="com_info_box_grid_box">
-                <h5 class="com_info_box_head">
-                    <n><span class="text_primary"><i class="fal fa-comments"></i></span> Post #<?= (int)$vPost['id'] ?>
-                        &middot; <?= htmlspecialchars($vPost['group_name'] ?? '--') ?> &middot; by <?= htmlspecialchars($vPost['user_full_name'] ?? ('User #' . (int)$vPost['user_id'])) ?></n>
-                    <div class="page_top_wrap_right">
-                        <a href="<?= $viewBase ?>" class="badge_dark"><i class="fal fa-times"></i> Close</a>
-                    </div>
-                </h5>
-                <div class="com_info_box_inner">
+    <!-- Hidden per-post content + media (copied into the modal on click) -->
+    <?= $dHidden ?>
 
-                    <p><?= nl2br(htmlspecialchars($vPost['content'] ?? '')) ?></p>
-
-                    <?php if ($vMedia) { ?>
-                        <ul class="quizques">
-                            <?php foreach ($vMedia as $m) { ?>
-                                <li>
-                                    <?= htmlspecialchars($m['media_type'] ?? 'media') ?>:
-                                    <?php if (!empty($m['media_url'])) { ?>
-                                        <a href="<?= htmlspecialchars($m['media_url']) ?>" target="_blank">View</a>
-                                    <?php } else { ?>--<?php } ?>
-                                </li>
-                            <?php } ?>
-                        </ul>
-                    <?php } ?>
-
-                    <h5 class="real_time_portal_heading mt-3"><n>Comments (<?= count($vComments) ?>)</n></h5>
-
-                    <?php if ($vComments) { foreach ($vComments as $c) {
-                        $isReply = !empty($c['parent_comment_id']);
-                        $cActive = ($c['status'] == 'A');
-                    ?>
-                        <div class="push_noti_right_botttom_body_box" style="<?= $isReply ? 'margin-left:24px;' : '' ?>">
-                            <p>
-                                <n>
-                                    <?= $isReply ? '&#8627; ' : '' ?>
-                                    <?= htmlspecialchars($c['user_full_name'] ?? ('User #' . (int)$c['user_id'])) ?>
-                                </n>
-                                <a href="manage_discussion.process.php?act=<?= $cActive ? 'CommentInactive' : 'CommentActive' ?>&id=<?= (int)$c['id'] ?>&post_id=<?= (int)$vPost['id'] ?>&back=<?= urlencode($back) ?>"
-                                   class="badge_padding <?= $cActive ? 'badge_success' : 'badge_danger' ?> w-max-con text-uppercase">
-                                    <?= $cActive ? 'Visible' : 'Hidden' ?>
-                                </a>
-                            </p>
-                            <ul class="quizques">
-                                <li><?= nl2br(htmlspecialchars($c['comment'] ?? '')) ?></li>
-                                <?php if (!empty($c['media_url'])) { ?>
-                                    <li>Media: <a href="<?= htmlspecialchars($c['media_url']) ?>" target="_blank">View</a></li>
-                                <?php } ?>
-                                <li>Likes: <?= (int)$c['like_count'] ?> &middot; Replies: <?= (int)$c['reply_count'] ?> &middot; <?= !empty($c['created_at']) ? date('d-m-Y H:i', strtotime($c['created_at'])) : '--' ?></li>
-                            </ul>
-                            <h6>
-                                <a href="javascript:void(0);" class="deleteDiscBtn badge_danger"
-                                   data-href="manage_discussion.process.php?act=CommentRemove&id=<?= (int)$c['id'] ?>&post_id=<?= (int)$vPost['id'] ?>&back=<?= urlencode($back) ?>">
-                                    <i class="fal fa-trash-alt"></i> Remove
-                                </a>
-                            </h6>
-                        </div>
-                    <?php } } else { ?>
-                        <div class="push_noti_right_botttom_body_box"><span class="mandatory">No comments.</span></div>
-                    <?php } ?>
+    <!-- ============ MEDIA MODAL ============ -->
+    <div class="modal fade" id="discMediaModal" tabindex="-1" aria-labelledby="discMediaModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="discMediaModalTitle">Post Media</h5>
+                    <button type="button" class="disc_close_btn discCloseBtn" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body" id="discMediaModalBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="badge_dark discCloseBtn"><i class="fal fa-times"></i> Close</button>
                 </div>
             </div>
         </div>
     </div>
-    <?php } ?>
     <?php
 }
 ?>

@@ -21,8 +21,6 @@ $sqlQuiz['QUERY']   = "SELECT q.*, g.group_name
 $sqlQuiz['PARAM'][] = ['FILD' => 'id', 'DATA' => $quiz_id, 'TYP' => 'i'];
 $qResult    = $mycms->sql_select($sqlQuiz);
 $quiz       = $qResult[0] ?? [];
-$quizRounds = max(1, (int)($quiz['rounds'] ?? 1));
-$quizLevels = max(1, (int)($quiz['levels'] ?? 1));
 
 if (empty($quiz)) {
     echo '<!DOCTYPE html><html><body style="background:#000;color:#f3f4f6;font-family:sans-serif;padding:40px;">'
@@ -33,15 +31,15 @@ if (empty($quiz)) {
 /* ---------- Questions + options ---------- */
 $sql = [];
 $sql['QUERY'] = "
-    SELECT q.id, q.quiz_id, q.level, q.round, q.question_text,
+    SELECT q.id, q.quiz_id, q.question_text,
         q.media_url, q.media_type, q.media_description,
-        q.timer_override, q.row_status, q.status, q.is_last_question,
+        q.row_status, q.status, q.is_last_question,
         opt.id AS opt_id, opt.option_text, opt.is_correct
     FROM rcg_cardiac_talk_quiz_questions q
     LEFT JOIN rcg_cardiac_talk_quiz_question_options opt ON opt.question_id = q.id
     WHERE q.row_status != 'D'
     AND q.quiz_id = ?
-    ORDER BY q.round ASC, q.level ASC, q.id ASC, opt.id ASC
+    ORDER BY q.id ASC, opt.id ASC
 ";
 $sql['PARAM'][] = ['FILD' => 'quiz_id', 'DATA' => $quiz_id, 'TYP' => 'i'];
 $all_questions = $mycms->sql_select($sql);
@@ -61,8 +59,7 @@ if (!empty($all_questions)) {
             $tmp[$qid] = [
                 'id' => (int)$qid, 'question' => $row['question_text'],
                 'options' => [], 'correctIndex' => 0, 'media' => $mediaObj,
-                'round' => (int)$row['round'], 'level' => (int)$row['level'],
-                'extraTime' => (int)$row['timer_override'], 'isLastQuestion' => ($row['is_last_question'] == 1)
+                'isLastQuestion' => ($row['is_last_question'] == 1)
             ];
         }
         if ($row['opt_id']) {
@@ -160,8 +157,6 @@ $fmtDt = function ($v) { return !empty($v) ? date('d-m-Y H:i:s', strtotime($v)) 
 
         .question-preview { background: var(--dk-panel) !important; border: 1px solid var(--dk-border) !important; color: var(--dk-text) !important; }
         .meta-badge { background: var(--dk-card) !important; color: var(--dk-text) !important; border: 1px solid var(--dk-border) !important; }
-        .meta-badge.round { color: #93c5fd !important; }
-        .meta-badge.level { color: #c4b5fd !important; }
         .meta-badge.time  { color: #fbbf24 !important; }
         .meta-badge.last-question { color: #f9a8d4 !important; }
         .media-description-preview { color: var(--dk-muted) !important; }
@@ -264,14 +259,12 @@ $fmtDt = function ($v) { return !empty($v) ? date('d-m-Y H:i:s', strtotime($v)) 
             <div class="quiz-detail-item"><span class="detail-label">Hall:</span><span class="detail-value"><?= htmlspecialchars($hallTitle) ?></span></div>
             <div class="quiz-detail-item"><span class="detail-label">Quiz Status:</span><span class="detail-value"><?= htmlspecialchars(ucfirst($quiz['status'] ?? '---')) ?></span></div>
             <div class="quiz-detail-item"><span class="detail-label">Start Time:</span><span class="detail-value"><?= $fmtDt($quiz['start_time'] ?? '') ?></span></div>
-            <div class="quiz-detail-item"><span class="detail-label">Rounds:</span><span class="detail-value"><?= (int)($quiz['rounds'] ?? 1) ?></span></div>
-            <div class="quiz-detail-item"><span class="detail-label">Levels:</span><span class="detail-value"><?= (int)($quiz['levels'] ?? 1) ?></span></div>
-            <div class="quiz-detail-item"><span class="detail-label">Answer Time:</span><span class="detail-value"><?= (int)($quiz['answer_time'] ?? 0) ?> sec</span></div>
+            <!-- <div class="quiz-detail-item"><span class="detail-label">Answer Time:</span><span class="detail-value"><?= (int)($quiz['answer_time'] ?? 0) ?> sec</span></div> -->
             <div class="quiz-detail-item"><span class="detail-label">View Answer:</span><span class="detail-value"><?php
                 $va = ['end'=>'At The End of The Quiz','question'=>'After Each Question','round'=>'After Each Round','level'=>'After Each Level'];
                 echo htmlspecialchars($va[$quiz['view_answer'] ?? ''] ?? '');
             ?></span></div>
-            <div class="quiz-detail-item"><span class="detail-label">QR Code:</span><span class="detail-value"><?= (($quiz['enable_qr'] ?? 'no') == 'yes') ? 'Enabled' : 'Disabled' ?></span></div>
+            <!-- <div class="quiz-detail-item"><span class="detail-label">QR Code:</span><span class="detail-value"><?= (($quiz['enable_qr'] ?? 'no') == 'yes') ? 'Enabled' : 'Disabled' ?></span></div> -->
             <div class="quiz-detail-item"><span class="detail-label">Seat Limit:</span><span class="detail-value"><?= (int)($quiz['seat_limit'] ?? 0) ?></span></div>
             <div class="quiz-detail-item"><span class="detail-label">Application Closing:</span><span class="detail-value"><?= $fmtDt($quiz['application_close_time'] ?? '') ?></span></div>
             <div class="quiz-detail-item"><span class="detail-label">Application Status:</span><span class="detail-value"><?= htmlspecialchars(ucfirst($quiz['application_status'] ?? '---')) ?></span></div>
@@ -282,9 +275,6 @@ $fmtDt = function ($v) { return !empty($v) ? date('d-m-Y H:i:s', strtotime($v)) 
     </div>
     <div class="question-preview">
         <div class="question-meta">
-            <div class="meta-badge round"         id="previewRound">Round 1</div>
-            <div class="meta-badge level"         id="previewLevel">Level 1</div>
-            <div class="meta-badge time"          id="previewTime"         style="display:none">+0s</div>
             <div class="meta-badge last-question" id="previewLastQuestion" style="display:none">Last Question</div>
         </div>
         <h2 id="previewQuestion">Your question will appear here</h2>
@@ -301,19 +291,6 @@ $fmtDt = function ($v) { return !empty($v) ? date('d-m-Y H:i:s', strtotime($v)) 
     <div class="input-group">
         <label>Question Text</label>
         <textarea id="qText" rows="3" placeholder="Type question here..."></textarea>
-    </div>
-    <div class="input-group">
-        <label>Round</label>
-        <select id="roundSelect"></select>
-    </div>
-    <div class="input-group">
-        <label>Level</label>
-        <select id="levelSelect"></select>
-    </div>
-    <div class="input-group">
-        <label>Extra Time (seconds)</label>
-        <input type="number" id="extraTime" min="0" max="300" value="0" />
-        <small style="color:#6b7280;font-size:12px;margin-top:5px;display:block;">Additional time beyond the default timer</small>
     </div>
     <div class="media-upload-section">
         <h4>Add Media</h4>
@@ -371,8 +348,6 @@ $fmtDt = function ($v) { return !empty($v) ? date('d-m-Y H:i:s', strtotime($v)) 
 const serverSlides = <?php echo json_encode($slides_for_js, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT); ?> || [];
 const PAGE_QUIZ_ID = <?php echo json_encode($quiz_id); ?>;
 const PROCESS_URL  = 'cardiac_talks_question.process.php';
-window.quizRounds  = <?php echo (int)$quizRounds; ?>;
-window.quizLevels  = <?php echo (int)$quizLevels; ?>;
 </script>
 
 <script>
@@ -386,14 +361,8 @@ var PLACEHOLDER_OPTION   = function(n) { return 'Option ' + n; };
 //  DOM REFS
 // ==================================================================
 var previewQuestion     = document.getElementById('previewQuestion');
-var previewRound        = document.getElementById('previewRound');
-var previewLevel        = document.getElementById('previewLevel');
-var previewTime         = document.getElementById('previewTime');
 var previewLastQuestion = document.getElementById('previewLastQuestion');
 var qText               = document.getElementById('qText');
-var roundSelect         = document.getElementById('roundSelect');
-var levelSelect         = document.getElementById('levelSelect');
-var extraTime           = document.getElementById('extraTime');
 var isLastQuestion      = document.getElementById('isLastQuestion');
 var optionsContainer    = document.getElementById('optionsContainer');
 var previewOptions      = document.getElementById('previewOptions');
@@ -434,15 +403,13 @@ var isSaving           = false;
 var isEditingOption    = false;
 
 // ==================================================================
-//  SORT HELPER
+//  SORT HELPER (saved questions by id, unsaved ones at the end)
 // ==================================================================
 function sortKey(s) {
     return s.id ? s.id : (1e15 + (s.tempId || 0));
 }
 function sortedSlides(arr) {
     return arr.slice().sort(function(a, b) {
-        if (a.round !== b.round) return a.round - b.round;
-        if (a.level !== b.level) return a.level - b.level;
         return sortKey(a) - sortKey(b);
     });
 }
@@ -491,9 +458,6 @@ function buildDraftSnapshot() {
         question:       qText.value,
         optionTexts:    optionTexts,
         correctIndex:   slides[idx].correctIndex,
-        round:          parseInt(roundSelect.value) || 1,
-        level:          parseInt(levelSelect.value) || 1,
-        extraTime:      parseInt(extraTime.value)   || 0,
         isLastQuestion: isLastQuestion.checked,
         mediaDescription: mediaDescription ? mediaDescription.value : ''
     };
@@ -644,9 +608,6 @@ function fillQuestionPayload(payload, slide, withFile) {
         payload.append('options[' + idx + '][is_correct]', opt.isCorrect ? 1 : 0);
     });
 
-    payload.append('round',            slide.round     || 1);
-    payload.append('level',            slide.level     || 1);
-    payload.append('timer_override',   slide.extraTime || 0);
     payload.append('is_last_question', slide.isLastQuestion ? 'Yes' : 'No');
 
     var mp = getMediaPayloadState(slide);
@@ -684,9 +645,6 @@ function flushCurrentSlideToState() {
     var s = slides[idx];
     var q = qText.value.trim();
     if (q && q !== PLACEHOLDER_QUESTION) s.question = q;
-    s.round          = parseInt(roundSelect.value) || s.round;
-    s.level          = parseInt(levelSelect.value) || s.level;
-    s.extraTime      = parseInt(extraTime.value)   || 0;
     s.isLastQuestion = isLastQuestion.checked;
     if (mediaDescription) {
         s.media = s.media || { type: 'none', images: [], videoUrl: '', audioUrl: '' };
@@ -779,21 +737,6 @@ function defaultOptions() {
     ];
 }
 
-function populateRoundLevelSelectors(maxRounds, maxLevels) {
-    roundSelect.innerHTML = '';
-    for (var i = 1; i <= maxRounds; i++) {
-        var o = document.createElement('option');
-        o.value = i; o.text = 'Round ' + i;
-        roundSelect.appendChild(o);
-    }
-    levelSelect.innerHTML = '';
-    for (var j = 1; j <= maxLevels; j++) {
-        var ol = document.createElement('option');
-        ol.value = j; ol.text = 'Level ' + j;
-        levelSelect.appendChild(ol);
-    }
-}
-
 function initEditor() {
     slides = serverSlides.map(function(s) {
         return {
@@ -802,9 +745,6 @@ function initEditor() {
             options:        (s.options && s.options.length) ? s.options : defaultOptions(),
             correctIndex:   typeof s.correctIndex === 'number' ? s.correctIndex : 0,
             media:          s.media || { type: 'none', images: [], videoUrl: null, audioUrl: null, description: '' },
-            round:          s.round      || 1,
-            level:          s.level      || 1,
-            extraTime:      s.extraTime  || 0,
             isLastQuestion: !!s.isLastQuestion
         };
     });
@@ -832,12 +772,11 @@ function initEditor() {
             var draft = entry.data;
             if (!draft || !draft.question || draft.question === PLACEHOLDER_QUESTION) return;
 
+            // a pending draft belongs to an existing server slide when the question text matches
             var matchingServerSlide = null;
             for (var mi = 0; mi < slides.length; mi++) {
                 var s = slides[mi];
-                if (s.question.trim().toLowerCase() === draft.question.trim().toLowerCase() &&
-                    s.round === (draft.round || 1) &&
-                    s.level === (draft.level || 1)) {
+                if (s.question.trim().toLowerCase() === draft.question.trim().toLowerCase()) {
                     matchingServerSlide = s;
                     break;
                 }
@@ -845,9 +784,6 @@ function initEditor() {
 
             if (matchingServerSlide) {
                 matchingServerSlide.question = draft.question;
-                matchingServerSlide.round    = draft.round          || 1;
-                matchingServerSlide.level    = draft.level          || 1;
-                matchingServerSlide.extraTime = typeof draft.extraTime === 'number' ? draft.extraTime : 0;
                 matchingServerSlide.isLastQuestion = !!draft.isLastQuestion;
                 if (typeof draft.mediaDescription === 'string') {
                     matchingServerSlide.media = matchingServerSlide.media || { type: 'none', images: [], videoUrl: null, audioUrl: null };
@@ -885,16 +821,11 @@ function initEditor() {
                     options:        restoredOptions,
                     correctIndex:   typeof draft.correctIndex === 'number' ? draft.correctIndex : 0,
                     media:          { type: 'none', images: [], videoUrl: null, audioUrl: null, description: draft.mediaDescription || '' },
-                    round:          draft.round          || 1,
-                    level:          draft.level          || 1,
-                    extraTime:      typeof draft.extraTime === 'number' ? draft.extraTime : 0,
                     isLastQuestion: draft.isLastQuestion || false
                 });
             }
         });
     } catch(e) { console.warn('[initEditor] LS pending restore error:', e); }
-
-    populateRoundLevelSelectors(window.quizRounds, window.quizLevels);
 
     if (slides.length === 0) {
         currentSlideId = null;
@@ -902,7 +833,7 @@ function initEditor() {
         document.getElementById('previewArea').style.opacity    = '0.4';
         document.querySelector('.settings-panel').style.display = 'none';
         previewQuestion.textContent = 'Select or Add a Question';
-        [previewRound, previewLevel, previewTime, previewLastQuestion].forEach(function(el) { el.style.display = 'none'; });
+        previewLastQuestion.style.display = 'none';
         setTimeout(function() { addNewSlide(); }, 150);
     } else {
         var lastSlideKey = 'cquiz_' + PAGE_QUIZ_ID + '_lastSlide';
@@ -956,10 +887,6 @@ function setupEventListeners() {
         scheduleAutoSave();
     });
 
-    roundSelect.addEventListener('change',    function() { updatePreviewMeta(); scheduleAutoSave(); });
-    levelSelect.addEventListener('change',    function() { updatePreviewMeta(); scheduleAutoSave(); });
-    extraTime.addEventListener('input',       function() { updatePreviewMeta(); });
-    extraTime.addEventListener('blur',        function() { scheduleAutoSave(); });
     isLastQuestion.addEventListener('change', function() { updatePreviewMeta(); scheduleAutoSave(); });
 
     addOptionBtn.addEventListener('click',  addOption);
@@ -1041,14 +968,13 @@ function applyMediaTypeUI(type) {
 function renderAllSlides() {
     slidesContainer.innerHTML = '';
     var sorted = sortedSlides(slides);
-    sorted.forEach(function(slide) {
+    sorted.forEach(function(slide, position) {
         var idKey = slide.id || slide.tempId;
         var card  = document.createElement('div');
         card.className  = 'slide-card ' + (idKey === currentSlideId ? 'active' : '');
         card.dataset.id = idKey;
 
         var indicators = '';
-        if (slide.extraTime > 0)  indicators += '<span style="color:#d97706;font-size:10px;margin-right:4px;"><i class="fas fa-clock"></i> +' + slide.extraTime + 's</span>';
         if (slide.isLastQuestion) indicators += '<span style="color:#be185d;font-size:10px;"><i class="fas fa-flag-checkered"></i></span>';
 
         var isPlaceholder = (!slide.question || slide.question === PLACEHOLDER_QUESTION);
@@ -1058,7 +984,7 @@ function renderAllSlides() {
 
         card.innerHTML =
             '<div class="slide-content">' + label + ' ' + indicators + '</div>' +
-            '<div class="slide-meta"><span>R' + slide.round + '</span><span>Lvl ' + slide.level + '</span></div>' +
+            '<div class="slide-meta"><span>Q' + (position + 1) + '</span></div>' +
             '<button class="delete-slide"><i class="fas fa-times"></i></button>';
 
         slidesContainer.appendChild(card);
@@ -1087,18 +1013,10 @@ function updatePreviewQuestion() {
 }
 
 function updatePreviewMeta() {
-    previewRound.textContent = 'Round ' + roundSelect.value;
-    previewLevel.textContent = 'Level ' + levelSelect.value;
-    var t = parseInt(extraTime.value) || 0;
-    previewTime.textContent           = '+' + t + 's';
-    previewTime.style.display         = t > 0 ? 'flex' : 'none';
     previewLastQuestion.style.display = isLastQuestion.checked ? 'flex' : 'none';
 
     var idx = getCurrentSlideIndex();
     if (idx !== -1) {
-        slides[idx].round          = parseInt(roundSelect.value);
-        slides[idx].level          = parseInt(levelSelect.value);
-        slides[idx].extraTime      = t;
         slides[idx].isLastQuestion = isLastQuestion.checked;
         renderAllSlides();
     }
@@ -1555,9 +1473,6 @@ function performSave(isManual) {
     }
 
     var savedSlideIdentity = slide.id || slide.tempId;
-    var round        = parseInt(roundSelect.value);
-    var level        = parseInt(levelSelect.value);
-    var time         = parseInt(extraTime.value) || 0;
     var lastQuestion = isLastQuestion.checked;
 
     var payload    = new FormData();
@@ -1620,9 +1535,6 @@ function performSave(isManual) {
             savedSlide.question       = questionText;
             savedSlide.correctIndex   = allOptions.findIndex(function(o) { return o.isCorrect; });
             if (savedSlide.correctIndex === -1) savedSlide.correctIndex = 0;
-            savedSlide.round          = round;
-            savedSlide.level          = level;
-            savedSlide.extraTime      = time;
             savedSlide.isLastQuestion = lastQuestion;
 
             renderAllSlides();
@@ -1658,7 +1570,7 @@ function addNewSlide() {
         options:  defaultOptions(),
         correctIndex: 0,
         media: { type: 'none', images: [], videoUrl: '', audioUrl: '', description: '' },
-        round: 1, level: 1, extraTime: 0, isLastQuestion: false
+        isLastQuestion: false
     };
     slides.push(newSlide);
     renderAllSlides();
@@ -1693,9 +1605,6 @@ function loadSlide(idKey) {
             slide.correctIndex = draft.correctIndex;
             slide.options.forEach(function(o, i) { o.isCorrect = (i === draft.correctIndex); });
         }
-        if (draft.round)                               slide.round          = draft.round;
-        if (draft.level)                               slide.level          = draft.level;
-        if (typeof draft.extraTime      === 'number')  slide.extraTime      = draft.extraTime;
         if (typeof draft.isLastQuestion === 'boolean') slide.isLastQuestion = draft.isLastQuestion;
         if (typeof draft.mediaDescription === 'string') {
             slide.media = slide.media || { type: 'none', images: [], videoUrl: '', audioUrl: '' };
@@ -1707,9 +1616,6 @@ function loadSlide(idKey) {
     qText.classList.toggle('placeholder-active', slide.question === PLACEHOLDER_QUESTION);
 
     correctAnswerIndex     = slide.correctIndex || 0;
-    roundSelect.value      = slide.round  || 1;
-    levelSelect.value      = slide.level  || 1;
-    extraTime.value        = slide.extraTime || 0;
     isLastQuestion.checked = slide.isLastQuestion || false;
 
     if (imageInput) imageInput.value = '';

@@ -20,17 +20,14 @@ switch ($act) {
             // Sanitize
             $group_id      = isset($_POST['group_id']) ? (int)$_POST['group_id'] : 0;
             if ($group_id <= 0) {
-                throw new Exception("Please select a group.");
+                throw new Exception("Please select a topic.");
             }
             $title         = addslashes(trim($_POST['title']));
             $description   = isset($_POST['description']) ? addslashes(trim($_POST['description'])) : null;
             $type          = 'main'; // trim($_POST['type']);
             $mode          = 'manual'; // trim($_POST['mode']);
             $hall          = isset($_POST['hall']) ? (int)$_POST['hall'] : null;
-            $rounds        = isset($_POST['rounds']) ? (int)$_POST['rounds'] : 1;
-            $levels        = isset($_POST['levels']) ? (int)$_POST['levels'] : 1;
             $start_time    = !empty($_POST['start_time']) ? trim($_POST['start_time']) : null;
-            $answer_time   = isset($_POST['answer_time']) ? (int)$_POST['answer_time'] : 20;
             $parent_id     = !empty($_POST['parent_id']) ? (int)$_POST['parent_id'] : null;
             $status        = !empty($_POST['quiz_status']) ? trim($_POST['quiz_status']) : 'draft';
             $view_answer   = !empty($_POST['view_answer']) ? trim($_POST['view_answer']) : 'manually';
@@ -39,16 +36,20 @@ switch ($act) {
             $created_by             = $loggedUserID; //(int)$_SESSION['user_id'];  // Assuming session is active
             $seat_limit             = isset($_POST['seat_limit']) ? (int)$_POST['seat_limit'] : 1;
             $application_close_time = isset($_POST['application_close_time']) ? $_POST['application_close_time'] : date('Y-m-d H:i:s');
-            $application_status     = isset($_POST['application_status']) ? trim($_POST['application_status']) : 'default';
+            $application_status     = isset($_POST['application_status']) ? trim($_POST['application_status']) : 'active';
             $marks_correct          = isset($_POST['marks_correct']) ? $_POST['marks_correct'] : 0;
             $marks_incorrect        = isset($_POST['marks_incorrect']) ? $_POST['marks_incorrect'] : 0;
             $join_type              = (isset($_POST['join_type']) && trim($_POST['join_type']) === 'approval') ? 'approval' : 'open';
+            if ($join_type === 'open') { // open to all: application window does not apply
+                $application_status     = 'active';
+                $application_close_time = date('Y-m-d H:i:s');
+            }
 
             // Build query
             $sql = [];
             $sql['QUERY'] = "INSERT INTO  `rcg_cardiac_talk_quizzes`
-                            SET group_id=?, title=?, description=?, type=?, mode=?, rounds=?, levels=?, 
-                                start_time=?, answer_time=?, parent_id=?, 
+                            SET group_id=?, title=?, description=?, type=?, mode=?, 
+                                start_time=?, parent_id=?, 
                                 status=?, created_by=?, row_status=?, hall_id=?, view_answer=?, 
                                 enable_qr=?, enable_instruction_bar=?, seat_limit=?, application_status=?, application_close_time=?, marks_correct=?, marks_incorrect=?, join_type=?";
 
@@ -58,10 +59,7 @@ switch ($act) {
                 ['FILD' => 'description',  'DATA' => $description,  'TYP' => 's'],
                 ['FILD' => 'type',         'DATA' => $type,         'TYP' => 's'],
                 ['FILD' => 'mode',         'DATA' => $mode,         'TYP' => 's'],
-                ['FILD' => 'rounds',       'DATA' => $rounds,       'TYP' => 'i'],
-                ['FILD' => 'levels',       'DATA' => $levels,       'TYP' => 'i'],
                 ['FILD' => 'start_time',   'DATA' => $start_time,   'TYP' => 's'],
-                ['FILD' => 'answer_time',  'DATA' => $answer_time,  'TYP' => 'i'],
                 ['FILD' => 'parent_id',    'DATA' => $parent_id,    'TYP' => 'i'],
                 ['FILD' => 'status',       'DATA' => $status,       'TYP' => 's'],
                 ['FILD' => 'created_by',   'DATA' => $created_by,   'TYP' => 'i'],
@@ -94,17 +92,14 @@ switch ($act) {
             // Sanitize
             $group_id      = isset($_POST['group_id']) ? (int)$_POST['group_id'] : 0;
             if ($group_id <= 0) {
-                throw new Exception("Please select a group.");
+                throw new Exception("Please select a topic.");
             }
             $title         = addslashes(trim($_POST['title']));
             $hall          = isset($_POST['hall']) ? (int)$_POST['hall'] : null;
             $description   = isset($_POST['description']) ? addslashes(trim($_POST['description'])) : null;
             $type          = 'main'; //trim($_POST['type']);
             $mode          = 'manual'; //trim($_POST['mode']);
-            $rounds        = isset($_POST['rounds']) ? (int)$_POST['rounds'] : 1;
-            $levels        = isset($_POST['levels']) ? (int)$_POST['levels'] : 1;
             $start_time    = !empty($_POST['start_time']) ? trim($_POST['start_time']) : null;
-            $answer_time   = isset($_POST['answer_time']) ? (int)$_POST['answer_time'] : 20;
             $parent_id     = !empty($_POST['parent_id']) ? (int)$_POST['parent_id'] : null;
             $status        = !empty($_POST['quiz_status']) ? trim($_POST['quiz_status']) : 'draft';
             $view_answer   = !empty($_POST['view_answer']) ? trim($_POST['view_answer']) : 'manually';
@@ -113,10 +108,14 @@ switch ($act) {
             $updated_by    = $loggedUserID; //(int)$_SESSION['user_id'];  // Assuming session
             $seat_limit             = isset($_POST['seat_limit']) ? (int)$_POST['seat_limit'] : 1;
             $application_close_time = isset($_POST['application_close_time']) ? $_POST['application_close_time'] : date('Y-m-d H:i:s');
-            $application_status     = isset($_POST['application_status']) ? trim($_POST['application_status']) : 'default';
+            $application_status     = isset($_POST['application_status']) ? trim($_POST['application_status']) : 'active';
             $marks_correct          = isset($_POST['marks_correct']) ? $_POST['marks_correct'] : 0;
             $marks_incorrect        = isset($_POST['marks_incorrect']) ? $_POST['marks_incorrect'] : 0;
             $join_type              = (isset($_POST['join_type']) && trim($_POST['join_type']) === 'approval') ? 'approval' : 'open';
+            if ($join_type === 'open') { // open to all: application window does not apply
+                $application_status     = 'active';
+                $application_close_time = date('Y-m-d H:i:s');
+            }
 
             if ($id <= 0) {
                 throw new Exception("Quiz ID is required.");
@@ -130,15 +129,15 @@ switch ($act) {
             $existingStartTime = $existingData[0]['start_time'] ?? null;
 
             // Normalize both values for a reliable comparison (avoid false positives from formatting differences)
-            $normalizedExisting = $existingStartTime ? date('Y-m-d H:i:s', strtotime($existingStartTime)) : null;
-            $normalizedNew      = $start_time ? date('Y-m-d H:i:s', strtotime($start_time)) : null;
+            $normalizedExisting = $existingStartTime ? date('Y-m-d H:i', strtotime($existingStartTime)) : null;
+            $normalizedNew      = $start_time ? date('Y-m-d H:i', strtotime($start_time)) : null;
             $startTimeChanged   = ($normalizedExisting !== $normalizedNew);
 
             // Build query
             $sql = [];
             $sql['QUERY'] = "UPDATE `rcg_cardiac_talk_quizzes` 
-                            SET group_id=?, title=?, description=?, type=?, mode=?, rounds=?, levels=?, 
-                                start_time=?, answer_time=?, parent_id=?,
+                            SET group_id=?, title=?, description=?, type=?, mode=?, 
+                                start_time=?, parent_id=?,
                                 status=?, updated_by=?, hall_id=?, view_answer=?, 
                                 enable_qr=?, enable_instruction_bar=?, seat_limit=?, application_status=?, application_close_time=?, marks_correct=?, marks_incorrect=?, join_type=?
                          WHERE id=? AND row_status!='D'";
@@ -149,10 +148,7 @@ switch ($act) {
                 ['FILD' => 'description',  'DATA' => $description,  'TYP' => 's'],
                 ['FILD' => 'type',         'DATA' => $type,         'TYP' => 's'],
                 ['FILD' => 'mode',         'DATA' => $mode,         'TYP' => 's'],
-                ['FILD' => 'rounds',       'DATA' => $rounds,       'TYP' => 'i'],
-                ['FILD' => 'levels',       'DATA' => $levels,       'TYP' => 'i'],
                 ['FILD' => 'start_time',   'DATA' => $start_time,   'TYP' => 's'],
-                ['FILD' => 'answer_time',  'DATA' => $answer_time,  'TYP' => 'i'],
                 ['FILD' => 'parent_id',    'DATA' => $parent_id,    'TYP' => 'i'],
                 ['FILD' => 'status',       'DATA' => $status,       'TYP' => 's'],
                 ['FILD' => 'updated_by',   'DATA' => $updated_by,   'TYP' => 'i'],
@@ -365,6 +361,131 @@ switch ($act) {
             setAlert('error', $e->getMessage());
             pageRedirection("cardiac_talks_discussion_quiz_poll.php", 0);
         }
+        exit();
+
+    case 'approve_applicants':
+    case 'reject_applicants':
+        $quizId = (int)($_POST['quiz_id'] ?? 0);
+        try {
+            if ($quizId <= 0) {
+                throw new Exception("Quiz ID is required.");
+            }
+            if (empty($_POST['ids']) || !is_array($_POST['ids'])) {
+                throw new Exception("No applicants selected.");
+            }
+            $ids     = array_values(array_filter(array_map('intval', $_POST['ids'])));
+            $approve = ($act === 'approve_applicants');
+
+            // Seat limit (0 = unlimited)
+            $qSql = [];
+            $qSql['QUERY']   = "SELECT seat_limit FROM `rcg_cardiac_talk_quizzes` WHERE id = ? AND row_status != 'D'";
+            $qSql['PARAM'][] = ['FILD' => 'id', 'DATA' => $quizId, 'TYP' => 'i'];
+            $qRes = $mycms->sql_select($qSql);
+            if (empty($qRes)) {
+                throw new Exception("Quiz not found.");
+            }
+            $seatLimit = (int)$qRes[0]['seat_limit'];
+
+            $cSql = [];
+            $cSql['QUERY']   = "SELECT COUNT(*) AS c FROM `rcg_cardiac_talk_quiz_participation` WHERE quiz_id = ? AND status = 'Approved' AND row_status = 'A'";
+            $cSql['PARAM'][] = ['FILD' => 'quiz_id', 'DATA' => $quizId, 'TYP' => 'i'];
+            $cRes        = $mycms->sql_select($cSql);
+            $approvedNow = $cRes ? (int)$cRes[0]['c'] : 0;
+
+            $done = 0;
+            $skippedFull = 0;
+            foreach ($ids as $pid) {
+                // Row must belong to this quiz
+                $rSql = [];
+                $rSql['QUERY']   = "SELECT status FROM `rcg_cardiac_talk_quiz_participation` WHERE id = ? AND quiz_id = ? AND row_status = 'A'";
+                $rSql['PARAM'][] = ['FILD' => 'id', 'DATA' => $pid, 'TYP' => 'i'];
+                $rSql['PARAM'][] = ['FILD' => 'quiz_id', 'DATA' => $quizId, 'TYP' => 'i'];
+                $rRes = $mycms->sql_select($rSql);
+                if (empty($rRes)) {
+                    continue;
+                }
+                $current = $rRes[0]['status'];
+
+                if ($approve) {
+                    if ($current === 'Approved') {
+                        continue;
+                    }
+                    if ($seatLimit > 0 && $approvedNow >= $seatLimit) {
+                        $skippedFull++;
+                        continue;
+                    }
+                    $u = [];
+                    $u['QUERY'] = "UPDATE `rcg_cardiac_talk_quiz_participation`
+                                   SET status = 'Approved', approved_by = ?, approved_at = NOW()
+                                   WHERE id = ? AND quiz_id = ? AND row_status = 'A'";
+                    $u['PARAM'] = [
+                        ['FILD' => 'approved_by', 'DATA' => $loggedUserID, 'TYP' => 'i'],
+                        ['FILD' => 'id',          'DATA' => $pid,          'TYP' => 'i'],
+                        ['FILD' => 'quiz_id',     'DATA' => $quizId,       'TYP' => 'i']
+                    ];
+                    $mycms->sql_update($u);
+                    $approvedNow++;
+                    $done++;
+                } else {
+                    if ($current === 'Rejected') {
+                        continue;
+                    }
+                    $u = [];
+                    $u['QUERY'] = "UPDATE `rcg_cardiac_talk_quiz_participation`
+                                   SET status = 'Rejected', approved_by = NULL, approved_at = NULL
+                                   WHERE id = ? AND quiz_id = ? AND row_status = 'A'";
+                    $u['PARAM'] = [
+                        ['FILD' => 'id',      'DATA' => $pid,    'TYP' => 'i'],
+                        ['FILD' => 'quiz_id', 'DATA' => $quizId, 'TYP' => 'i']
+                    ];
+                    $mycms->sql_update($u);
+                    $done++;
+                }
+            }
+
+            if ($approve) {
+                $msg = $done . ' applicant(s) approved.';
+                if ($skippedFull > 0) {
+                    $msg .= ' ' . $skippedFull . ' not approved because the seat limit (' . $seatLimit . ') is reached.';
+                }
+                setAlert(($done === 0 && $skippedFull > 0) ? 'error' : 'success', $msg);
+            } else {
+                setAlert('success', $done . ' applicant(s) rejected.');
+            }
+        } catch (Exception $e) {
+            setAlert('error', $e->getMessage());
+        }
+        participantRedirect('cardiac_talks_quiz_applicants.php', $quizId);
+        exit();
+
+    case 'remove_participants':
+        $quizId = (int)($_POST['quiz_id'] ?? 0);
+        try {
+            if ($quizId <= 0) {
+                throw new Exception("Quiz ID is required.");
+            }
+            if (empty($_POST['ids']) || !is_array($_POST['ids'])) {
+                throw new Exception("No participants selected.");
+            }
+            $ids  = array_values(array_filter(array_map('intval', $_POST['ids'])));
+            $done = 0;
+            foreach ($ids as $pid) {
+                $u = [];
+                $u['QUERY'] = "UPDATE `rcg_cardiac_talk_quiz_participation`
+                               SET row_status = 'D'
+                               WHERE id = ? AND quiz_id = ? AND row_status = 'A'";
+                $u['PARAM'] = [
+                    ['FILD' => 'id',      'DATA' => $pid,    'TYP' => 'i'],
+                    ['FILD' => 'quiz_id', 'DATA' => $quizId, 'TYP' => 'i']
+                ];
+                $mycms->sql_update($u);
+                $done++;
+            }
+            setAlert('success', $done . ' participant(s) removed.');
+        } catch (Exception $e) {
+            setAlert('error', $e->getMessage());
+        }
+        participantRedirect('cardiac_talks_quiz_participants.php', $quizId);
         exit();
 
     case 'notify_all':
@@ -596,4 +717,17 @@ function pageRedirection($fileName, $messageCode, $additionalString = "")
 
     $page = getReturnPage($fileName);   // $fileName is only the default now
     $mycms->redirect($page . "?m=" . $messageCode . $additionalString . $searchString);
+}
+
+/* Redirect back to the participants / applicants page, keeping its filters */
+function participantRedirect($page, $quizId)
+{
+    global $mycms;
+    $qs = "?quiz_id=" . (int)$quizId;
+    foreach (['f_status', 'f_search'] as $k) {
+        if (isset($_POST[$k]) && $_POST[$k] !== '') {
+            $qs .= "&" . $k . "=" . urlencode($_POST[$k]);
+        }
+    }
+    $mycms->redirect($page . $qs);
 }
