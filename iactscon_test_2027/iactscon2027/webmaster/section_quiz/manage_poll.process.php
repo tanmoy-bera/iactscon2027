@@ -1,6 +1,6 @@
 <?php
 
-include_once('../includes/init.php');
+include_once('includes/init.php');
 $loggedUserID = $mycms->getLoggedUserId();
 $act = @$_REQUEST['act'];
 switch ($act) {
@@ -233,12 +233,12 @@ switch ($act) {
             echo "Error: " . $e->getMessage();
         }
         exit();
-   case 'Reset':
+    case 'Reset':
         try {
             if (empty($_REQUEST['id'])) throw new Exception("Missing Poll ID to reset.");
 
             $poll_id    = (int)$_REQUEST['id'];
-            $updated_by = $loggedUserID;
+            $updated_by = $loggedUserID; //(int)$_SESSION['user_id'];
 
             // ==========================
             // 1️⃣ Reset all vote counts
@@ -258,21 +258,11 @@ switch ($act) {
             $sql['PARAM'][] = ['FILD' => 'poll_id', 'DATA' => $poll_id, 'TYP' => 'i'];
             $mycms->sql_delete($sql);
 
-            // ==========================
-            // 3️⃣ Set poll as inactive
-            // ==========================
-            $sql = [];
-            $sql['QUERY'] = "UPDATE `rcg_polls`
-                            SET is_active = 0, updated_by = ?
-                            WHERE id = ?";
-            $sql['PARAM'][] = ['FILD' => 'updated_by', 'DATA' => $updated_by, 'TYP' => 'i'];
-            $sql['PARAM'][] = ['FILD' => 'id',         'DATA' => $poll_id,    'TYP' => 'i'];
-            $mycms->sql_update($sql);
-
             // Redirect after successful reset
             pageRedirection("manage_polls.php", 2);  // 2 = success
         } catch (Exception $e) {
             pageRedirection("manage_polls.php", "Error: " . $e->getMessage());
+            // echo "Error: " . $e->getMessage();
         }
         exit();
 }

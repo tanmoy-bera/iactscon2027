@@ -165,8 +165,8 @@ if (!$qmFormMode) {
                                     </div>
 
                                     <div class="frm_grp span_2">
-                                        <p class="frm-head">Hall <span class="mandatory"></span></p>
-                                        <select name="hall" id="hall" class="validate[required]" >
+                                        <p class="frm-head">Hall <span class="mandatory">*</span></p>
+                                        <select name="hall" id="hall" class="validate[required]" required>
                                             <option value=""> - Select - </option>
                                             <?php if ($qmHalls) { foreach ($qmHalls as $hall) { ?>
                                                 <option value="<?= $hall['id'] ?>" <?= (($qmRow['hall_id'] ?? '') == $hall['id']) ? 'selected' : '' ?>><?= htmlspecialchars($hall['hall_title']) ?></option>
@@ -274,7 +274,7 @@ if (!$qmFormMode) {
                     #quizmaster .table_wrap table td {
                         vertical-align: middle;
                     }
-                    /* 1 = checkbox, 2 = Sl No, 6 = Quiz Status, 7 = Status  -> center */
+                    /* 1 = checkbox, 2 = Sl No, 6 = Quiz Status, 7 = Applicants, 8 = Status -> center */
                     #quizmaster .table_wrap table th:nth-child(1),
                     #quizmaster .table_wrap table td:nth-child(1),
                     #quizmaster .table_wrap table th:nth-child(2),
@@ -282,7 +282,9 @@ if (!$qmFormMode) {
                     #quizmaster .table_wrap table th:nth-child(6),
                     #quizmaster .table_wrap table td:nth-child(6),
                     #quizmaster .table_wrap table th:nth-child(7),
-                    #quizmaster .table_wrap table td:nth-child(7) {
+                    #quizmaster .table_wrap table td:nth-child(7),
+                    #quizmaster .table_wrap table th:nth-child(8),
+                    #quizmaster .table_wrap table td:nth-child(8) {
                         text-align: center;
                     }
                     /* 3 = Quiz Title, 4 = Hall, 5 = Start Time -> left */
@@ -312,6 +314,7 @@ if (!$qmFormMode) {
                                 <th align="left">Hall</th>
                                 <th align="left">Start Time</th>
                                 <th align="center">Quiz Status</th>
+                                <th align="center">Applicants</th>
                                 <th align="center">Status</th>
                                 <th class="action">Action</th>
                             </tr>
@@ -332,6 +335,10 @@ if (!$qmFormMode) {
                                         <td align="left"><?= htmlspecialchars($row['hall_title'] ?? '') ?></td>
                                         <td align="left"><?= !empty($row['start_time']) ? date('d M Y, H:i', strtotime($row['start_time'])) : '--' ?></td>
                                         <td align="center"><?= ucfirst($row['status']) ?></td>
+                                        <!-- Applicants: approve / reject applications (participations.php) -->
+                                        <td align="center">
+                                            <a href="<?= $cfg['SECTION_BASE_URL'] ?>participations.php?quiz_id=<?= $row['id'] ?>" target="_blank">View</a>
+                                        </td>
                                         <td align="center">
                                             <a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?act=<?= ($row['row_status'] == 'A') ? 'Inactive' : 'Active' ?>&id=<?= $row['id'] ?><?= $searchString ?><?= $qmRet ?>"
                                                class="badge_padding <?= ($row['row_status'] == 'A') ? 'badge_success' : 'badge_danger' ?> w-max-con text-uppercase">
@@ -348,9 +355,10 @@ if (!$qmFormMode) {
                                                             <a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?quiz_id=<?= $row['id'] ?>&act=notify_all<?= $qmRet ?>" class="icon_hover badge_primary action-transparent"><i class="fal fa-bell"></i>Notify All</a>
                                                         <?php } ?>
                                                     <?php } ?>
-                                                    <a href="<?= $cfg['SECTION_BASE_URL'] ?>participations.php?quiz_id=<?= $row['id'] ?>" target="_blank" class="icon_hover badge_primary action-transparent"><i class="fal fa-user-check"></i>Applicants</a>
                                                     <a href="<?= $qmSelf ?>?show=edit&quiz_id=<?= $row['id'] ?><?= $searchString ?>" class="icon_hover badge_primary action-transparent"><i class="fal fa-edit"></i>Edit</a>
                                                     <a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?quiz_id=<?= $row['id'] ?>&act=reset_quiz<?= $qmRet ?>" class="icon_hover badge_primary action-transparent" onclick="return confirm('Reset this quiz?');"><i class="fal fa-redo"></i>Reset Quiz</a>
+                                                    <!-- Participants: users who have joined (participants.php) -->
+                                                    <a href="<?= $cfg['SECTION_BASE_URL'] ?>participations.php?quiz_id=<?= $row['id'] ?>" class="icon_hover badge_primary action-transparent"><i class="fal fa-users"></i>Participants</a>
                                                     <a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?act=Remove&id=<?= $row['id'] ?><?= $searchString ?><?= $qmRet ?>" class="icon_hover badge_primary action-transparent" onclick="return confirm('Do you really want to remove this record');"><i class="fal fa-trash-alt"></i>Remove</a>
                                                 </ul>
                                             </div>
@@ -361,7 +369,7 @@ if (!$qmFormMode) {
                             } else {
                                 ?>
                                 <tr>
-                                    <td colspan="8" align="center" style="text-align:center;">
+                                    <td colspan="9" align="center" style="text-align:center;">
                                         <span class="mandatory">No Record(s) Found !!</span>
                                     </td>
                                 </tr>

@@ -30,7 +30,7 @@ if (!function_exists('qmsel')) {
 <body>
     <?php include_once("./includes/left-menu.php"); ?>
     <header>
-        <h2>Public Group Management</h2>
+        <h2>Discussions, Quizzes & Polls</h2>
         <?php include_once("./includes/header_right.php"); ?>
     </header>
     <div class="body_wrap">

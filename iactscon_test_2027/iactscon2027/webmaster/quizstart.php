@@ -190,9 +190,9 @@ if ($quiz_details['enable_qr'] == 'yes') {
         <div class="section-pad">
             <div class="header">
                 <h1 class="logoname">CCICON <span>2025</span></h1>
-                <img src="admin_quiz/img/l1.png" alt="" class="divdr">
+                <img src="section_quiz/admin_quiz/img/l1.png" alt="" class="divdr">
                 <p class="texthead-sm">AUGUST 22-24. 2025 ITC ROYAL BENGAL</p>
-                <img src="admin_quiz/img/l2.png" alt="" class="divdr">
+                <img src="section_quiz/admin_quiz/img/l2.png" alt="" class="divdr">
                 <p class="texthead-lg">6TH NATIONAL PULMONOLOGY CONFERANCE OF THE CHEST COUNCIL OF INDIA</p>
             </div>
             <div class="use_code">
@@ -227,7 +227,7 @@ if ($quiz_details['enable_qr'] == 'yes') {
                 <div class="left_footer">
                     <div class="left_f_logo">
                         <p>MANAGED BY</p>
-                        <img src="admin_quiz/img/Rueda New logo.png" alt="">
+                        <img src="section_quiz/admin_quiz/img/Rueda New logo.png" alt="">
                     </div>
                 </div>
                 <div style="display: none;" class="right_footer">

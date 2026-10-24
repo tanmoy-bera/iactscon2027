@@ -23,12 +23,13 @@ $isPrivate   = ($groupRow && $groupRow['group_type'] === 'private');
 $backUrl     = ($groupRow && !$isPrivate) ? 'cardiac_talks_topics.php' : 'group_list.php';
 $backLabel   = ($groupRow && !$isPrivate) ? 'Back to Topics' : 'Back to Groups';
 $parentLabel = ($groupRow && !$isPrivate) ? 'Cardiac Talks Topics' : 'Manage Groups';
+$groupNameSafe = $groupRow ? htmlspecialchars($groupRow['group_name']) : '';
 ?>
 
 <body>
     <?php include_once("./includes/left-menu.php"); ?>
     <header>
-        <h2>Group Members</h2>
+        <h2>Group Members<?= $groupRow ? ' — ' . $groupNameSafe : '' ?></h2>
         <?php include_once("./includes/header_right.php"); ?>
     </header>
     <?php
@@ -94,10 +95,13 @@ $parentLabel = ($groupRow && !$isPrivate) ? 'Cardiac Talks Topics' : 'Manage Gro
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">Community</a></li>
                         <li class="breadcrumb-item"><a href="<?= $backUrl ?>"><?= $parentLabel ?></a></li>
+                        <?php if ($groupRow) { ?>
+                        <li class="breadcrumb-item"><a href="#"><?= $groupNameSafe ?></a></li>
+                        <?php } ?>
                         <li class="breadcrumb-item active" aria-current="page"><a href="#">Group Members</a></li>
                     </ol>
                 </nav>
-                <h2>Group Members<?= $groupRow ? ' — ' . htmlspecialchars($groupRow['group_name']) : '' ?></h2>
+                <h2>Group Members<?= $groupRow ? ' — ' . $groupNameSafe : '' ?></h2>
             </div>
             <div class="page_top_wrap_right">
                 <a href="<?= $backUrl ?>" class="badge_dark"><i class="fal fa-arrow-left"></i> <?= $backLabel ?></a>
@@ -167,7 +171,7 @@ $parentLabel = ($groupRow && !$isPrivate) ? 'Cardiac Talks Topics' : 'Manage Gro
                     <div class="com_info_box_grid">
                         <div class="com_info_box_grid_box">
                             <h5 class="com_info_box_head">
-                                <n><span class="text_success"><i class="fal fa-users"></i></span> Active Members</n>
+                                <n><span class="text_success"><i class="fal fa-users"></i></span> Active Members — <?= $groupNameSafe ?></n>
                             </h5>
                             <div class="com_info_box_inner">
 
@@ -316,7 +320,7 @@ $parentLabel = ($groupRow && !$isPrivate) ? 'Cardiac Talks Topics' : 'Manage Gro
                         <input type="hidden" name="search_name" value="<?= htmlspecialchars($searchName) ?>" />
 
                         <h5 style="margin:0 0 4px 0;color:#fff;font-size:18px;">Block <span id="blockUserName"></span></h5>
-                        <p style="margin:0 0 18px 0;color:#aaa;font-size:13px;">Group: <?= htmlspecialchars($groupRow['group_name']) ?></p>
+                        <p style="margin:0 0 18px 0;color:#aaa;font-size:13px;">Group: <?= $groupNameSafe ?></p>
 
                         <div class="frm_grp" style="margin-bottom:14px;">
                             <p class="frm-head" style="color:#ddd;">Restriction <span class="mandatory">*</span></p>

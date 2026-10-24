@@ -21,6 +21,10 @@ switch ($act) {
             if ($group_name === '') {
                 throw new Exception("Group name is required.");
             }
+            // Name must be unique across ALL groups (private groups + public topics)
+            if (groupNameExists($mycms, $group_name)) {
+                throw new Exception("A group or topic named \"" . $group_name . "\" already exists. Please use a different name.");
+            }
 
             // Cover image (optional)
             $cover_image = uploadGroupCover('cover_image');
@@ -64,6 +68,10 @@ switch ($act) {
             }
             if ($group_name === '') {
                 throw new Exception("Group name is required.");
+            }
+            // Name must be unique across ALL groups (ignore this group itself)
+            if (groupNameExists($mycms, $group_name, $group_id)) {
+                throw new Exception("A group or topic named \"" . $group_name . "\" already exists. Please use a different name.");
             }
 
             // New cover image uploaded? otherwise keep the old one
@@ -213,6 +221,23 @@ function setAlert($type, $message)
         'type'    => ($type === 'error') ? 'error' : 'success',
         'message' => $message
     ];
+}
+
+/*============== HELPER: DUPLICATE NAME CHECK ================*/
+/* A group name must be unique across private groups AND public topics (deleted ones are ignored).
+   Comparison ignores case and leading/trailing spaces. $excludeId = the record being edited. */
+function groupNameExists($mycms, $name, $excludeId = 0)
+{
+    $q = [];
+    $q['QUERY'] = "SELECT `id` FROM `rcg_groups`
+                   WHERE `status` != 'D' AND LOWER(TRIM(`group_name`)) = LOWER(?) AND `id` != ?
+                   LIMIT 1";
+    $q['PARAM'] = [
+        ['FILD' => 'group_name', 'DATA' => trim($name),      'TYP' => 's'],
+        ['FILD' => 'id',         'DATA' => (int)$excludeId,  'TYP' => 'i']
+    ];
+    $r = $mycms->sql_select($q);
+    return !empty($r);
 }
 
 /*============== HELPER: COVER IMAGE UPLOAD ================*/

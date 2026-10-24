@@ -17,12 +17,13 @@ if ($groupId > 0) {
         $groupRow = $found[0];
     }
 }
+$groupNameSafe = $groupRow ? htmlspecialchars($groupRow['group_name']) : '';
 ?>
 
 <body>
     <?php include_once("./includes/left-menu.php"); ?>
     <header>
-        <h2>Group Invitations</h2>
+        <h2>Group Invitations<?= $groupRow ? ' — ' . $groupNameSafe : '' ?></h2>
         <?php include_once("./includes/header_right.php"); ?>
     </header>
     <?php
@@ -79,10 +80,13 @@ if ($groupId > 0) {
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">Community</a></li>
                         <li class="breadcrumb-item"><a href="group_list.php">Manage Groups</a></li>
+                        <?php if ($groupRow) { ?>
+                        <li class="breadcrumb-item"><a href="#"><?= $groupNameSafe ?></a></li>
+                        <?php } ?>
                         <li class="breadcrumb-item active" aria-current="page"><a href="#">Group Invitations</a></li>
                     </ol>
                 </nav>
-                <h2>Invite Users<?= $groupRow ? ' — ' . htmlspecialchars($groupRow['group_name']) : '' ?></h2>
+                <h2>Invite Users<?= $groupRow ? ' — ' . $groupNameSafe : '' ?></h2>
             </div>
             <div class="page_top_wrap_right">
                 <a href="group_list.php" class="badge_dark"><i class="fal fa-arrow-left"></i> Back to Groups</a>
@@ -104,7 +108,7 @@ if ($groupId > 0) {
                     <div class="com_info_box_grid">
                         <div class="com_info_box_grid_box">
                             <h5 class="com_info_box_head">
-                                <n><span class="text_success"><i class="fal fa-user-plus"></i></span> Invite Users</n>
+                                <n><span class="text_success"><i class="fal fa-user-plus"></i></span> Invite Users — <?= $groupNameSafe ?></n>
                             </h5>
                             <div class="com_info_box_inner">
 
