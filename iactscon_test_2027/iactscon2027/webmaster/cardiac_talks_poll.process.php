@@ -103,16 +103,18 @@ switch ($act) {
                 $mycms->sql_insert($o);
             }
 
-            pageRedirection("manage_quiz_polls.php", 1);
+            setAlert('success', 'Poll added successfully.');
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 1);
         } catch (Exception $e) {
-            pageRedirection("manage_quiz_polls.php", "Error: " . $e->getMessage());
+            setAlert('error', $e->getMessage());
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 0, "&mode=add");
         }
         exit();
 
     /* ============================ UPDATE ============================ */
     case 'edit_poll':
+        $id = (int)($_POST['poll_id'] ?? 0);
         try {
-            $id = (int)($_POST['poll_id'] ?? 0);
             if ($id <= 0) throw new Exception("Poll ID is required.");
             $d = pollCollect();
 
@@ -181,9 +183,12 @@ switch ($act) {
                 $mycms->sql_delete($x);
             }
 
-            pageRedirection("manage_quiz_polls.php", 2);
+            setAlert('success', 'Poll updated successfully.');
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 2);
         } catch (Exception $e) {
-            pageRedirection("manage_quiz_polls.php", "Error: " . $e->getMessage());
+            setAlert('error', $e->getMessage());
+            $back = ($id > 0) ? "&edit_poll=" . $id : "";
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 0, $back);
         }
         exit();
 
@@ -202,9 +207,11 @@ switch ($act) {
             ];
             $mycms->sql_update($sql);
 
-            pageRedirection("manage_quiz_polls.php", 3);
+            setAlert('success', 'Poll deleted successfully.');
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 3);
         } catch (Exception $e) {
-            pageRedirection("manage_quiz_polls.php", "Error: " . $e->getMessage());
+            setAlert('error', $e->getMessage());
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 0);
         }
         exit();
 
@@ -229,9 +236,12 @@ switch ($act) {
             ];
             $mycms->sql_update($sql);
 
-            pageRedirection("manage_quiz_polls.php", 2);
+            $doneMap = ['Active' => 'marked as active', 'Inactive' => 'marked as inactive', 'Publish' => 'published', 'Unpublish' => 'unpublished'];
+            setAlert('success', 'Poll ' . $doneMap[$act] . ' successfully.');
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 2);
         } catch (Exception $e) {
-            pageRedirection("manage_quiz_polls.php", "Error: " . $e->getMessage());
+            setAlert('error', $e->getMessage());
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 0);
         }
         exit();
 
@@ -244,7 +254,9 @@ switch ($act) {
             $ids    = array_map('intval', $_POST['ids']);
             $action = $_POST['action'];
 
+            $count = 0;
             foreach ($ids as $id) {
+                if ($id <= 0) continue;
                 $sql = [];
                 switch ($action) {
                     case 'Active':
@@ -276,11 +288,15 @@ switch ($act) {
                         throw new Exception("Invalid action selected.");
                 }
                 $mycms->sql_update($sql);
+                $count++;
             }
 
-            pageRedirection("manage_quiz_polls.php", ($action == 'Remove' ? 3 : 2));
+            $verb = ['Active' => 'marked as active', 'Inactive' => 'marked as inactive', 'Publish' => 'published', 'Unpublish' => 'unpublished', 'Remove' => 'removed'];
+            setAlert('success', $count . ' poll(s) ' . $verb[$action] . ' successfully.');
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", ($action == 'Remove' ? 3 : 2));
         } catch (Exception $e) {
-            pageRedirection("manage_quiz_polls.php", "Error: " . $e->getMessage());
+            setAlert('error', $e->getMessage());
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 0);
         }
         exit();
 
@@ -306,17 +322,28 @@ switch ($act) {
                 error_log("Firebase reset error for poll {$pollId}: " . $e->getMessage());
             }
 
-            pageRedirection("manage_quiz_polls.php", 2);
+            setAlert('success', 'Poll votes reset successfully.');
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 2);
         } catch (Exception $e) {
-            pageRedirection("manage_quiz_polls.php", "Error: " . $e->getMessage());
+            setAlert('error', $e->getMessage());
+            pageRedirection("cardiac_talks_discussion_quiz_poll.php", 0);
         }
         exit();
 }
 
-/* Only these pages are allowed as redirect target (security) */
-function getReturnPage($default = "manage_quiz_polls.php")
+/*============== HELPER: FLASH ALERT (shown once on the list page) ================*/
+function setAlert($type, $message)
 {
-    $allowed = ['manage_quiz_polls.php', 'public_group.php'];
+    $_SESSION['cardiac_alert'] = [
+        'type'    => ($type === 'error') ? 'error' : 'success',
+        'message' => $message
+    ];
+}
+
+/* Only these pages are allowed as redirect target (security) */
+function getReturnPage($default = "cardiac_talks_discussion_quiz_poll.php")
+{
+    $allowed = ['cardiac_talks_discussion_quiz_poll.php'];
 
     // 1) explicit return_to (hidden field / link param)
     $page = basename($_REQUEST['return_to'] ?? '');
