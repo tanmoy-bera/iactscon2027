@@ -34,27 +34,7 @@ switch ($action) {
 
 		exit();
 		break;
-		case 'getAbstractTopicsByCategory':
-			$categoryId = isset($_POST['categoryId']) ? (int) $_POST['categoryId'] : 0;
 
-			$sqlAbstractTopic = array();
-			$sqlAbstractTopic['QUERY'] = "SELECT * FROM " . _DB_ABSTRACT_TOPIC_ . " 
-											WHERE `status` = ? AND `category` = ?
-											ORDER BY `abstract_topic` ASC";
-			$sqlAbstractTopic['PARAM'][] = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
-			$sqlAbstractTopic['PARAM'][] = array('FILD' => 'category', 'DATA' => $categoryId, 'TYP' => 'i');
-
-			$resultAbstractTopic = $mycms->sql_select($sqlAbstractTopic);
-
-			echo '<option value="">-- Select Topic --</option>';
-			if ($resultAbstractTopic) {
-				foreach ($resultAbstractTopic as $rowAbstractTopic) {
-					echo '<option value="' . $rowAbstractTopic['id'] . '">' 
-						. htmlspecialchars($rowAbstractTopic['abstract_topic']) 
-						. '</option>';
-				}
-			}
-		break;
 
 	case 'generateRoomType':
 		$hotelId   = addslashes(trim($_REQUEST['hotelId']));

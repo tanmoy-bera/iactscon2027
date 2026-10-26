@@ -13,9 +13,9 @@ define("_HTTPS_SERVER_", 		"https://".$_SERVER['HTTP_HOST']."/");
 //define("_WEBSITE_BASE_URL_", 	"http://www.aiccrcog2019.com/");
 //define("_EVENT_BASE_URL_", 		"https://www.ruedakolkata.com/20-aic_crc-og19/");
 //define("_BASE_URL_", 			"https://www.ruedakolkata.com/20-aic_crc-og19/");
-define("_WEBSITE_BASE_URL_", 	"https://ruedakolkata.com/iactscon2027/");
-define("_EVENT_BASE_URL_", 		"https://ruedakolkata.com/iactscon2027/");
-define("_BASE_URL_", 			"https://ruedakolkata.com/iactscon2027/");
+define("_WEBSITE_BASE_URL_", 	"https://ruedakolkata.com/iactscon_test_2027/");
+define("_EVENT_BASE_URL_", 		"https://ruedakolkata.com/iactscon_test_2027/");
+define("_BASE_URL_", 			"https://ruedakolkata.com/iactscon_test_2027/");
 
 // Front End Path
 define("_DIR_CM_IMAGES_",		_BASE_URL_.'images/');

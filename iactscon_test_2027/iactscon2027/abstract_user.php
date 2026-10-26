@@ -306,34 +306,7 @@ if ($delegateId != '') {
         var CFG = { BASE_URL : "<?=_BASE_URL_?>" };
     </script>
 <script type="text/javascript" language="javascript" src="js/website/returnData.process.js"></script>
-<script>
-$(function () {
-    // Stop the generic forType=country handler from firing for these two fields
-    $('#user_country, #abstract_author_country').off('change');
 
-    $('#user_country').on('change', function () {
-        var countryId = $(this).val();
-        if (!countryId) {
-            $('#user_state').html('<option value="">-- Select Country First --</option>');
-            return;
-        }
-        $.post('returnData.process.php', { act: 'generateStateList', countryId: countryId }, function (html) {
-            $('#user_state').html(html).removeAttr('disabled');
-        });
-    });
-
-    $('#abstract_author_country').on('change', function () {
-        var countryId = $(this).val();
-        if (!countryId) {
-            $('#abstract_author_state').html('<option value="">-- Select Country First --</option>');
-            return;
-        }
-        $.post('returnData.process.php', { act: 'generateStateList', countryId: countryId }, function (html) {
-            $('#abstract_author_state').html(html).removeAttr('disabled');
-        });
-    });
-});
-</script>
 <form name="abstractRequestForm" id="abstractRequestForm" action="<?= _BASE_URL_ ?>abstract.user.entrypoint.process.php" method="post" enctype="multipart/form-data">
    <input type="hidden" name="act" value="step1" />
    	<input type="hidden" name="report_data" id="report_data" value="Abstract" />
@@ -2504,7 +2477,7 @@ $(document).ready(function() {
             .prop('readonly', true)
 
         setTimeout(function(){
-            $('#abstract_author_state').val($('#user_state').val());
+            $('#abstract_author_state').val(presenter_state);
         },300);
 
         $('#isPresenter').val('Y');
@@ -2629,15 +2602,17 @@ $(document).ready(function () {
                     </select>
                 </div>
                 <div class="frm_grp span_2">
-                    <p class="frm-head">State <i class="mandatory">*</i></p>
+                    <p class="frm-head">State</p>
                     <div class="d-flex align-items-center">
-                        <select class="coauthor_state coauthor_state_${authorCount} <?= $disabledclass ?>"
-                            name="abstract_coauthor_state[]"
-                            data-coauthor-index="${authorCount}"
-                            required
-                            validate="Please Select State"
-                            style="flex:1;">
-                            <option value="">-- Select Country First --</option>
+                        <select class="coauthor_state  <?= $disabledclass ?>"
+                        name="abstract_coauthor_state[]"
+                        forType="stateCo"
+                        
+                        <?= $disabled ?>
+                        validate="Please Select State"
+                        style="flex:1;">
+                        <option value="">-- Select Country First --</option>
+                       
                         </select>
                     </div>
                 </div>
@@ -3303,52 +3278,34 @@ $(document).ready(function(){
         }
 
     });
-    $(document).on("change", ".coauthor_country", function(){
-        var countryId = $(this).val();
-        var $this = $(this);
-        
-        // Method 1: Find the state dropdown by traversing up to the coauthor_item
-        var $coauthorItem = $this.closest(".coauthor_item");
-        var $stateDropdown = $coauthorItem.find(".coauthor_state");
-        
-        // OR Method 2: If Method 1 doesn't work, try finding the parent .form_grid first
-        // var $formGrid = $this.closest(".form_grid");
-        // var $stateDropdown = $formGrid.find(".coauthor_state");
-        
-        console.log("Co-author item found: ", $coauthorItem.length > 0 ? "Yes" : "No");
-        console.log("State dropdown found: ", $stateDropdown.length > 0 ? "Yes" : "No");
-        
-        if(!$stateDropdown.length){
-            // Fallback: Try to find by data attribute
-            var coauthorIndex = $this.data('coauthor-index');
-            if(coauthorIndex){
-                $stateDropdown = $(".coauthor_state_" + coauthorIndex);
-                console.log("Fallback state dropdown found: ", $stateDropdown.length > 0 ? "Yes" : "No");
-            }
-        }
-        
-        if(countryId != ""){
-            $.ajax({
-                type: "POST",
-                url: "returnData.process.php",
-                data: "act=generateStateList&countryId=" + countryId,
-                dataType: "html",
-                async: false,
-                success: function(response){
-                    console.log("AJAX Response received, updating state dropdown");
-                    $stateDropdown.html(response);
-                    $stateDropdown.removeAttr("disabled");
-                },
-                error: function(xhr, status, error){
-                    console.error("AJAX Error:", error);
-                    $stateDropdown.html('<option value="">Error loading states</option>');
-                }
-            });
-        }else{
-            $stateDropdown.html('<option value="">-- Select Country First --</option>');
-            $stateDropdown.attr("disabled", "disabled");
-        }
-    });
+    $(document).on("change",".coauthor_country",function(){
+
+    var countryId = $(this).val();
+
+    // var stateDropdown = $(this)
+    //     .closest(".form_grid")
+    //     .find(".coauthor_state");
+
+    // stateDropdown.html('<option>Loading...</option>');
+
+     if(countryId!=""){
+		$.ajax({
+					type: "POST",
+					url: "returnData.process.php",
+					data: "act=generateStateList&countryId="+countryId,
+					dataType: "html",
+					async: false,
+					success: function(JSONObject){
+						$("select[forType=stateCo]").html(JSONObject);
+						$("select[forType=stateCo]").removeAttr("disabled");
+					}
+		});
+	}else{
+		$("select[forType=stateCo]").html('<option value="">-- Select Country First --</option>');
+		$("select[forType=stateCo]").attr("disabled","disabled");
+	}
+
+});
  });
             $('#formFileAbstract').on('change', function() {
 				var file = this.files[0];

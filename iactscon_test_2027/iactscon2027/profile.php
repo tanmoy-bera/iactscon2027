@@ -819,7 +819,9 @@ $dinnerTariffArray   = getAllDinnerTarrifDetails($currentCutoffId);
                     <div class="span_6 workshop_detail profile_detaile_box">
                         <div class="profile_detaile_box_head">
                             <h3><span><?php workshop(); ?></span>Accomodation</h3>
-                         
+                            <!-- if guest added -->
+                            <!-- <button type="button" class="popup_btn" data-tab="addworkshop"><?php edit(); ?>Manage</button> -->
+                            <!-- if guest added -->
                         </div>
                          <div class="hotel_blank">
                                     <span><?php workshop(); ?></span>
@@ -1841,38 +1843,12 @@ $dinnerTariffArray   = getAllDinnerTarrifDetails($currentCutoffId);
                <div class="registration_right_body">
                   <div class="registration_right_body_head">
                       <div class="registration_right_body_head_left">
-                          <!-- <h4>Choose your accommodation</h4> -->
-                          <!-- <h5>Official partner hotels with exclusive rates.</h5> -->
+                          <h4>Choose your accommodation</h4>
+                          <h5>Official partner hotels with exclusive rates.</h5>
                       </div>
                       <!-- <div class="registration_right_body_head_right">
                           <a class="text_danger text_danger_clear" style="cursor: pointer;">Clear Choise</a>
                       </div> -->
-                  </div>
-                   <div class="registration_right_body_tab">
-                    <div id="hotelDateStore" style="display:none;"></div>
-                        <div class="hotel_link_owl owl-carousel owl-theme">
-
-                  <?php
-                        if (count($resultFetchHotel)) {
-                            foreach ($resultFetchHotel as $k => $val) {
-                                $sqlValidHotel = array();
-                                $sqlValidHotel['QUERY'] = "SELECT 1 FROM " . _DB_TARIFF_ACCOMMODATION_ . "
-                                                          WHERE status = ? AND tariff_cutoff_id = ? AND hotel_id = ? AND inr_amount > 0 LIMIT 1";
-                                $sqlValidHotel['PARAM'][] = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
-                                $sqlValidHotel['PARAM'][] = array('FILD' => 'tariff_cutoff_id', 'DATA' => $currentCutoffId, 'TYP' => 's');
-                                $sqlValidHotel['PARAM'][] = array('FILD' => 'hotel_id', 'DATA' => $val['id'], 'TYP' => 's');
-                                $hotelHasValidAmount = $mycms->sql_select($sqlValidHotel);
-                              
-                                if (empty($hotelHasValidAmount)) {
-                                    continue;
-                                }
-                        ?>
-                                <button type="button" class="active hotel_tab_btn hotel_tab_btn_hotel" data-tab="<?= $val['id'] ?>" data-notes="<?= htmlspecialchars($val['hotel_notes'] ?? '', ENT_QUOTES) ?>"><?= $val['hotel_name'] ?><span><i class="fa-solid fa-star"></i><?=$val['hotelRatings']?></span></button>
-                        <?php
-                            }
-                        }
-                        ?>
-                      </div>
                   </div>
                   <div
                       class="registration_right_body_head registration_right_body_sub_head accommodation_body_head">
@@ -1991,7 +1967,32 @@ $dinnerTariffArray   = getAllDinnerTarrifDetails($currentCutoffId);
                       </div>
                   </div>
 
-                 
+                  <div class="registration_right_body_tab">
+                    <div id="hotelDateStore" style="display:none;"></div>
+                        <div class="hotel_link_owl owl-carousel owl-theme">
+
+                  <?php
+                        if (count($resultFetchHotel)) {
+                            foreach ($resultFetchHotel as $k => $val) {
+                                $sqlValidHotel = array();
+                                $sqlValidHotel['QUERY'] = "SELECT 1 FROM " . _DB_TARIFF_ACCOMMODATION_ . "
+                                                          WHERE status = ? AND tariff_cutoff_id = ? AND hotel_id = ? AND inr_amount > 0 LIMIT 1";
+                                $sqlValidHotel['PARAM'][] = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
+                                $sqlValidHotel['PARAM'][] = array('FILD' => 'tariff_cutoff_id', 'DATA' => $currentCutoffId, 'TYP' => 's');
+                                $sqlValidHotel['PARAM'][] = array('FILD' => 'hotel_id', 'DATA' => $val['id'], 'TYP' => 's');
+                                $hotelHasValidAmount = $mycms->sql_select($sqlValidHotel);
+                              
+                                if (empty($hotelHasValidAmount)) {
+                                    continue;
+                                }
+                        ?>
+                                <button type="button" class="active hotel_tab_btn hotel_tab_btn_hotel" data-tab="<?= $val['id'] ?>" data-notes="<?= htmlspecialchars($val['hotel_notes'] ?? '', ENT_QUOTES) ?>"><?= $val['hotel_name'] ?><span><i class="fa-solid fa-star"></i><?=$val['hotelRatings']?></span></button>
+                        <?php
+                            }
+                        }
+                        ?>
+                      </div>
+                  </div>
                   <div class="registration_right_body_content accommodation_body_content">
                     <input type="hidden" name="hotel_id" id="hotel_id">
                       <input type="hidden" name="hotel_select_acco_id" id="hotel_select_acco_id">

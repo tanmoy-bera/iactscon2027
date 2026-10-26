@@ -432,17 +432,7 @@ $QR_code = _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $result[1]['image'];
 
                                 const title  = el.attr('invoiceTitle');
                                 const name   = el.attr('invoiceName');
-                                 let displayAmount = amt;
-
-                                if (gst_flag == 2) {
-                                    var cgstP = <?= $cfg['INT.CGST'] ?>;
-                                    var sgstP = <?= $cfg['INT.SGST'] ?>;
-                                    var gstPercent = cgstP + sgstP;
-                                    var itemGst = (amt * gstPercent) / (100 + gstPercent);
-                                    displayAmount = amt - itemGst;
-                                }
-
-                                const amount = parseFloat(displayAmount).toFixed(2);
+                                const amount = parseFloat(el.attr('amount')).toFixed(2);
                                 const icon   = el.attr('icon');
                                 const reg    = el.attr('reg');
                                 // alert(name);
@@ -618,43 +608,7 @@ $QR_code = _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $result[1]['image'];
                 '₹ ' + totalinternetAmount.toLocaleString('en-IN')
             );
 
-              // ===== ADD THIS BLOCK =====
-            // Prevent recursion — flag guard
-            if (window.__isUpdatingComplimentary) return;
-            window.__isUpdatingComplimentary = true;
-
-            try {
-                if (totalinternetAmount <= 0) {
-                    // Hide all payment UI
-                    $('.review_tab').hide();
-                    $('.review_right_box').hide();
-                    $('#complimentaryMessage').show();
-                    $('.gstcharge').hide();
-
-                    // Check Complimentary WITHOUT triggering other handlers
-                    $("input[name='payment_mode']").prop('checked', false);
-                    $("input[name='payment_mode'][value='Complimentary']")
-                        .prop('checked', true); // no trigger, just set
-                    $('#registrationMode').val('OFFLINE');
-                } else {
-                    // Show payment UI again
-                    $('.review_tab').show();
-                    $('#complimentaryMessage').hide();
-                     $('.gstcharge').show();
-                    // Restore previously selected mode (or default to first)
-                    var selectedPaymentMode = $("input[type=radio][use=payment_mode_select]:checked").val();
-                    if (selectedPaymentMode) {
-                        $(".review_tab button").removeClass('active');
-                        // match button by clicking equivalent
-                        $("input[type=radio][use=payment_mode_select]:checked").trigger('click');
-                    } else {
-                        $('.review_tab button').first().trigger('click');
-                    }
-                }
-            } finally {
-                window.__isUpdatingComplimentary = false;
-            }
-            // ===== END ADDED BLOCK =====
+           
         }
 
 

@@ -9242,7 +9242,7 @@ function complementaryPaymentConfirmationProcess($slipId, $delegateId)
 
 			$sqlUpdateWorkshop   = array();
 			$sqlUpdateWorkshop['QUERY']    = "UPDATE " . _DB_REQUEST_WORKSHOP_ . "
-												SET `payment_status` = 'COMPLIMENTARY'
+												SET `payment_status` = 'ZERO_VALUE'
 											  WHERE `delegate_id` = '" . $valActiveInvoice['delegate_id'] . "'
 												AND `status`='A'";
 
@@ -9250,7 +9250,7 @@ function complementaryPaymentConfirmationProcess($slipId, $delegateId)
 
 			$sqlUpdateAccom       = array();
 			$sqlUpdateAccom['QUERY']	      = "UPDATE " . _DB_REQUEST_ACCOMMODATION_ . "
-										SET `payment_status` = 'COMPLIMENTARY'
+										SET `payment_status` = 'ZERO_VALUE'
 									  WHERE `user_id` = '" . $valActiveInvoice['delegate_id'] . "'
 										AND `status`='A'";
 
@@ -9259,14 +9259,14 @@ function complementaryPaymentConfirmationProcess($slipId, $delegateId)
 		if ($valActiveInvoice['service_type'] == 'DELEGATE_WORKSHOP_REGISTRATION') {
 			$sqlUpdateSlip   = array();
 			$sqlUpdateSlip['QUERY']	      = "UPDATE " . _DB_REQUEST_WORKSHOP_ . "
-										SET `payment_status` = 'COMPLIMENTARY'
+										SET `payment_status` = 'ZERO_VALUE'
 									  WHERE `id` = '" . $valActiveInvoice['refference_id'] . "'";
 
 			$mycms->sql_update($sqlUpdateSlip, false);
 
 			$sqlUpdate   = array();
 			$sqlUpdate['QUERY']		= "UPDATE " . _DB_USER_REGISTRATION_ . "
-									SET `workshop_payment_status` = 'COMPLIMENTARY'
+									SET `workshop_payment_status` = 'ZERO_VALUE'
 								  WHERE `id` = '" . $valActiveInvoice['delegate_id'] . "'";
 
 			$mycms->sql_update($sqlUpdate, false);
@@ -9274,7 +9274,7 @@ function complementaryPaymentConfirmationProcess($slipId, $delegateId)
 		if ($valActiveInvoice['service_type'] == 'ACCOMPANY_CONFERENCE_REGISTRATION') {
 			$sqlUpdateSlip       = array();
 			$sqlUpdateSlip['QUERY']	      = "UPDATE " . _DB_USER_REGISTRATION_ . "
-										SET `registration_payment_status` = 'COMPLIMENTARY'
+										SET `registration_payment_status` = 'ZERO_VALUE'
 									  WHERE `id` = '" . $valActiveInvoice['refference_id'] . "'";
 
 			$mycms->sql_update($sqlUpdateSlip, false);
@@ -9282,14 +9282,14 @@ function complementaryPaymentConfirmationProcess($slipId, $delegateId)
 		if ($valActiveInvoice['service_type'] == 'DELEGATE_ACCOMMODATION_REQUEST') {
 			$sqlUpdateSlip   = array();
 			$sqlUpdateSlip['QUERY']	      = "UPDATE " . _DB_REQUEST_ACCOMMODATION_ . "
-											SET `payment_status` = 'COMPLIMENTARY'
+											SET `payment_status` = 'ZERO_VALUE'
 										  WHERE `id` = '" . $valActiveInvoice['refference_id'] . "'";
 
 			$mycms->sql_update($sqlUpdateSlip, false);
 
 			$sqlUpdate = array();
 			$sqlUpdate['QUERY']		 = "UPDATE " . _DB_USER_REGISTRATION_ . "
-										SET `accommodation_payment_status` = 'COMPLIMENTARY'
+										SET `accommodation_payment_status` = 'ZERO_VALUE'
 									  WHERE `id` = '" . $valActiveInvoice['delegate_id'] . "'";
 
 			$mycms->sql_update($sqlUpdate, false);
@@ -9310,55 +9310,12 @@ function complementaryPaymentConfirmationProcess($slipId, $delegateId)
 			$mycms->sql_update($sqlUpdate, false);
 		}
 
-		// $sqlUpdateSlip      = array();
-		// $sqlUpdateSlip['QUERY']	      = "UPDATE " . _DB_INVOICE_ . "
-		// 									SET `payment_status` = 'COMPLIMENTARY'
-		// 								  WHERE `id` = '" . $valActiveInvoice['id'] . "'";
+		$sqlUpdateSlip      = array();
+		$sqlUpdateSlip['QUERY']	      = "UPDATE " . _DB_INVOICE_ . "
+											SET `payment_status` = 'COMPLIMENTARY'
+										  WHERE `id` = '" . $valActiveInvoice['id'] . "'";
 
-		// $mycms->sql_update($sqlUpdateSlip, false);
-		$sqlUpdateInvoice      = array();
-		$sqlUpdateInvoice['QUERY'] = " UPDATE " . _DB_INVOICE_ . "
-										 SET  `service_total_price` 	     = ?,
-										 	  `service_product_price`        = ?,
-										 	  `service_unit_price`           = ?,
-										 	  `discount_amount`              = ?,
-										 	  `total_amount_after_discount`  = ?,
-											  `cgst_int_percentage` 	     = ?, 
-											  `sgst_int_percentage`	         = ?,
-											  `cgst_int_price` 	  	         = ?, 
-											  `sgst_int_price`	 	         = ?,										 							  
-											  `service_gst_int_price`	     = ?,
-											  `service_basic_price`          = ?,
-											  `cgst_price` 	  	 		 	 = ?, 
-											  `sgst_price`	 	 	     	 = ?,										 
-											  `service_gst_total_price`	 	 = ?,
-											  `service_grand_price`  	     = ?,
-											  `service_roundoff_price`  	 = ?,
-											  `has_gst`  				 	 = ?,
-											  `payment_status`  			 = ?
-											WHERE `id` 						 = ?";
-
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'service_total_price', 'DATA' => (float) 0, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'service_product_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'service_unit_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'discount_amount', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'total_amount_after_discount', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'cgst_int_percentage', 'DATA' => (float) $cfg['INT.CGST'], 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'sgst_int_percentage', 'DATA' => (float) $cfg['INT.SGST'], 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'cgst_int_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'sgst_int_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'service_gst_int_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'service_basic_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'cgst_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'sgst_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'service_gst_total_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'service_grand_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'service_roundoff_price', 'DATA' => 0.00, 'TYP' => 'd');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'has_gst', 'DATA' => 'Y', 'TYP' => 's');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'payment_status', 'DATA' =>'COMPLIMENTARY', 'TYP' => 's');
-		$sqlUpdateInvoice['PARAM'][] = array('FILD' => 'id', 'DATA' =>$valActiveInvoice['id'], 'TYP' => 'i');
-		$mycms->sql_update($sqlUpdateInvoice, false);
-
+		$mycms->sql_update($sqlUpdateSlip, false);
 	}
 	offline_conference_registration_confirmation_message($delegateId,$paymentId="",$slipId , 'SEND');
 	// online_senior_citizen_conference_registration_confirmation_message($delegateId, $paymentId = "", $slipId, 'SEND');

@@ -2926,56 +2926,6 @@ $(document).ready(function(){
                 }
             });
         });
-    $(document).on("click", "button[type='submit'][name='submit']", function (e) {
-        e.preventDefault();
-
-        var $form = $("#caseRequestEditForm");
-
-        // don't let hidden fields block submission
-        $form.find(":input:hidden").removeAttr("required");
-
-        if (!checkAbstractLimits()) return;
-
-        var formData = new FormData($form[0]);
-        formData.append("is_ajax", "1");
-
-        // show loader + disable the button so it can't be double-clicked
-        var $submitBtn = $(this);
-        $submitBtn.prop("disabled", true);
-        $("#formLoader").show();
-
-        $.ajax({
-            url: $form.attr("action"),
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: "json",
-            success: function (resp) {
-                if (resp.status === "success") {
-                    // keep loader up through the redirect — page is navigating away anyway
-                    window.location.href = resp.redirect;
-                } else {
-                    $("#formLoader").hide();
-                    $submitBtn.prop("disabled", false);
-                    toastr.error(resp.message || "Something went wrong. Please try again.", "Error", {
-                        progressBar: true,
-                        timeOut: 4000,
-                        showMethod: "slideDown",
-                        hideMethod: "slideUp"
-                    });
-                }
-            },
-            error: function () {
-                $("#formLoader").hide();
-                $submitBtn.prop("disabled", false);
-                toastr.error("Something went wrong. Please try again.", "Error", {
-                    progressBar: true,
-                    timeOut: 4000
-                });
-            }
-        });
-    });
  </script>
 </html>
 <? 

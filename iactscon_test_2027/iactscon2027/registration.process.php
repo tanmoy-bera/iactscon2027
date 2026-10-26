@@ -3792,7 +3792,7 @@ function setupAccommodationDetails()
 			}
 			$accomodationDetails['refference_invoice_id']							 = 0;
 			$accomodationDetails['refference_slip_id']								 = $mycms->getSession('SLIP_ID');
-			$accomodationDetails['booking_mode']									 = $registrationMode;
+			$accomodationDetails['booking_mode']									 = 'OFFLINE';
 			$accomodationDetails['payment_status']									 = 'UNPAID';
 			$accomodationDetails['roomTypeId']									 = $resPackageCheckoutDate1[0]['roomTypeId'];
           

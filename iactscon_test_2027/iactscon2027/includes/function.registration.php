@@ -37,7 +37,7 @@ function getAllRegistrationTariffs($cutoffId="",$reviewOperational=true)
 	$displayData 	 = array();
 	
 	$sqlRegClasf			= array();
-	$sqlRegClasf['QUERY']	= "SELECT `classification_title`,`title_description`,`Checkbox_description`,`id`,`currency`,`type` ,`isOffer`,icon, residential_hotel_id
+	$sqlRegClasf['QUERY']	= "SELECT `classification_title`,`title_description`,`id`,`currency`,`type` ,`isOffer`,icon, residential_hotel_id
 								 FROM "._DB_REGISTRATION_CLASSIFICATION_." 
 								WHERE status = ? ".
 								  (($reviewOperational)?" AND is_operational = 'Y' ":"")
@@ -67,7 +67,6 @@ function getAllRegistrationTariffs($cutoffId="",$reviewOperational=true)
 			$displayData[$rowRegClasf['id']][$cutoffvalue['id']]['HOTEL'] = $rowRegClasf['hotel'];
 			$displayData[$rowRegClasf['id']][$cutoffvalue['id']]['HOTEL_ID'] = $rowRegClasf['residential_hotel_id'];
 			$displayData[$rowRegClasf['id']][$cutoffvalue['id']]['ISOFFER'] = $rowRegClasf['isOffer'];
-			$displayData[$rowRegClasf['id']][$cutoffvalue['id']]['CHECKBOX_DESCRIPTION'] = $rowRegClasf['Checkbox_description'];
 
 			$displayData[$rowRegClasf['id']][$cutoffvalue['id']]['ICON'] = $rowRegClasf['icon'];
 			

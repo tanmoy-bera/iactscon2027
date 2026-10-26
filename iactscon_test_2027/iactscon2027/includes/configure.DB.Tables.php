@@ -17,9 +17,12 @@
 	define("_DB_CONF_ISAR_MEMBER_", 						"`".$TABLE_PREFIX."isar_member`");	
 	define("_DB_CONSTANTS_", 								"`".$TABLE_PREFIX."constant`");  
 	
-	define("_DB_WEBMASTER_SECTIONS_", 							"`".$TABLE_PREFIX."webmaster_section`");
-	define("_DB_WEBMASTER_MODULE_", 								"`".$TABLE_PREFIX."webmaster_module`");
-	define("_DB_WEBMASTER_PAGES_", 								"`".$TABLE_PREFIX."webmaster_pages`");
+	define("_DB_WEBMASTER_SECTIONS_", 							"`".$TABLE_PREFIX."webmaster_section`"); // new db
+	// define("_DB_WEBMASTER_SECTIONS_", 							"`".$TABLE_PREFIX."webpagesection`"); // old db
+	define("_DB_WEBMASTER_MODULE_", 								"`".$TABLE_PREFIX."webmaster_module`"); // new db
+	// define("_DB_WEBMASTER_MODULE_", 								"`".$TABLE_PREFIX."webpagemodule`"); // old db
+	define("_DB_WEBMASTER_PAGES_", 								"`".$TABLE_PREFIX."webmaster_pages`"); // new db
+	// define("_DB_WEBMASTER_PAGES_", 								"`".$TABLE_PREFIX."webpage`"); // old db
 	define("_DB_WEBMASTER_SUBPAGE_", 						"`".$TABLE_PREFIX."webmaster_subpage`");
 	define("_DB_WEBMASTER_TAB_", 								"`".$TABLE_PREFIX."webmaster_tab`");
 	define("_DB_WEBMASTER_SUBTAB_", 						"`".$TABLE_PREFIX."webmaster_subtab`");

@@ -54,7 +54,7 @@ switch ($action) {
         <div class="login_right">
 			<div class="login_right_top">
                 <h2><?php echo $companyInfo['company_conf_name']; ?></span></h2>
-				<p><?php echo $companyInfo['company_conf_full_name']; ?></p>
+				<p>73rd Annual Conference of the Indian Association of Cardiovascular-Thoracic Surgeons(IACTS).</p>
 				<ol>
 					<li>
 						<span class=""><i class='fal fa-map-marker-alt'></i></span>

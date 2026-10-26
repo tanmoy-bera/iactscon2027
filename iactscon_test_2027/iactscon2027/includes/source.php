@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Conference Registartion</title>
 
@@ -34,6 +33,8 @@
     <link rel="stylesheet" type="text/css" href="css/style.css?v=4">
     <link rel="stylesheet" type="text/css" href="css/registration_check_radio.css?v=4">
     <link rel="stylesheet" type="text/css" href="css/responcive.css?v=5">
+ <link rel="stylesheet" type="text/css" href="css/profile.css?v=4">
+<link rel="stylesheet" type="text/css" href="css/profile_responsive.css?v=5">
     <link href="css/owl.carousel.min.css?v=2" rel="stylesheet" type="text/css">
     <link href="css/owl.theme.default.min.css?v=2" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
@@ -45,14 +46,12 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css'>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css'>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/parvus@2.3.3/dist/css/parvus.min.css'>
-            <?php include_once("style.php"); ?>
-
 </head>
 <?php include_once("includes/icons.php"); ?>
-<!-- <div class="payment_loading">
+<div class="payment_loading">
     <div class="payment_loading_inner">
         <video src="images/Cube.webm" autoplay inline muted loop></video>
          <h4>Payment Processing</h4>
                 <p>Lorem IsumLorem IsumLorem IsumLorem IsumLorem IsumLorem IsumLorem IsumLorem IsumLorem IsumLorem IsumLorem IsumLorem IsumLorem Isum</p>
     </div>
-</div> -->
+</div>

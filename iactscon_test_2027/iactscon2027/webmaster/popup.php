@@ -34,6 +34,19 @@ $editHotelId   = isset($_POST['editHotelId']) ? $_POST['editHotelId'] : null;
     display: block;
     border: 2px solid red;
 }
+
+    /* ===== Session image + toggle ===== */
+    .sess_img_note { font-size: 12px; opacity: .7; margin-top: 4px; }
+    .sess_img_err  { color: #dc3545; font-size: 12px; margin-top: 4px; display: none; }
+    .sess_img_box .frm_img_preview img { max-width: 100%; max-height: 160px; display: block; }
+    .sess_switch { position: relative; display: inline-block; width: 46px; height: 24px; vertical-align: middle; }
+    .sess_switch input { opacity: 0; width: 0; height: 0; }
+    .sess_slider { position: absolute; inset: 0; background: #888; border-radius: 24px; cursor: pointer; transition: .2s; }
+    .sess_slider:before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; top: 3px;
+                          background: #fff; border-radius: 50%; transition: .2s; }
+    .sess_switch input:checked + .sess_slider { background: #28a745; }
+    .sess_switch input:checked + .sess_slider:before { transform: translateX(22px); }
+    .sess_switch_label { margin-left: 8px; vertical-align: middle; }
     </style>
 <div class="pop_up_wrap">
     <div class="pop_up_inner">
@@ -141,6 +154,21 @@ $editHotelId   = isset($_POST['editHotelId']) ? $_POST['editHotelId'] : null;
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <tr>
+                                            <td>
+                                                Conference Registration<br>
+                                                <small class="text-muted">NATCON 2025-000325</small>
+                                            </td>
+                                            <td>
+                                                Delegate <span class="badge_padding badge_dark">OFFLINE (FRONT)</span>
+                                            </td>
+                                            <td class="text-right">
+                                                ₹ 6,000
+                                            </td>
+                                            <td class="text-right">
+                                                <span class="mi-1 badge_padding badge_success  w-max-con text-uppercase"><?php paid(); ?>Paid</span>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td>
                                                 Conference Registration<br>
@@ -1113,7 +1141,10 @@ $editHotelId   = isset($_POST['editHotelId']) ? $_POST['editHotelId'] : null;
             </div>
         </div>
         <!-- New accommodation booking pop up -->
-        <!-- New session pop up -->
+
+        <!-- ===================================================================== -->
+        <!-- New session pop up  (UPDATED: <form> wrapper + session image + show-image toggle) -->
+        <!-- ===================================================================== -->
         <div class="pop_up_body " id="newsession">
             <div class="registration_pop_up">
                 <div class="registration-pop_heading">
@@ -1122,101 +1153,132 @@ $editHotelId   = isset($_POST['editHotelId']) ? $_POST['editHotelId'] : null;
                         <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
                     </p>
                 </div>
-                <div class="registration-pop_body">
-                    <div class="registration-pop_body_box">
-                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
-                            <h5 class="registration-pop_body_box_heading"><span>Session Details</span></h5>
-                            <div class="form_grid">
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Title</p>
-                                    <input>
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Date</p>
-                                    <input type="date">
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Start Time</p>
-                                    <input type="time">
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">End Time</p>
-                                    <input type="time">
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Hall</p>
-                                    <select></select>
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Ref Color</p>
-                                    <select></select>
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Type</p>
-                                    <select></select>
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Chairpersons</p>
-                                    <input date>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
-                            <h5 class="registration-pop_body_box_heading"><span>Talks / Sub-Sessions</span><a class="add mi-1"><?php add() ?>Add</a></h5>
-                            <div class="accm_add_wrap talk_sub">
-                                <h6 class="accm_add_empty">No talks added yet.</h6>
-                                <div class="accm_add_box">
-                                    <div class="form_grid">
-                                        <div class="frm_grp span_2">
-                                            <p class="frm-head sub-frm-head">Duration</p>
-                                            <input>
+                <!-- TODO: point action to your real session processing file -->
+                <form name="frmSessionAdd" id="frmSessionAdd" method="post" action="<?= $cfg['SECTION_BASE_URL'] ?>session.process.php" enctype="multipart/form-data">
+                    <input type="hidden" name="act" value="insert" />
+                    <div class="registration-pop_body">
+                        <div class="registration-pop_body_box">
+                            <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                                <h5 class="registration-pop_body_box_heading"><span>Session Details</span></h5>
+                                <div class="form_grid">
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Title</p>
+                                        <input>
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Date</p>
+                                        <input type="date">
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Start Time</p>
+                                        <input type="time">
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">End Time</p>
+                                        <input type="time">
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Hall</p>
+                                        <select></select>
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Ref Color</p>
+                                        <select></select>
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Type</p>
+                                        <select></select>
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Chairpersons</p>
+                                        <input date>
+                                    </div>
+
+                                    <!-- NEW: Session image (1600 x 1000) -->
+                                    <div class="frm_grp span_4 sess_img_box">
+                                        <p class="frm-head">Session Image <small>(1600 × 1000 px)</small></p>
+                                        <input type="file" name="session_image" class="sess_img_input" accept="image/png,image/jpeg,image/webp" style="display:none;">
+                                        <input type="hidden" name="session_exist_image" value="">
+                                        <label class="frm-image sess_img_upload"><?php upload() ?></label>
+                                        <div class="frm_img_preview" style="display:none;">
+                                            <img class="sess_img_preview" src="" alt="">
+                                            <button type="button" class="sess_img_remove"><?php delete() ?></button>
                                         </div>
-                                        <div class="frm_grp span_7">
-                                            <p class="frm-head sub-frm-head">Topic Title</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_5">
-                                            <p class="frm-head sub-frm-head">Speaker</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_1">
-                                            <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete() ?></a>
-                                        </div>
+                                        <p class="sess_img_note">Only 1600 × 1000 px images are accepted.</p>
+                                        <p class="sess_img_err"></p>
+                                    </div>
+                                    <!-- NEW: Show image toggle -->
+                                    <div class="frm_grp span_4">
+                                        <p class="frm-head">Show Image</p>
+                                        <input type="hidden" name="show_image" value="0">
+                                        <label class="sess_switch">
+                                            <input type="checkbox" name="show_image" value="1" class="sess_show_toggle">
+                                            <span class="sess_slider"></span>
+                                        </label>
+                                        <span class="sess_switch_label">No</span>
                                     </div>
                                 </div>
-                                <div class="accm_add_box">
-                                    <div class="form_grid">
-                                        <div class="frm_grp span_2">
-                                            <p class="frm-head sub-frm-head">Duration</p>
-                                            <input>
+                            </div>
+                            <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                                <h5 class="registration-pop_body_box_heading"><span>Talks / Sub-Sessions</span><a class="add mi-1"><?php add() ?>Add</a></h5>
+                                <div class="accm_add_wrap talk_sub">
+                                    <h6 class="accm_add_empty">No talks added yet.</h6>
+                                    <div class="accm_add_box">
+                                        <div class="form_grid">
+                                            <div class="frm_grp span_2">
+                                                <p class="frm-head sub-frm-head">Duration</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_7">
+                                                <p class="frm-head sub-frm-head">Topic Title</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_5">
+                                                <p class="frm-head sub-frm-head">Speaker</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_1">
+                                                <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete() ?></a>
+                                            </div>
                                         </div>
-                                        <div class="frm_grp span_7">
-                                            <p class="frm-head sub-frm-head">Topic Title</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_5">
-                                            <p class="frm-head sub-frm-head">Speaker</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_1">
-                                            <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete() ?></a>
+                                    </div>
+                                    <div class="accm_add_box">
+                                        <div class="form_grid">
+                                            <div class="frm_grp span_2">
+                                                <p class="frm-head sub-frm-head">Duration</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_7">
+                                                <p class="frm-head sub-frm-head">Topic Title</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_5">
+                                                <p class="frm-head sub-frm-head">Speaker</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_1">
+                                                <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete() ?></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="registration-pop_footer">
-                    <div class="registration_btn_wrap">
-                        <button class="popup_close badge_dark">Cancel</button>
-                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Compose Session</button>
+                    <div class="registration-pop_footer">
+                        <div class="registration_btn_wrap">
+                            <button class="popup_close badge_dark">Cancel</button>
+                            <button type="submit" class="mi-1 badge_success"><?php save(); ?>Compose Session</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <!-- New session pop up -->
-        <!-- edit session pop up -->
+
+        <!-- ===================================================================== -->
+        <!-- edit session pop up  (UPDATED: <form> wrapper + session image + show-image toggle) -->
+        <!-- ===================================================================== -->
         <div class="pop_up_body " id="editsession">
             <div class="registration_pop_up">
                 <div class="registration-pop_heading">
@@ -1225,101 +1287,130 @@ $editHotelId   = isset($_POST['editHotelId']) ? $_POST['editHotelId'] : null;
                         <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
                     </p>
                 </div>
-                <div class="registration-pop_body">
-                    <div class="registration-pop_body_box">
-                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
-                            <h5 class="registration-pop_body_box_heading"><span>Session Details</span></h5>
-                            <div class="form_grid">
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Title</p>
-                                    <input>
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Date</p>
-                                    <input type="date">
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Start Time</p>
-                                    <input type="time">
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">End Time</p>
-                                    <input type="time">
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Hall</p>
-                                    <select></select>
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Ref Color</p>
-                                    <select></select>
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Type</p>
-                                    <select></select>
-                                </div>
-                                <div class="frm_grp span_2">
-                                    <p class="frm-head">Session Chairpersons</p>
-                                    <input date>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
-                            <h5 class="registration-pop_body_box_heading"><span>Talks / Sub-Sessions</span><a class="add mi-1"><?php add() ?>Add</a></h5>
-                            <div class="accm_add_wrap talk_sub">
-                                <h6 class="accm_add_empty">No talks added yet.</h6>
-                                <div class="accm_add_box">
-                                    <div class="form_grid">
-                                        <div class="frm_grp span_2">
-                                            <p class="frm-head sub-frm-head">Duration</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_7">
-                                            <p class="frm-head sub-frm-head">Topic Title</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_5">
-                                            <p class="frm-head sub-frm-head">Speaker</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_1">
-                                            <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete() ?></a>
-                                        </div>
+                <!-- TODO: point action to your real session processing file -->
+                <form name="frmSessionEdit" id="frmSessionEdit" method="post" action="<?= $cfg['SECTION_BASE_URL'] ?>session.process.php" enctype="multipart/form-data">
+                    <input type="hidden" name="act" value="update" />
+                    <input type="hidden" name="session_id" id="session_id" value="" />
+                    <div class="registration-pop_body">
+                        <div class="registration-pop_body_box">
+                            <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                                <h5 class="registration-pop_body_box_heading"><span>Session Details</span></h5>
+                                <div class="form_grid">
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Title</p>
+                                        <input>
                                     </div>
-                                </div>
-                                <div class="accm_add_box">
-                                    <div class="form_grid">
-                                        <div class="frm_grp span_2">
-                                            <p class="frm-head sub-frm-head">Duration</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_7">
-                                            <p class="frm-head sub-frm-head">Topic Title</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_5">
-                                            <p class="frm-head sub-frm-head">Speaker</p>
-                                            <input>
-                                        </div>
-                                        <div class="frm_grp span_1">
-                                            <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete() ?></a>
-                                        </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Date</p>
+                                        <input type="date">
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Start Time</p>
+                                        <input type="time">
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">End Time</p>
+                                        <input type="time">
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Hall</p>
+                                        <select></select>
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Ref Color</p>
+                                        <select></select>
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Type</p>
+                                        <select></select>
+                                    </div>
+                                    <div class="frm_grp span_2">
+                                        <p class="frm-head">Session Chairpersons</p>
+                                        <input date>
+                                    </div>
 
+                                    <!-- NEW: Session image (1600 x 1000) -->
+                                    <div class="frm_grp span_4 sess_img_box">
+                                        <p class="frm-head">Session Image <small>(1600 × 1000 px)</small></p>
+                                        <input type="file" name="session_image" class="sess_img_input" accept="image/png,image/jpeg,image/webp" style="display:none;">
+                                        <input type="hidden" name="session_exist_image" value="">
+                                        <label class="frm-image sess_img_upload"><?php upload() ?></label>
+                                        <div class="frm_img_preview" style="display:none;">
+                                            <img class="sess_img_preview" src="" alt="">
+                                            <button type="button" class="sess_img_remove"><?php delete() ?></button>
+                                        </div>
+                                        <p class="sess_img_note">Only 1600 × 1000 px images are accepted.</p>
+                                        <p class="sess_img_err"></p>
+                                    </div>
+                                    <!-- NEW: Show image toggle -->
+                                    <div class="frm_grp span_4">
+                                        <p class="frm-head">Show Image</p>
+                                        <input type="hidden" name="show_image" value="0">
+                                        <label class="sess_switch">
+                                            <input type="checkbox" name="show_image" value="1" class="sess_show_toggle">
+                                            <span class="sess_slider"></span>
+                                        </label>
+                                        <span class="sess_switch_label">No</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                                <h5 class="registration-pop_body_box_heading"><span>Talks / Sub-Sessions</span><a class="add mi-1"><?php add() ?>Add</a></h5>
+                                <div class="accm_add_wrap talk_sub">
+                                    <h6 class="accm_add_empty">No talks added yet.</h6>
+                                    <div class="accm_add_box">
+                                        <div class="form_grid">
+                                            <div class="frm_grp span_2">
+                                                <p class="frm-head sub-frm-head">Duration</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_7">
+                                                <p class="frm-head sub-frm-head">Topic Title</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_5">
+                                                <p class="frm-head sub-frm-head">Speaker</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_1">
+                                                <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete() ?></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accm_add_box">
+                                        <div class="form_grid">
+                                            <div class="frm_grp span_2">
+                                                <p class="frm-head sub-frm-head">Duration</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_7">
+                                                <p class="frm-head sub-frm-head">Topic Title</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_5">
+                                                <p class="frm-head sub-frm-head">Speaker</p>
+                                                <input>
+                                            </div>
+                                            <div class="frm_grp span_1">
+                                                <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete() ?></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="registration-pop_footer">
-                    <div class="registration_btn_wrap">
-                        <button class="popup_close badge_dark">Cancel</button>
-                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Update Session</button>
+                    <div class="registration-pop_footer">
+                        <div class="registration_btn_wrap">
+                            <button class="popup_close badge_dark">Cancel</button>
+                            <button type="submit" class="mi-1 badge_success"><?php save(); ?>Update Session</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <!-- edit session pop up -->
+
         <!-- New exibitor pop up -->
         <div class="pop_up_body " id="newexibitor">
             <div class="registration_pop_up">
@@ -2307,267 +2398,6 @@ $editHotelId   = isset($_POST['editHotelId']) ? $_POST['editHotelId'] : null;
             </div>
         </div>
         <!-- New hotel pop up -->
-          <!-- <div class="pop_up_body" id="edithotel">
-            <div class="registration_pop_up">
-                <div class="registration-pop_heading">
-                    <span>Edit Hotel</span>
-                    <p>
-                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
-                    </p>
-                </div>
-                <form name="frmInsert" id="frmInsert" action="<?= $cfg['SECTION_BASE_URL'] ?>hotel_listing.process.php" method="post" enctype="multipart/form-data" onsubmit="return onSubmitAction();">
-	         	    <input type="hidden" name="act" value="insert" />
-                    <div class="registration-pop_body">
-                        <div class="registration-pop_body_box">
-                            <div class="registration-pop_body_box_inner">
-                                <h4 class="registration-pop_body_box_heading">
-                                    <span>Hotel Details</span>
-                                </h4>
-                                <div class="form_grid">
-                                    <div class="frm_grp span_3">
-                                        <p class="frm-head">Hotel Name</p>
-                                        <input name="hotel_name_add" id="hotel_name_add" required="" />
-
-                                    </div>
-                                    <div class="frm_grp span_1">
-                                        <p class="frm-head">Ratings</p>
-                                         <select  name="hotelRatings">
-                                            <option value="">Select</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-
-                                        </select>
-                                    </div>
-                                    <div class="frm_grp span_2">
-                                        <p class="frm-head">Hotel Phone No</p>
-                                        <input type="number" name="hotel_phone_add" id="hotel_phone_add" required="" />
-
-                                    </div>
-                                    <div class="frm_grp span_2">
-                                        <p class="frm-head">Distance From Venue (Km)</p>
-                                        <input type="number" name="distance_from_venue_add" id="distance_from_venue_add" required="" />
-                                    </div>
-                                    <div class="frm_grp span_2">
-                                        <p class="frm-head">Check In Date</p>
-                                        <input type="date" name="check_in" id="check_in" required="" onchange="updateSeatLimits();" />
-
-                                    </div>
-                                    <div class="frm_grp span_2">
-                                        <p class="frm-head">Check Out Date</p>
-                                        <input type="date" name="check_out" id="check_out" required="" onchange="updateSeatLimits();" />
-                                    </div>
-                                    <div class="frm_grp span_4">
-                                        <p class="frm-head">Address</p>
-                                        <input  name="hotel_address_add" id="hotel_address_add"  required="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="registration-pop_body_box_inner" id="packageForm_1">
-                                <h4 class="registration-pop_body_box_heading">
-                                    <span>Packages</span>
-                                    <a class="add mi-1" id="add_package_1"><?php add(); ?>Add</a>
-                                </h4>
-                                <div class="accm_add_wrap" id="accm_add_wrap_1">
-                                    <h6 class="accm_add_empty" id="accm_add_empty_1">No Package Available</h6>
-                                    <div class="accm_add_box" id="package_box" style="display:none;">
-                                        <div class="form_grid">
-                                            <div class="frm_grp span_4">
-                                                <p class="frm-head">Package Name</p>
-                                                <input name="package_name[]">
-                                            </div>
-
-                                            <a href="#" onclick="hidePackageBox(); return false;" class="accm_delet icon_hover badge_danger action-transparent"><?php delete(); ?></a>
-                                        </div>
-                                    </div>
-                                  
-                                </div>
-                            </div>
-                        </div>
-                        <div class="registration-pop_body_box">
-                            <div class="registration-pop_body_box_inner"  id="aminityForm_1">
-                                <h4 class="registration-pop_body_box_heading">
-                                    <span>Aminites</span>
-                                    <a class="add mi-1" id="add_aminity_1"><?php add(); ?>Add</a>
-                                </h4>
-                                <div class="accm_add_wrap"  id="accm_add_wrap_2">
-                                    <h6 class="accm_add_empty"  id="accm_add_empty_2">No Aminity Available</h6>
-                                    <div class="accm_add_box" id="aminity_box" style="display:none;">
-                                        <div class="form_grid">
-                                            <div class="frm_grp span_3">
-                                                <p class="frm-head">Aminity Name</p>
-                                                <input name="accessories_name[]">
-                                            </div>
-                                           <div class="frm_grp span_1 iconBox">
-                                                <p class="frm-head">Icon</p>
-
-                                                <input type="file"
-                                                    name="accessories_icon[]"
-                                                    class="icon_input"
-                                                    accept="image/*"
-                                                    style="display:none;">
-
-                                                <label class="frm-image uploadIcon">
-                                                    <?php upload() ?>
-                                                </label>
-
-                                                <div class="frm_img_preview" style="display:none;">
-                                                    <img class="iconPreview"
-                                                        src="https://ruedakolkata.com/natcon2025/uploads/EMAIL.HEADER.FOOTER.IMAGE/HOTELICON_0_0001_250107125112.png">
-                                                    <button type="button" class="removeIcon">
-                                                        <?php delete() ?>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete(); ?></a>
-
-                                        </div>
-                                    </div>
-                                  
-                                </div>
-                            </div>
-                            <div class="registration-pop_body_box_inner" id="RoomForm_1">
-                                <h4 class="registration-pop_body_box_heading">
-                                    <span>Room Type</span>
-                                    <a class="add mi-1" id="add_room_1"><?php add(); ?>Add</a>
-                                </h4>
-                                <div class="accm_add_wrap" id="accm_add_wrap_3">
-                                    <h6 class="accm_add_empty" id="accm_add_empty_3">No Room Type Available</h6>
-                                    <div class="accm_add_box" id="room_box" style="display:none;">
-                                        <div class="form_grid">
-                                            <div class="frm_grp span_2">
-                                                <p class="frm-head">Room Type</p>
-                                                <input name="room_type[]">
-                                            </div>
-                                            <div class="frm_grp span_2 roomImageBox">
-                                                <p class="frm-head">Room Image</p>
-
-                                                <input type="file"
-                                                    name="room_type_image[]"
-                                                    class="room_input"
-                                                    accept="image/*"
-                                                    style="display:none;">
-
-                                                <label class="frm-image uploadRoomImage">
-                                                    <?php upload() ?>
-                                                </label>
-
-                                                <div class="frm_img_preview" style="display:none;">
-                                                    <img class="roomPreview"
-                                                        src="https://ruedakolkata.com/natcon2025/uploads/EMAIL.HEADER.FOOTER.IMAGE/HOTELICON_0_0001_250107125112.png">
-                                                    <button type="button" class="removeRoomImage">
-                                                        <?php delete() ?>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="accm_delet icon_hover badge_danger action-transparent"><?php delete(); ?></a>
-                                        </div>
-                                    </div>
-                                   
-                                </div>
-                            </div>
-                        </div>
-                        <div class="registration-pop_body_box">
-                            <div class="registration-pop_body_box_inner">
-                                <h4 class="registration-pop_body_box_heading">
-                                    <span>Seat Limits</span>
-                                </h4>
-                                <div class="form_grid">
-                                    <div class="registration-pop_body_box_inner span_4">
-                                        <div class="form_grid" id="seat_limits_container">
-                                            <div class="frm_grp span_2">
-                                                <p class="frm-head">Date</p>
-                                                <p class="typed_data"></p>
-                                            </div>
-                                            <div class="frm_grp span_2">
-                                                <p class="frm-head">Seat</p>
-                                                <input  name="seat_limit[]" >
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                </div>
-                            </div>
-                            <div class="registration-pop_body_box_inner">
-                                <h4 class="registration-pop_body_box_heading">
-                                    <span>Hotel Images</span>
-                                </h4>
-                                <div class="com_info_branding_wrap form_grid g_2">
-                                  <div class="com_info_branding_box addBox">
-                                        <div class="branding_image_preview">
-                                            <img class="previewImage" src="images/Banner KTC BG.png" alt="">
-                                            <button class="removeImage" type="button"><i class="fal fa-trash-alt"></i></button>
-                                        </div>
-                                        <div class="branding_image_upload">
-                                            <input type="file" name="slider_image[]" class="webmaster_background" style="display:none" accept="image/*">
-                                            <label for="webmaster_background" class="uploadLabel"><span><?php upload() ?></span></label>
-                                        </div>
-                                    </div>
-                                    <div class="com_info_branding_box addBox">
-                                        <div class="branding_image_preview">
-                                            <img class="previewImage" src="images/Banner KTC BG.png" alt="">
-                                            <button class="removeImage"><i class="fal fa-trash-alt"></i></button>
-                                        </div>
-                                        <div class="branding_image_upload" >
-                                            <input style="display: none;"name="slider_image[]"  class="webmaster_background" type="file"  accept="image/*">
-                                            <label for="webmaster_background" class="uploadLabel">
-                                                <span><?php upload() ?></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="com_info_branding_box addBox">
-                                        <div class="branding_image_preview">
-                                            <img class="previewImage" src="images/Banner KTC BG.png" alt="">
-                                            <button class="removeImage"><i class="fal fa-trash-alt"></i></button>
-                                        </div>
-                                        <div class="branding_image_upload">
-                                            <input style="display: none;" name="slider_image[]" class="webmaster_background" type="file"  accept="image/*">
-                                            <label for="webmaster_background" class="uploadLabel">
-                                                <span><?php upload() ?></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="com_info_branding_box addBox">
-                                        <div class="branding_image_preview">
-                                            <img class="previewImage" src="images/Banner KTC BG.png" alt="">
-                                            <button class="removeImage"><i class="fal fa-trash-alt"></i></button>
-                                        </div>
-                                        <div class="branding_image_upload">
-                                            <input style="display: none;" name="slider_image[]" class="webmaster_background" type="file"  accept="image/*">
-                                            <label for="webmaster_background" class="uploadLabel">
-                                                <span><?php upload() ?></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="com_info_branding_box addBox">
-                                        <div class="branding_image_preview">
-                                            <img class="previewImage" src="images/Banner KTC BG.png" alt="">
-                                            <button class="removeImage"><i class="fal fa-trash-alt"></i></button>
-                                        </div>
-                                        <div class="branding_image_upload">
-                                            <input style="display: none;" name="slider_image[]" class="webmaster_background" type="file"  accept="image/*">
-                                            <label for="webmaster_background" class="uploadLabel">
-                                                <span><?php upload() ?></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="registration-pop_footer">
-                        <div class="registration_btn_wrap">
-                            <button class="popup_close badge_dark">Cancel</button>
-                            <button type="submit" class="mi-1 badge_success"><?php save(); ?>Add Hotel</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div> -->
         <!-- edit hotel pop up -->
         <div class="pop_up_body" id="edithotel">
             <div class="registration_pop_up">
@@ -4782,111 +4612,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
-<!-- <script>
-document.addEventListener("click", function(e) {
-    if (e.target.closest("#edit_package_1")) {
-        e.preventDefault();
-        
-        const wrapper1 = document.getElementById('accm_edit_wrap_1');
-        
-        // FIX the wrapper's display (don't replace it)
-        wrapper1.style.cssText = `
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            min-height: 100px !important;
-            background: #f8f9fa !important;
-            border: 2px solid #dee2e6 !important;
-            border-radius: 5px !important;
-            padding: 20px !important;
-            margin: 10px 0 !important;
-        `;
-        
-        // Create NEW package box with different structure
-        const newBox = document.createElement('div');
-        newBox.className = 'package-item-visible';
-        
-        newBox.innerHTML = `
-            <div class="package-content" style="
-                display: flex !important;
-                align-items: flex-start !important;
-                justify-content: space-between !important;
-                background: white !important;
-                padding: 15px !important;
-                margin-bottom: 10px !important;
-                border: 1px solid #ced4da !important;
-                border-radius: 4px !important;
-                min-height: 70px !important;
-                box-sizing: border-box !important;
-            ">
-                <div style="flex: 1 !important; margin-right: 15px !important;">
-                    <div style="
-                        font-weight: bold !important;
-                        margin-bottom: 5px !important;
-                        color: #495057 !important;
-                    ">Package Name</div>
-                    <input type="text" 
-                           name="package_name[]" 
-                           value=""
-                           class="package-input"
-                           style="
-                               width: 100% !important;
-                               padding: 8px 12px !important;
-                               border: 1px solid #ced4da !important;
-                               border-radius: 3px !important;
-                               font-size: 14px !important;
-                               box-sizing: border-box !important;
-                           ">
-                </div>
-                <button type="button" 
-                        class="delete-package-btn"
-                        style="
-                            background: #dc3545 !important;
-                            color: white !important;
-                            border: none !important;
-                            padding: 8px 16px !important;
-                            border-radius: 3px !important;
-                            cursor: pointer !important;
-                            font-size: 14px !important;
-                            align-self: center !important;
-                        ">
-                    Delete
-                </button>
-            </div>
-        `;
-        
-        wrapper1.appendChild(newBox);
-        
-        // Focus on the new input
-        setTimeout(() => {
-            const input = newBox.querySelector('.package-input');
-            if (input) input.focus();
-        }, 100);
-        
-        console.log('✓ Package added. Total packages:', wrapper1.querySelectorAll('.package-item-visible').length);
-    }
-    
-    // Handle delete buttons for NEW packages
-    if (e.target.closest('.delete-package-btn')) {
-        e.preventDefault();
-        const packageItem = e.target.closest('.package-item-visible');
-        if (packageItem) {
-            packageItem.remove();
-            console.log('✓ Package deleted');
-        }
-    }
-    
-    // Handle delete buttons for OLD packages (if they exist)
-    if (e.target.closest('.accm_delet')) {
-        e.preventDefault();
-        const packageItem = e.target.closest('.accm_add_box');
-        if (packageItem && packageItem.id !== 'package_template') {
-            packageItem.remove();
-            console.log('✓ Old package deleted');
-        }
-    }
-});
-</script> -->
 <script>
 function initEditHotelPackages() {
 
@@ -5471,14 +5196,6 @@ function initEditHotelSlider() {
         const preview = box.querySelector('.editpreviewImage');
         console.log('Input element found:', input); // should log input element
 
-        // Remove button
-    //    if (e.target.closest('.editremoveImage')) {
-    //        preview.src = "images/Banner KTC BG.png";
-    //        input.value = "";
-    //        box.querySelector('.branding_image_upload').style.display = 'block';
-    //        box.querySelector('.branding_image_preview').style.display = 'none';
-    //     return;
-    //     }
         if (e.target.closest('.editremoveImage')) {
 
             preview.src = "images/Banner KTC BG.png";
@@ -5538,29 +5255,101 @@ function initEditHotelSlider() {
 // initial page load
 document.addEventListener("DOMContentLoaded", initEditHotelSlider);
 </script>
-<!-- <script>
-document.addEventListener("DOMContentLoaded", function () {
 
-    const addBtn = document.getElementById("add_package_1");
-    const box = document.getElementById("package_box");
-    const empty = document.getElementById("accm_add_empty_1");
+<!-- ===================================================================== -->
+<!-- Session image (1600 x 1000) + Show Image toggle  — Compose / Edit Session -->
+<!-- ===================================================================== -->
+<script>
+(function () {
+    var REQ_W = 1600, REQ_H = 1000;
 
-    addBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        box.style.display = "block";
-        empty.style.display = "none";
+    function box(el)   { return el.closest('.sess_img_box'); }
+    function showErr(b, msg) {
+        var e = b.querySelector('.sess_img_err');
+        e.textContent = msg || '';
+        e.style.display = msg ? 'block' : 'none';
+    }
+    function resetBox(b) {
+        b.querySelector('.sess_img_input').value = '';
+        b.querySelector('.sess_img_preview').src = '';
+        b.querySelector('.frm_img_preview').style.display = 'none';
+        b.querySelector('.sess_img_upload').style.display = 'block';
+        b.querySelector('[name="session_exist_image"]').value = '';   // tells server to drop old image
+    }
+
+    // open file picker / remove image
+    document.addEventListener('click', function (e) {
+        var up = e.target.closest('.sess_img_upload');
+        if (up) { e.preventDefault(); box(up).querySelector('.sess_img_input').click(); return; }
+
+        var rm = e.target.closest('.sess_img_remove');
+        if (rm) { e.preventDefault(); var b = box(rm); showErr(b, ''); resetBox(b); }
     });
 
-});
+    // validate exact size + preview
+    document.addEventListener('change', function (e) {
+        var input = e.target;
+        if (!input.classList || !input.classList.contains('sess_img_input')) return;
 
-function hidePackageBox() {
-    document.getElementById("package_box").style.display = "none";
-    document.getElementById("accm_add_empty_1").style.display = "block";
-}
-</script> -->
-<!-- <style>
-					.notify-defult { background-color: #dff0d8; color: #468847; border-color: #d6e9c6; }
-				</style>
-                <div class="notify notify-success" fortype="messageDiv" style="display: none;">
-					<p>Data Updated Successfully</p>
-				</div> -->
+        var b = box(input), file = input.files[0];
+        showErr(b, '');
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            showErr(b, 'Please select an image file.'); input.value = ''; return;
+        }
+
+        var url = URL.createObjectURL(file), img = new Image();
+        img.onload = function () {
+            if (img.naturalWidth !== REQ_W || img.naturalHeight !== REQ_H) {
+                showErr(b, 'Image must be exactly ' + REQ_W + ' × ' + REQ_H + ' px (selected: '
+                           + img.naturalWidth + ' × ' + img.naturalHeight + ').');
+                input.value = '';
+                URL.revokeObjectURL(url);
+                return;
+            }
+            b.querySelector('.sess_img_preview').src = url;
+            b.querySelector('.frm_img_preview').style.display = 'block';
+            b.querySelector('.sess_img_upload').style.display = 'none';
+        };
+        img.onerror = function () { showErr(b, 'Could not read this image.'); input.value = ''; };
+        img.src = url;
+    });
+
+    // toggle label Yes / No
+    document.addEventListener('change', function (e) {
+        if (!e.target.classList || !e.target.classList.contains('sess_show_toggle')) return;
+        e.target.closest('.frm_grp').querySelector('.sess_switch_label').textContent = e.target.checked ? 'Yes' : 'No';
+    });
+
+    // block submit while a size error is showing
+    document.addEventListener('submit', function (e) {
+        var errs = e.target.querySelectorAll('.sess_img_err');
+        for (var i = 0; i < errs.length; i++) {
+            if (errs[i].style.display === 'block') { e.preventDefault(); errs[i].scrollIntoView({block: 'center'}); return; }
+        }
+    }, true);
+
+    // ---- helpers for the EDIT popup: call these from your existing "edit session" click handler ----
+    //   sessSetImage('#editsession', 'file.jpg', 'https://ruedakolkata.com/natcon2025/uploads/SESSION/');
+    //   sessSetToggle('#editsession', 1);
+    window.sessSetImage = function (popup, filename, baseUrl) {
+        var b = document.querySelector(popup + ' .sess_img_box');
+        showErr(b, '');
+        b.querySelector('.sess_img_input').value = '';
+        b.querySelector('[name="session_exist_image"]').value = filename || '';
+        if (filename) {
+            b.querySelector('.sess_img_preview').src = baseUrl + filename;
+            b.querySelector('.frm_img_preview').style.display = 'block';
+            b.querySelector('.sess_img_upload').style.display = 'none';
+        } else {
+            resetBox(b);
+        }
+    };
+    window.sessSetToggle = function (popup, on) {
+        var t = document.querySelector(popup + ' .sess_show_toggle');
+        t.checked = !!parseInt(on, 10);
+        t.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+})();
+</script>

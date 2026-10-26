@@ -3,6 +3,16 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js'></script>
 <script src="js/owl.carousel.js"></script>
 <script>
+    $('.slide_left_menu').click(function () {
+        $(".profile_left_menu").toggleClass("active");
+        $('.profile_body').toggleClass("active");
+        $('.left_menu_overlay').toggleClass("active");
+    });
+    $('.left_menu_overlay').click(function () {
+        $(".profile_left_menu").removeClass("active");
+        $('.profile_body').removeClass("active");
+        $('.left_menu_overlay').removeClass("active");
+    });
     $('.hotel_link_owl').owlCarousel({
         loop: false,
         margin: 6,
@@ -32,21 +42,21 @@
         speed: 1000,
         items: 1,
     });
-    // $('.review_tab .owl-item button').click(function() {
-    //     var tabId = $(this).attr('data-tab');
-    //     $(".review_right_box").hide();
-    //     $(".review_tab button").removeClass("active");
-    //     $('#' + tabId).toggle();
-    //     $(this).toggleClass('active');
-    // });
-    $('.hotel_tab_btn').click(function() {
+    $('.review_tab .owl-item button').click(function () {
+        var tabId = $(this).attr('data-tab');
+        $(".review_right_box").hide();
+        $(".review_tab button").removeClass("active");
+        $('#' + tabId).toggle();
+        $(this).toggleClass('active');
+    });
+    $('.hotel_tab_btn').click(function () {
         var tabId = $(this).attr('data-tab');
         $(".hotel_box").hide();
         $(".hotel_tab_btn").removeClass("active");
         $('#' + tabId).toggle();
         $(this).toggleClass('active');
     });
-    $('.wrkshp_tab_btn').click(function() {
+    $('.wrkshp_tab_btn').click(function () {
         var tabId = $(this).attr('data-tab');
         $(".wrkshp_box").hide();
         $(".wrkshp_tab_btn").removeClass("active");
@@ -57,20 +67,20 @@
     $(".mySelect").select2({
         minimumResultsForSearch: 5
     });
-    $('.icon_hover').hover(function() {
+    $('.icon_hover').hover(function () {
         $(this).toggleClass('action-transparent');
     });
-    $('.icon_hover').hover(function() {
+    $('.icon_hover').hover(function () {
         if ($(this).hasClass("active")) {
             $(this).removeClass('action-transparent');
         }
     });
 
-    $('.dropdown-toggle').click(function() {
+    $('.dropdown-toggle').click(function () {
         $(this).toggleClass('active');
     });
 
-    $('.has-sub').click(function() {
+    $('.has-sub').click(function () {
         if ($(this).hasClass("active")) {
             $(".sub_menu").slideUp();
             $(".has-sub").removeClass("active");
@@ -85,7 +95,7 @@
             $(this).parent().find(".has-sub").toggleClass("active");
         }
     });
-    $('.sub-has-sub').click(function() {
+    $('.sub-has-sub').click(function () {
         if ($(this).hasClass("active")) {
             $(".sub_sub_menu").slideUp();
             $(".sub-has-sub").removeClass("active");
@@ -96,7 +106,7 @@
             $(this).parent().find(".sub-has-sub").toggleClass("active");
         }
     });
-    $('.popup_btn').click(function() {
+    $('.popup_btn').click(function () {
         var tabId = $(this).attr('data-tab');
         $(".popup_wrap").show();
         $('#' + tabId).show();
@@ -105,7 +115,7 @@
 
     var progress = $('body').find('.progress-bar-wrap');
     var speed = 30;
-    progress.each(function() {
+    progress.each(function () {
         var item = $(this).find('.progress-done');
         item.css("width", item.attr("data-progress") + "%");
         item.css("opacity", "1");
@@ -113,27 +123,27 @@
 
     })
     var counted = 0;
-    $(window).scroll(function() {
+    $(window).scroll(function () {
 
         var oTop = $('#counter').offset().top - window.innerHeight;
         if (counted == 0 && $(window).scrollTop() > oTop) {
-            $('.count').each(function() {
+            $('.count').each(function () {
                 var $this = $(this),
                     countTo = $this.attr('data-count');
                 $({
                     countNum: $this.text()
                 }).animate({
-                        countNum: countTo
-                    },
+                    countNum: countTo
+                },
 
                     {
 
                         duration: 2000,
                         easing: 'swing',
-                        step: function() {
+                        step: function () {
                             $this.text(Math.floor(this.countNum));
                         },
-                        complete: function() {
+                        complete: function () {
                             $this.text(this.countNum);
                             //alert('finished');
                         }

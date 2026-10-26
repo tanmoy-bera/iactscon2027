@@ -3548,7 +3548,7 @@ function online_conference_registration_confirmation_accompany_message($delegate
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
 				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
+			$workshopDetails = '<tr>
 					<td colspan="2"  style="padding: 20px;">
 						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
 						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
@@ -3644,7 +3644,7 @@ function online_conference_registration_confirmation_accompany_message($delegate
 									</tr>
 									<tr>
 										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;"> ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
+										<td style="padding: 15px; color: #272727;">1 night, ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
 									</tr>
 									
 									<tr>
@@ -3705,7 +3705,7 @@ function online_conference_registration_confirmation_accompany_message($delegate
 			$invoiceMode = $invoiceItem['invoice_mode'];
 		}
 		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
+			$internetHandling = $invoiceItem['internet_handling_amount'];
 		}
 
 		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
@@ -3869,7 +3869,7 @@ function online_conference_registration_confirmation_accompany_message($delegate
 							Total price
 						</td>
 						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-							₹ ' .$slipAmount . '
+							₹ ' . number_format(ceil($totalPrice), 0) . '
 						</td>
 					</tr>
 
@@ -4218,7 +4218,7 @@ function online_conference_registration_confirmation_workshop_message($delegateI
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
 				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
+			$workshopDetails = '<tr>
 					<td colspan="2"  style="padding: 20px;">
 						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
 						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
@@ -4314,7 +4314,7 @@ function online_conference_registration_confirmation_workshop_message($delegateI
 									</tr>
 									<tr>
 										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;">' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
+										<td style="padding: 15px; color: #272727;">1 night, ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
 									</tr>
 									
 									<tr>
@@ -4375,7 +4375,7 @@ function online_conference_registration_confirmation_workshop_message($delegateI
 			$invoiceMode = $invoiceItem['invoice_mode'];
 		}
 		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
+			$internetHandling = $invoiceItem['internet_handling_amount'];
 		}
 
 		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
@@ -4539,7 +4539,7 @@ function online_conference_registration_confirmation_workshop_message($delegateI
 							Total price
 						</td>
 						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-						₹ ' . $slipAmount . '
+						₹ ' . number_format(ceil($totalPrice), 0) . '
 						</td>
 					</tr>
 
@@ -4887,7 +4887,7 @@ function online_onlyworkshop_registration_confirmation_workshop_message($delegat
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
 				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
+			$workshopDetails = '<tr>
 					<td colspan="2"  style="padding: 20px;">
 						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
 						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
@@ -4983,7 +4983,7 @@ function online_onlyworkshop_registration_confirmation_workshop_message($delegat
 									</tr>
 									<tr>
 										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;"> ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
+										<td style="padding: 15px; color: #272727;">1 night, ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
 									</tr>
 									
 									<tr>
@@ -5044,7 +5044,7 @@ function online_onlyworkshop_registration_confirmation_workshop_message($delegat
 			$invoiceMode = $invoiceItem['invoice_mode'];
 		}
 		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
+			$internetHandling = $invoiceItem['internet_handling_amount'];
 		}
 
 		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
@@ -5208,7 +5208,7 @@ function online_onlyworkshop_registration_confirmation_workshop_message($delegat
 							Total price
 						</td>
 						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-							₹ ' . $slipAmount . '
+							₹ ' . number_format(ceil($totalPrice), 0) . '
 						</td>
 					</tr>
 
@@ -5683,7 +5683,7 @@ function online_conference_registration_confirmation_message($delegateId, $payme
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
 				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
+			$workshopDetails = '<tr>
 					<td colspan="2"  style="padding: 20px;">
 						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
 						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
@@ -5779,7 +5779,7 @@ function online_conference_registration_confirmation_message($delegateId, $payme
 									</tr>
 									<tr>
 										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;"> ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
+										<td style="padding: 15px; color: #272727;">1 night, ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
 									</tr>
 									
 									<tr>
@@ -5840,7 +5840,7 @@ function online_conference_registration_confirmation_message($delegateId, $payme
 			$invoiceMode = $invoiceItem['invoice_mode'];
 		}
 		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
+			$internetHandling = $invoiceItem['internet_handling_amount'];
 		}
 
 		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
@@ -6004,7 +6004,7 @@ function online_conference_registration_confirmation_message($delegateId, $payme
 							Total price
 						</td>
 						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-							₹ ' . $slipAmount . '
+							₹ ' . number_format(ceil($totalPrice), 0) . '
 						</td>
 					</tr>
 
@@ -6278,667 +6278,114 @@ function online_conference_registration_certificate_message($delegateId, $paymen
 function online_accommodation_confirmation_message($delegateId, $paymentId, $slipId, $operation = 'SEND')
 {
 	global $mycms, $cfg;
+	return false;
 	include_once('function.delegate.php');
 	include_once('function.invoice.php');
 	include_once('function.registration.php');
-	include_once('function.dinner.php');
+	include_once('function.delegate.php');
+	return false;
+	$loginUrl     		   = _BASE_URL_;
+	$rowFetchUserDetails   = getUserDetails($delegateId);
+	$invoiceOrderSummary   = generateInvoiceOrderSummary($delegateId, $slipId);
+	$rowFetchPayment 	   = getPaymentDetails($paymentId);
+	$user_password     	   = $mycms->decoded($rowFetchUserDetails['user_password']);
 
-	$loginUrl = _BASE_URL_;
-
-	$rowFetchUserDetails = getUserDetails($delegateId);
-	$invoiceOrderSummary = generateInvoiceOrderSummary($delegateId, $slipId);
-	$rowFetchPayment     = getPaymentDetails($paymentId);
-	$color               = '80ec91';
-
-	$sqlMSG = array();
-	$sqlMSG['QUERY'] = "SELECT `conf_start_date`,`conf_end_date` FROM " . _DB_COMPANY_INFORMATION_ . " WHERE `id` = 1";
-	$result      = $mycms->sql_select($sqlMSG);
-	$companyInfo = $result[0];
-
-	$startD    = $companyInfo['conf_start_date'];
-	$endD      = $companyInfo['conf_end_date'];
-	$startDate = new DateTime($startD);
-	$endDate   = new DateTime($endD);
-
-	if ($startDate->format('F Y') == $endDate->format('F Y')) {
-		$formatted = $startDate->format("F jS") . " - " . $endDate->format("jS");
-	} else {
-		$formatted = $startDate->format("F jS") . " - " . $endDate->format("F jS");
-	}
-
-	$sqlSlip = array();
-	$sqlSlip['QUERY']    = "SELECT * FROM " . _DB_SLIP_ . " WHERE status = ? AND id = ? ";
-	$sqlSlip['PARAM'][]  = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
-	$sqlSlip['PARAM'][]  = array('FILD' => 'id',     'DATA' => $rowFetchPayment['slip_id'], 'TYP' => 's');
-	$resSlip   = $mycms->sql_select($sqlSlip);
-	$rowaSlip  = $resSlip[0];
-
-	$user_password    = $mycms->decoded($rowFetchUserDetails['user_password']);
-	$delagateCatagory = getUserClassificationId($delegateId);
-
-	$sqlaccommodation = array();
-	$sqlaccommodation['QUERY']   = "SELECT * FROM " . _DB_REQUEST_ACCOMMODATION_ . " WHERE status = ? AND user_id = ? ";
-	$sqlaccommodation['PARAM'][] = array('FILD' => 'status',  'DATA' => 'A', 'TYP' => 's');
-	$sqlaccommodation['PARAM'][] = array('FILD' => 'user_id', 'DATA' => $delegateId, 'TYP' => 's');
-	$resaccom  = $mycms->sql_select($sqlaccommodation);
-	$rowaccomm = $resaccom[0];
-
-	$accommodationDetails = accmodation_details_New($delegateId);
-	$mailPaymentDetails    = mailPaymentDetails($delegateId, $paymentId, '80ec91');
-	$mailInvoiceDetails    = mailInvoiceDetails($delegateId, $slipId, '80ec91', '29742f');
-
-	$slipAmount = invoiceAmountOfSlip($slipId);
-	if ($slipAmount == 0) {
-		$mailPaymentDetails = '</tr><tr><td colspan="2" style="background: #36f14930;color:black"><p><h1 align="center">Complimentary</h1></p></td></tr>';
-		$mailInvoiceDetails = "";
-	}
-
-	$sqlMail = array();
-	$sqlMail['QUERY']   = "SELECT * FROM " . _DB_EMAIL_TEMPLATE_ . " WHERE status = ? AND id = ? ";
-	$sqlMail['PARAM'][] = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
-	$sqlMail['PARAM'][] = array('FILD' => 'id',     'DATA' =>3,   'TYP' => 's');
-	$resMail  = $mycms->sql_select($sqlMail);
-	$rowaMail = $resMail[0];
-
-	$sql = array();
-	$sql['QUERY'] = "SELECT * FROM " . _DB_EMAIL_SETTING_ . " WHERE `status`='A' order by id desc limit 1";
-	$result = $mycms->sql_select($sql);
-	$row = $result[0];
-
-	$sqlUserImage = array();
-	$sqlUserImage['QUERY'] = "SELECT * From " . _DB_ICON_SETTING_ . " WHERE `title` = 'Payment Successful'";
-	$fetchData = $mycms->sql_select($sqlUserImage, false);
-	$img = _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $fetchData[0]['icon'];
-
-	$logo       = '<img src="' . _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $cfg['MAILER.LOGO'] . '" style="display: inline-block;width: 115px;">';
-	$line       = _BASE_URL_ . 'images/mailer/title-line-bottom.png';
-	$line1      = _BASE_URL_ . 'images/mailer/line-before.png';
-	$line2      = _BASE_URL_ . 'images/mailer/line-after.png';
-	$reg_link   = _BASE_URL_;
-	$footer_img = _BASE_URL_ . 'images/mailer/footer-bg.png';
-
-	$invoiceArr = invoiceDetailsOfSlip($slipId);
-
-	// ---- Amenities for this hotel, split into two even columns ----
-	$sqlAcc = array();
-	$sqlAcc['QUERY'] = "SELECT * FROM " . _DB_ACCOMMODATION_ACCESSORIES_ . "
-						WHERE `hotel_id` = '" . $rowaccomm['hotel_id'] . "' AND status='A' AND purpose='aminity' ORDER BY `id` ASC";
-	$queryAcc = $mycms->sql_select($sqlAcc, false);
-
-	$amenitiesLeftHtml  = '';
-	$amenitiesRightHtml = '';
-
-	if ($queryAcc) {
-		$totalAmenities = count($queryAcc);
-		$leftCount      = ceil($totalAmenities / 2);   // e.g. 6 -> 3/3, 8 -> 4/4, 7 -> 4/3
-
-		$amenityRowTpl = function ($aminity) {
-			$icon = '';
-			if ($aminity['accessories_icon'] != '') {
-				$icon = '<img src="' . _BASE_URL_ . 'uploads/EMAIL.HEADER.FOOTER.IMAGE/' . $aminity['accessories_icon'] . '" style="width: 100%;display: inline-block;">';
-			}
-			return '
-				<tr>
-					<td style="width: 31px;padding: 5px 0;">' . $icon . '</td>
-					<td style="color: #ffffff; font-size: 17px;padding: 5px 0;padding-left: 10px;">
-						' . $aminity['accessories_name'] . '
-					</td>
-				</tr>';
-		};
-
-		foreach ($queryAcc as $keyqueryAcc => $aminity) {
-			if ($keyqueryAcc < $leftCount) {
-				$amenitiesLeftHtml  .= $amenityRowTpl($aminity);
-			} else {
-				$amenitiesRightHtml .= $amenityRowTpl($aminity);
-			}
-		}
-	}
-
-	// Defaults so downstream str_replace() never hits an undefined variable
-	// if $invoiceArr happens to be empty or lacks a matching service_type.
-	$registrationDetails = '';
-	$accomodationDetails = '';
-	$accompanyDetails    = '';
-	$workshopDetails      = '';
-
-	foreach ($invoiceArr as $key => $invoiceDetailsRow) {
-
-		if ($invoiceDetailsRow['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
-			$registrationDetails = '<tr>
-					<td colspan="2" style="padding: 20px;font-size: 23px;">
-						Thanks <b>' . $rowFetchUserDetails['user_full_name'] . '</b>! Your registration for <b>' . $cfg['EMAIL_CONF_NAME'] . '</b> dated <b>' . $formatted . '</b> at <b>' . $cfg['EMAIL_CONF_VENUE'] . '</b> has been <b>Confirmed</b>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" style="padding: 0 20px;">
-						<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f7f7f7;border-radius: 15px;">
-							<tbody>
-								<tr>
-									<td colspan="2" style="padding: 20px;font-size: 24px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-										Registration Inclusions are:</td>
-								</tr>
-								' . $invoiceOrderSummary . '
-							</tbody>
-						</table>
-					</td>
-				</tr>';
-		}
-	   if ($invoiceDetailsRow['service_type'] == "ACCOMPANY_CONFERENCE_REGISTRATION") {
-			$accompanyUserDetails = getUserDetails($invoiceDetailsRow['refference_id']);
-			$accompanyDetails = '<tr>
-					<td colspan="2"  style="padding: 20px;">
-						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Accompany Registration</p>
-						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-							' . $accompanyUserDetails['user_full_name'] . '</p>
-					</td>
-
-				</tr>
-				<tr>
-					<td colspan="2" style="padding: 0 20px;">
-						<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius: 17px;background: #fff3e9;">
-							<tbody>
-								<tr>
-									<td colspan="2" style="padding: 20px;font-size: 24px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-										Inclutions:</td>
-								</tr>
-								' . $invoiceOrderSummary . '
-							</tbody>
-						</table>
-					</td>
-				</tr>';
-		}
-
-		if ($invoiceDetailsRow['service_type'] == "DELEGATE_WORKSHOP_REGISTRATION") {
-			$workShopDetails = getWorkshopDetails($invoiceDetailsRow['refference_id']);
-				$sqlWorkshopclsf 	=	array();		
-			$sqlWorkshopclsf['QUERY'] = "SELECT `venue` FROM "._DB_WORKSHOP_CLASSIFICATION_." WHERE status = ? AND `id` = ?";
-			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
-			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
-				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
-					<td colspan="2"  style="padding: 20px;">
-						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
-						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-							' . getWorkshopName($workShopDetails['workshop_id']). '</p>
-					</td>
-
-				</tr>
-				<tr>
-					<td colspan="2" style="padding: 0 20px;">
-						<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius: 17px;background: #fff3e9;">
-							<tbody>
-								<tr>
-									<td colspan="2" style="padding: 20px;font-size: 24px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-										Workshop Details:</td>
-								</tr>
-								<td style="width: 50%;padding: 20px;padding-top: 0;vertical-align: top;">
-									<table width="100%" cellpadding="0" cellspacing="0" border="0">
-										<tbody>Workshop Date :  '.getWorkshopDate($workShopDetails['workshop_id']).'</tbody>
-									</table>
-									<table width="100%" cellpadding="0" cellspacing="0" border="0">
-										<tbody>Workshop Venue :  '.$resWorkshopclsf[0]['venue'].'</tbody>
-									</table>
-								</td>
-								
-							</tbody>
-						</table>
-					</td>
-				</tr>';
-		}
-		if ($invoiceDetailsRow['service_type'] == "DELEGATE_ACCOMMODATION_REQUEST") {
-				$sqlaccommodationDetails['QUERY'] 				 = "SELECT accommodation.*,package.package_name 
-													  FROM " . _DB_REQUEST_ACCOMMODATION_ . " accommodation
-												INNER JOIN " . _DB_PACKAGE_ACCOMMODATION_ . " package
-														ON accommodation.package_id = package.id
-													 WHERE accommodation.status = 'A' 
-													   AND accommodation.user_id = '" . $invoiceDetailsRow['delegateId'] . "'
-													   AND accommodation.id = '" . $invoiceDetailsRow['refference_id'] . "'";
-
-			$resaccommodation = $mycms->sql_select($sqlaccommodationDetails);
-			$rowaccommodation = $resaccommodation[0];
-			$accomodationDetails = '  <tr>
-						<td style="width: 50%;padding: 20px;">
-							<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Accommodation booking at</p>
-							<p style="margin-bottom: 0;margin-top: 1px;font-size: 26px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-								' . $accommodationDetails['HOTEL_DETAILS']['hotel_name'] . '</p>
-						</td>
-						<td style="width: 50%;text-align: right;padding: 20px;">
-							<p style="margin: 0;font-size: 16px;color: #4e4e4e;font-style: italic;">' . $accommodationDetails['BOOKING_DETAILS']['checkin_date'] . ' 
-							</p>
-							<p style="margin-bottom: 0;margin-top: 4px;font-size: 16px;color: #4e4e4e;font-style: italic;">' . $accommodationDetails['BOOKING_DETAILS']['checkin_date'] . '
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" style="padding: 0 20px;">
-							<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius: 17px;background: linear-gradient(45deg, rgb(225, 101, 90), rgb(60, 2, 170));">
-								<tbody>
-									<tr>
-										<td colspan="2" style="padding: 20px;font-size: 24px;color: #ffffff;font-weight: 500;font-style: italic;">
-											Hotel Amenities:</td>
-									</tr>
-									<tr>
-										<td style="width: 50%;padding: 20px;padding-top: 0;vertical-align: top;">
-											<table width="100%" cellpadding="0" cellspacing="0" border="0">
-												<tbody>' . $amenitiesLeftHtml . '</tbody>
-											</table>
-										</td>
-										<td style="width: 50%;padding: 20px;padding-top: 0;vertical-align: top;">
-											<table width="100%" cellpadding="0" cellspacing="0" border="0">
-												<tbody>' . $amenitiesRightHtml . '</tbody>
-											</table>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" style="padding: 20px;font-size: 24px; color: #3f3f3f;font-weight: 500;font-style: italic;">
-							Reservation Details</td>
-					</tr>
-					<tr>
-						<td colspan="2" style="padding: 0 20px;">
-							<table width="100%" cellpadding="0" cellspacing="0" border="1px" style="font-size: 15px;color: #6b6b6b;">
-								<tbody>
-									<tr>
-										<td style="padding: 15px;width: 30%;">Check-in</td>
-										<td style="padding: 15px;color: #272727;">'.$accommodationDetails['BOOKING_DETAILS']['checkin_date'].'</td>
-									</tr>
-									<tr>
-										<td style="padding: 15px;">Check-out</td>
-										<td style="padding: 15px; color: #272727;">'.$accommodationDetails['BOOKING_DETAILS']['checkout_date'].'</td>
-									</tr>
-									<tr>
-										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;"> ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
-									</tr>
-									
-									<tr>
-										<td style="padding: 15px;">Location</td>
-										<td style="padding: 15px; color: #272727;">'.$accommodationDetails['HOTEL_DETAILS']['hotel_address'].'</td>
-									</tr>
-									<tr>
-										<td style="padding: 15px;">Phone</td>
-										<td style="padding: 15px; color: #272727;"><a href="tel: +916746686666">'.$accommodationDetails['HOTEL_DETAILS']['hotel_phone_no'].'</a></td>
-									</tr>
-									
-									<tr>
-										<td style="padding: 15px;">Cancellation policy</td>
-										<td style="padding: 15px; color: #272727;"><b>'.$cfg['ACCOMODATION_CANCEL_POLICY'].'</b></td>
-									</tr>
-									<tr>
-										<td style="padding: 15px;">Reservation Policy</td>
-										<td style="padding: 15px; color: #272727;">
-											'.$accommodationDetails['HOTEL_DETAILS']['hotel_policy'].'
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-					</tr>';
-		}
-
-	
-	}
-
-	/**
-	 * Picks GST-inclusive vs basic price for a line item based on gst_flag_invoice,
-	 * and returns BOTH the raw numeric value (for totals math) and the formatted
-	 * string (for display), so the two can never drift apart again.
-	 */
-	$resolveLinePrice = function (array $gstArray, $gstFlagInvoice) {
-		$raw = ($gstFlagInvoice == 3) ? $gstArray['GST.PRICE'] : $gstArray['BASIC.PRICE'];
-		return array(
-			'raw'    => $raw,
-			'display' => number_format($raw, 2),
-		);
-	};
-
-	$invoiceDetails = '<tr>
-    <td colspan="2" style="padding: 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #dce6ff;">
-            <tbody>';
-
-	$totalCGST          = 0;
-	$totalSGST          = 0;
-	$subTotalOfAllItems = 0;
-	$invoiceMode        = '';
-	$internetHandling   = 0;
-    $discountAmount   = 0;
-	foreach ($invoiceArr as $key => $invoiceItem) {
-
-		if (isset($invoiceItem['invoice_mode'])) {
-			$invoiceMode = $invoiceItem['invoice_mode'];
-		}
-		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
-		}
-
-		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
-			if ($cfg['IGST.FLAG'] == 0) {
-				$cgst = $cfg['CONFERENCE.CGST'];
-				$sgst = $cfg['CONFERENCE.SGST'];
-			} else {
-				$cgst = $cfg['CONFERENCE.IGST'] / 2;
-				$sgst = $cfg['CONFERENCE.IGST'] / 2;
-			}
-
-			$gstArray = gstCalculation($cgst, $sgst, $invoiceItem['service_unit_price'], $igst);
-			$price    = $resolveLinePrice($gstArray, $invoiceItem['gst_flag_invoice']);
-            $discountAmount += $invoiceItem['discount_amount'];
-			$subTotalOfAllItems += $price['raw'];
-			$totalCGST           += $gstArray['CGST.PRICE'];
-			$totalSGST           += $gstArray['SGST.PRICE'];
-
-			$particulaTitle = getRegClsfName(getUserClassificationId($delegateId, true));
-
-			$invoiceDetails .= '
-							<tr>
-								<td style="width: 50%; padding: 5px 20px; padding-top: 20px">' . $particulaTitle . '</td>
-								<td style="text-align: right; width: 50%; padding: 5px 20px; padding-top: 20px">
-									₹ ' . $price['display'] . '
-								</td>
-							</tr>';
-		}
-
-		
-		if ($invoiceItem['service_type'] == "ACCOMPANY_CONFERENCE_REGISTRATION") {
-			$cgst                 = $cfg['ACCOMPANY.CGST'];
-			$sgst                 = $cfg['ACCOMPANY.SGST'];
-			$accompanyUserDetails = getUserDetails($invoiceItem['refference_id'], true);
-			$gstArray             = gstCalculation($cgst, $sgst, $invoiceItem['service_unit_price']);
-			$price                = $resolveLinePrice($gstArray, $invoiceItem['gst_flag_invoice']);
-
-			$subTotalOfAllItems += $price['raw'];
-			$totalCGST           += $gstArray['CGST.PRICE'];
-			$totalSGST           += $gstArray['SGST.PRICE'];
-            $discountAmount += $invoiceItem['discount_amount'];
-			$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px; ">
-							Accompanying Person- ' . $accompanyUserDetails['user_full_name'] . '
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . $price['display'] . '
-						</td>
-					</tr>';
-		}
-
-		if ($invoiceItem['service_type'] == "DELEGATE_WORKSHOP_REGISTRATION") {
-			$cgst                 = $cfg['ACCOMPANY.CGST'];
-			$sgst                 = $cfg['ACCOMPANY.SGST'];
-			$gstArray             = gstCalculation($cgst, $sgst, $invoiceItem['service_unit_price']);
-			$price                = $resolveLinePrice($gstArray, $invoiceItem['gst_flag_invoice']);
-			$workShopDetails 				 = getWorkshopDetails($invoiceItem['refference_id'], true);
-			$subTotalOfAllItems += $price['raw'];
-			$totalCGST           += $gstArray['CGST.PRICE'];
-			$totalSGST           += $gstArray['SGST.PRICE'];
-            $discountAmount += $invoiceItem['discount_amount'];
-			$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px; ">
-							'.getWorkshopName($workShopDetails['workshop_id']) .'
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . $price['display'] . '
-						</td>
-					</tr>';
-		}
-		if ($invoiceItem['service_type'] == "DELEGATE_ACCOMMODATION_REQUEST") {
-			$sqlaccommodationDetails = array();
-			$sqlaccommodationDetails['QUERY'] = "SELECT accommodation.*,package.package_name, package.id AS packageId, room.room_id
-														FROM " . _DB_REQUEST_ACCOMMODATION_ . " accommodation
+	$sqlaccommodationDetails = array();
+	$sqlaccommodationDetails['QUERY']  = "SELECT accommodation.*,masterHotel.hotel_name AS hotel_name,
+	   										masterHotel.hotel_address AS hotel_address,package.package_name
+												 FROM " . _DB_REQUEST_ACCOMMODATION_ . " accommodation
 													INNER JOIN " . _DB_PACKAGE_ACCOMMODATION_ . " package
-															ON accommodation.package_id = package.id
-													INNER JOIN " . _DB_MASTER_ROOM_ . " room
-															ON accommodation.id = room.request_accommodation_id
-														WHERE accommodation.status = ?
-														AND accommodation.user_id = ?
-														AND accommodation.id = ? ";
-			$sqlaccommodationDetails['PARAM'][] = array('FILD' => 'accommodation.status',  'DATA' => 'A', 'TYP' => 's');
-			$sqlaccommodationDetails['PARAM'][] = array('FILD' => 'accommodation.user_id', 'DATA' => $invoiceItem['delegateId'], 'TYP' => 's');
-			$sqlaccommodationDetails['PARAM'][] = array('FILD' => 'accommodation.id',      'DATA' => $invoiceItem['refference_id'], 'TYP' => 's');
+														ON accommodation.package_id = package.id
+													INNER JOIN " . _DB_MASTER_HOTEL_ . " masterHotel
+														ON masterHotel.id = package.hotel_id
+											   WHERE accommodation.status = ? 
+												 AND accommodation.user_id = ?";
 
-			$resaccommodation = $mycms->sql_select($sqlaccommodationDetails);
-			$rowaccommodation = $resaccommodation[0];
+	$sqlaccommodationDetails['PARAM'][]   = array('FILD' => 'accommodation.status',   'DATA' => 'A',   		  'TYP' => 's');
+	$sqlaccommodationDetails['PARAM'][]   = array('FILD' => 'accommodation.user_id',   'DATA' => $delegateId,   		  'TYP' => 's');
 
-			$cgst              = $cfg['ACCOMMODATION.CGST'];
-			$sgst              = $cfg['ACCOMMODATION.SGST'];
-			$accommodationDtls = getAccomodationDetails($invoiceItem['refference_id'], true);
-			$gstArray          = gstCalculation($cgst, $sgst, $invoiceItem['service_unit_price']);
-			$price             = $resolveLinePrice($gstArray, $invoiceItem['gst_flag_invoice']);
-            $discountAmount += $invoiceItem['discount_amount'];
-			$subTotalOfAllItems += $price['raw'];
-			$totalCGST           += $gstArray['CGST.PRICE'];
-			$totalSGST           += $gstArray['SGST.PRICE'];
-
-			$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px;">
-							Accommodation Booking
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . $price['display'] . '
-						</td>
-					</tr>';
-		}
-
-	}
-
-	$totalPrice = $subTotalOfAllItems + $totalCGST + $totalSGST-$discountAmount;
-	if ($invoiceMode == 'ONLINE') {
-		$totalPrice += $internetHandling;
-	}
-   
-
-	$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px;">
-							Goods &amp; services tax
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . number_format($totalCGST + $totalSGST, 2) . '
-						</td>
-					</tr>';
-
-	if ($invoiceMode == 'ONLINE') {
-		$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px;">
-							Internet service charge
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . number_format($internetHandling, 2) . '
-						</td>
-					</tr>';
-	}
-    if ($discountAmount > 0) {
-		$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px;">
-							Discount Amount
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-						-	₹ ' . number_format($discountAmount, 2) . '
-						</td>
-					</tr>';
-	}
-	$invoiceDetails .= '
-					<tr>
-						<td colspan="2" style="padding:0 20px;">
-							<hr style="background: #5a70aa;height: 2px;border: 0;margin: 15px 0;">
-						</td>
-					</tr>
-
-					<tr>
-						<td style="width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 500; font-size: 20px;">
-							Total price
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-							₹ ' . $slipAmount . '
-						</td>
-					</tr>
-
-					</tbody>
-					</table>
-				</td>
-			</tr>';
-	
-     $paid_by = '<p style="margin-bottom: 0;margin-top: 3px;font-size: 14px;">You’ve guaranteed your
-                                        booking by '.$rowFetchPayment['payment_mode'].'</p>';
-	$mailTemplateDescription = htmlspecialchars_decode($rowaMail['description']);
-	$appInfo = '';
-	if ($rowFetchPayment['payment_mode']== 'UPI') {
-    $logoSrc = _BASE_URL_ . "images/unified-payment-interface-upi-logo-png_seeklogo-333088.png";
-	$payment_logo = '<tr>
-						<td style="padding: 20px;"><img src="'.$logoSrc.'" style="width: 79px;"></td>
-					</tr>';
-	} elseif ($rowFetchPayment['payment_mode'] == 'NEFT') {
-		$logoSrc =_BASE_URL_ . "images/neft-logo-png_seeklogo-192965.png";
-		$payment_logo = '<tr>
-						<td style="padding: 20px;"><img src="'.$logoSrc.'" style="width: 79px;"></td>
-					</tr>';
-	} elseif ($rowFetchPayment['payment_mode'] == 'CARD' || $rowFetchPayment['payment_mode'] == 'Card' || $rowFetchPayment['payment_mode']== 'ONLINE' || $invoiceMode == 'ONLINE') {
-		$sql_qr = array();
-		$sql_qr['QUERY'] = "SELECT `title`, `image` FROM " . _DB_LANDING_FLYER_IMAGE_ . "
-							WHERE `status` = 'A' AND `title` IN ('QR Code','Online Payment Logo')";
-		$result = $mycms->sql_select($sql_qr);
-
-		// Index by title so we never depend on row order.
-		$imagesByTitle = array();
-		foreach ($result as $row) {
-			$imagesByTitle[$row['title']] = $row['image'];
-		}
-
-		$qrCodeImage       = isset($imagesByTitle['QR Code'])
-			? _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $imagesByTitle['QR Code']
-			: '';
-		$onlinePaymentLogo = isset($imagesByTitle['Online Payment Logo'])
-			? _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $imagesByTitle['Online Payment Logo']
-			: '';
-
-		$logoSrc = $onlinePaymentLogo; // what actually renders below
-		$payment_logo = '<tr>
-						<td style="padding: 20px;"><img src="'.$logoSrc.'" style="width: 190px;"></td>
-					</tr>';
-	} else {
-		$logoSrc = ''; // fallback so $logoSrc is never undefined for e.g. CASH/CHEQUE
-	}
-    if ($slipAmount == 0) {
-		$paid_by = '<p style="margin-bottom: 0;margin-top: 10px;font-size: 14px;">COMPLIMENTARY</p>';
-		$payment_logo = '';
-	}
-	$find = [
-		'[LOGO]', '[CONF_DATE]', '[CONF_VENUE]', '[UNIQUE_ID]', '[username]',
-		'[PROFILE_LINK]', '[WEBSITE_LINK]', '[IMG]', '[REG_ID]', '[MAIL]',
-		'[MOBILE]', '[REG_CLS_NAME]', '[payment_details]', '[invoice_details]',
-		'[amount]', '[inr]', '[invoice_order_details]', '[LINE]', '[LINE1]',
-		'[LINE2]', '[REG_LINK]', '[CONF_EMAIL]', '[CONF_MOBILE]', '[REPLY_EMAIL]',
-		'[CONF_NAME]', '[VENUE_ADDRESS]', '[HOTEL_NAME]', '[CHECKINDATE]',
-		'[CHECKOUTDATE]', '[HOTEL_ADDRESS]', '[HOTEL_MOBILE]', '[QTY]',
-		'[CANCELATION_POLICY]', '[REFUND_POLICY]', '[REGISTRATION_DETAILS]',
-		'[ACCOMODATION_DETAILS]', '[ACCOMPANY_DETAILS]', '[WORKSHOP_DETAILS]',
-		'[INVOICE_DETAILS]', '[APP_INFO]','[CHECK_PNG]','[CIRCLE_PNG]', '[PAID_BY]','[ACCOMODATION_CANCEL_POLICY]','[PAYMENT_LOGO]','[FOOTER_IMG]'
-	];
-
-	$regClsId = $rowFetchUserDetails['registration_classification_id'];
-
-	$replacement = [
-		$logo,
-		$formatted,
-		$cfg['EMAIL_CONF_VENUE'],
-		$rowFetchUserDetails['user_unique_sequence'],
-		$rowFetchUserDetails['user_full_name'],
-		_BASE_URL_ . 'profile.php',
-		$cfg['SITE_LINK'],
-		$img,
-		$rowFetchUserDetails['user_registration_id'],
-		$rowFetchUserDetails['user_email_id'],
-		$rowFetchUserDetails['user_mobile_no'],
-		getRegClsfName($regClsId),
-		$mailPaymentDetails,
-		$mailInvoiceDetails,
-		number_format($financialSummaryOfSlip['AMOUNT'], 2),
-		$currr,
-		$invoiceOrderSummary,
-		$line,
-		$line1,
-		$line2,
-		$reg_link,
-		$cfg['EMAIL_CONF_EMAIL_US'],
-		$cfg['EMAIL_CONF_CONTACT_US'],
-		$cfg['EMAIL_CONF_REPLY_US'],
-		$cfg['EMAIL_CONF_NAME'],
-		$cfg['EMAIL_CONF_VENUE'],
-		$accommodationDetails['HOTEL_DETAILS']['hotel_name'],
-		$accommodationDetails['BOOKING_DETAILS']['checkin_date'],
-		$accommodationDetails['BOOKING_DETAILS']['checkout_date'],
-		$accommodationDetails['HOTEL_DETAILS']['hotel_address'],
-		$accommodationDetails['HOTEL_DETAILS']['hotel_phone_no'],
-		$accommodationDetails['BOOKING_DETAILS']['booking_quantity'],
-		$cfg['CANCELLATION_PAGE_INFO'],
-		$cfg['TERMS_PAGE_INFO'],
-		$registrationDetails,
-		$accomodationDetails,
-		$accompanyDetails,
-		$workshopDetails,
-		$invoiceDetails,
-		$appInfo,
-		_BASE_URL_ . 'images/check.png',
-		_BASE_URL_ . 'images/circle-in-black-of-a-drum-top-view.png',
-		$paid_by,
-		$cfg['ACCOMODATION_CANCEL_POLICY'],
-		$payment_logo,
-		$footer_img
-	];
-
-	$result  = str_replace($find, $replacement, $mailTemplateDescription);
-	$message = $result;
-
-	// ===== SAVE REGISTRATION EMAIL AS FILE =====
-	$uploadDir = __DIR__ . "/../uploads/registration_confirmation/";
-	if (!file_exists($uploadDir)) {
-		mkdir($uploadDir, 0755, true);
-	}
-
-	$fileName = "registration_" . $delegateId . "_" . $slipId . "_" . time() . ".html";
-	$filePath = $uploadDir . $fileName;
-	file_put_contents($filePath, $message);
-
-	$sqlSaveFile = array();
-	$sqlSaveFile['QUERY']   = "UPDATE " . _DB_USER_REGISTRATION_ . " SET registration_confirm_file = ? WHERE id = ?";
-	$sqlSaveFile['PARAM'][] = array('FILD' => 'registration_confirm_file', 'DATA' => $fileName, 'TYP' => 's');
-	$sqlSaveFile['PARAM'][] = array('FILD' => 'id', 'DATA' => $delegateId, 'TYP' => 'i');
-	$mycms->sql_update($sqlSaveFile);
-
+	$resaccommodation = $mycms->sql_select($sqlaccommodationDetails);
+	$rowaccomm             = $resaccommodation[0];
 	// COMPOSING EMAIL
-	$subject = $rowaMail['subject'];
+	$message = '<table width="800" border="0" align="left" cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:14px;">';
+	$message .= get_email_header();
 
-	$payRegSms = "Transaction SUCCESSFUL. " . $cfg['EMAIL_CONF_NAME'] . " has received the payment of "
-		. getRegistrationCurrency(getUserClassificationId($delegateId)) . '. '
-		. number_format($rowFetchPayment['amount'], 2)
-		. " for the registration of " . $rowFetchUserDetails['user_full_name']
-		. ". You are now SUCCESSFULLY REGISTERED for " . $cfg['EMAIL_CONF_NAME']
-		. ". Your Unique Sequence:" . $rowFetchUserDetails['user_unique_sequence']
-		. " , Registration ID:" . $rowFetchUserDetails['user_registration_id']
-		. " , Registered Email ID:" . $rowFetchUserDetails['user_email_id']
-		. ". For details, please check the Registration Confirmation mail. Invoice will be sent at registered mail id. Have a nice day.";
+	$message .= '<tr>';
+	$message .= '	 <td align="left" valign="top">';
+	$message .= '	 Dear ' . $rowFetchUserDetails['user_full_name'] . ',';
+	$message .= '	 <br /><br />';
+	$message .= '    Payment <strong>SUCCESSFUL.</strong> ' . $cfg['EMAIL_CONF_NAME'] . ' has received ' . getRegistrationCurrency(getUserClassificationId($delegateId)) . '. ' . number_format($rowFetchPayment['amount'], 2) . ' for your accommodation booking at ' . $rowaccomm['hotel_name'] . ', ' . $rowaccomm['hotel_address'] . '.';
+	$message .= '    <br /><br />';
+	$message .= '    Reservation <strong> CONFIRMED</strong>. You have booked your stay at ' . $rowaccomm['hotel_name'] . ', ' . $rowaccomm['hotel_address'] . ' for attending ' . $cfg['EMAIL_CONF_NAME'] . '. Please save this e-mail for further reference.';
+	$message .= '    <br /><br />';
+	$message .= '	 <u><b>RESERVATION DETAILS</b></u>';
+	$message .= ' 	<br /><br />';
+	$message .= 	$invoiceOrderSummary;
 
+
+	$message .= '			<br /><br />';
+	if ($rowFetchPayment['amount'] != 0.00) {
+		$message .= '		<u><strong>TRANSACTION DETAILS</strong></u>';
+		$message .= '		<br /><br />';
+		$message .=	'		Payment has been done through online process.';
+		$message .= '       <table border="1" cellpadding="1" cellspacing="0"  width = "60%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px;">';
+		$message .= '		<tr><td>Receiver</td><td>  ' . $cfg['EMAIL_CONF_NAME'] . '</td></tr>';
+		$message .= '		<tr><td>Transaction Date</td><td>' . date("jS F, Y", strtotime($rowFetchPayment['payment_date'])) . '</td></tr>';
+		$message .=	'		<tr><td>Amount</td><td>  ' . getRegistrationCurrency(getUserClassificationId($delegateId)) . ' ' . number_format($rowFetchPayment['amount'], 2) . '</td></tr>';
+		$message .=	'		<tr><td>Mode of Payment</td><td> ' . $rowFetchPayment['payment_mode'] . '</td></tr>';
+		$message .=	'		<tr><td>Transaction ID</td><td>' . $rowFetchPayment['atom_atom_transaction_id'] . '</td></tr>';
+		$message .= '		</table><br /><br />';
+	}
+
+	if ($rowFetchPayment['amount'] != 0.00) {
+		$message .= '			<strong><u>INVOICE DETAILS</u></strong>';
+		$message .= '			<br /><br />';
+		$message .= '			<table border="1" cellpadding="1" cellspacing="0"  width = "60%" style="font-family:Arial, Helvetica, sans-serif; font-size:14px;">';
+		$message .= '			  <tr>	
+											<td width="15%"><b>Invoice No.</b></td>
+											<td width="70%"><b>Invoice for</b></td>
+											<td width="20%" align="center"><b>Download</b></td>
+									  </tr>';
+		$message .= 			getInvoiceMailerDetails($delegateId, $slipId, "", "");
+		$message .= '			</table>';
+		$message .= '			<br /><br />';
+	}
+
+	$termAndcondition     		   = _BASE_URL_ . 'terms.php';
+	$cancellAndcondition     	   = _BASE_URL_ . 'cancellation.php';
+	$message .= '			<a href="' . $termAndcondition . '">Click here to know the terms and condition.</a>';
+	$message .= '			<br /><br/>';
+	$message .= '			<a href="' . $cancellAndcondition . '">Click here to know the cancellation and refund policy.</a>';
+	$message .= '			<br /><br/>';
+	$message .= '			<br/><br /><a href="' . $loginUrl . '">Click here</a> to log into your ' . $cfg['EMAIL_CONF_NAME'] . '  user account.';
+	$message .= '			<br /><br/>';
+	$message .= '			For more information please write at <u><strong><u><strong>' . $cfg['ADMIN_REGISTRATION_EMAIL'] . '</strong></u></strong></u>';
+	$message .= '			<br /><br/>';
+	$message .= ' 	 </td>';
+	$message .= ' </tr>';
+	$message .= get_email_footer();
+	$message .= '</table>';
+
+	$subject  = "Stay Booking Confirmation_" . $cfg['EMAIL_CONF_NAME'];
+
+	$paysms  = "Transaction SUCCESSFUL " . $cfg['EMAIL_CONF_NAME'] . " has received " . getRegistrationCurrency(getUserClassificationId($delegateId)) . "." . number_format($rowFetchPayment['amount'], 2) . " to book a stay for " . $rowaccomm['hotel_name'] . " Transaction ID " . $rowFetchPayment['atom_atom_transaction_id'] . " Have a nice day.";
+	$regsms = "Your reservation at " . $rowaccomm['hotel_name'] . ", " . $rowaccomm['hotel_address'] . " is CONFIRMED. Check-in 14:00 hrs. " . $rowaccomm['checkin_date'] . ", Check-out 12:00 hrs. on " . $rowaccomm['checkout_date'] . ".";
 	if ($operation == 'SEND') {
 		$mycms->send_mail($rowFetchUserDetails['user_full_name'], $rowFetchUserDetails['user_email_id'], $subject, $message, '', $cfg['ADMIN_EMAIL']);
 
 		if (floatval($rowFetchPayment['amount']) > 0) {
-			$paystatus = $mycms->send_sms($rowFetchUserDetails['user_mobile_no'], $payRegSms);
+			$paystatus = $mycms->send_sms($rowFetchUserDetails['user_mobile_no'], $paysms);
 		}
+		$regstatus = $mycsm->send_sms($rowFetchUserDetails['user_mobile_no'], $regsms);
+
 		return true;
 	} else if ($operation == 'RETURN_TEXT') {
 		$array = array();
 		$array['MAIL_SUBJECT'] = $subject;
 		$array['MAIL_BODY']    = $message;
 		$array['SMS_NO']       = $rowFetchUserDetails['user_mobile_no'];
-		$array['SMS_BODY'][0]  = $payRegSms;
+		$array['SMS_BODY'][0]  = $paysms;
+		$array['SMS_BODY'][1]  = $regsms;
 		return $array;
 	} else {
 		return false;
@@ -8028,7 +7475,7 @@ function offline_conference_registration_confirmation_accompany_message($delegat
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
 				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
+			$workshopDetails = '<tr>
 					<td colspan="2"  style="padding: 20px;">
 						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
 						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
@@ -8124,7 +7571,7 @@ function offline_conference_registration_confirmation_accompany_message($delegat
 									</tr>
 									<tr>
 										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;"> ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
+										<td style="padding: 15px; color: #272727;">1 night, ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
 									</tr>
 									
 									<tr>
@@ -8185,7 +7632,7 @@ function offline_conference_registration_confirmation_accompany_message($delegat
 			$invoiceMode = $invoiceItem['invoice_mode'];
 		}
 		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
+			$internetHandling = $invoiceItem['internet_handling_amount'];
 		}
 
 		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
@@ -8349,7 +7796,7 @@ function offline_conference_registration_confirmation_accompany_message($delegat
 							Total price
 						</td>
 						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-							₹ ' . $slipAmount . '
+							₹ ' . number_format(ceil($totalPrice), 0) . '
 						</td>
 					</tr>
 
@@ -9059,7 +8506,7 @@ function offline_conference_registration_confirmation_message($delegateId, $paym
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
 				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
+			$workshopDetails = '<tr>
 					<td colspan="2"  style="padding: 20px;">
 						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
 						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
@@ -9155,7 +8602,7 @@ function offline_conference_registration_confirmation_message($delegateId, $paym
 									</tr>
 									<tr>
 										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;"> ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
+										<td style="padding: 15px; color: #272727;">1 night, ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
 									</tr>
 									
 									<tr>
@@ -9216,7 +8663,7 @@ function offline_conference_registration_confirmation_message($delegateId, $paym
 			$invoiceMode = $invoiceItem['invoice_mode'];
 		}
 		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
+			$internetHandling = $invoiceItem['internet_handling_amount'];
 		}
 
 		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
@@ -9380,7 +8827,7 @@ function offline_conference_registration_confirmation_message($delegateId, $paym
 							Total price
 						</td>
 						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-							₹ ' . $slipAmount . '
+							₹ ' . number_format(ceil($totalPrice), 0) . '
 						</td>
 					</tr>
 
@@ -9729,7 +9176,7 @@ function offline_conference_complimentry_registration_confirmation_message($dele
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
 				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
+			$workshopDetails = '<tr>
 					<td colspan="2"  style="padding: 20px;">
 						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
 						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
@@ -9825,7 +9272,7 @@ function offline_conference_complimentry_registration_confirmation_message($dele
 									</tr>
 									<tr>
 										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;">' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
+										<td style="padding: 15px; color: #272727;">1 night, ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
 									</tr>
 									
 									<tr>
@@ -9886,7 +9333,7 @@ function offline_conference_complimentry_registration_confirmation_message($dele
 			$invoiceMode = $invoiceItem['invoice_mode'];
 		}
 		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
+			$internetHandling = $invoiceItem['internet_handling_amount'];
 		}
 
 		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
@@ -10050,7 +9497,7 @@ function offline_conference_complimentry_registration_confirmation_message($dele
 							Total price
 						</td>
 						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-							₹ ' . $slipAmount . '
+							₹ ' . number_format(ceil($totalPrice), 0) . '
 						</td>
 					</tr>
 
@@ -10603,667 +10050,132 @@ function getAccommodatioPaymentDetails($paymentId, $delegateId, $slipId)
 function offline_accommodation_confirmation_message($delegateId, $paymentId, $slipId, $operation = 'SEND')
 {
 	global $mycms, $cfg;
-	include_once('function.delegate.php');
-	include_once('function.invoice.php');
-	include_once('function.registration.php');
-	include_once('function.dinner.php');
 
-	$loginUrl = _BASE_URL_;
+	$loginUrl          	   = _BASE_URL_;
+	$rowFetchUserDetails   = getUserDetails($delegateId);
 
-	$rowFetchUserDetails = getUserDetails($delegateId);
-	$invoiceOrderSummary = generateInvoiceOrderSummary($delegateId, $slipId);
-	$rowFetchPayment     = getPaymentDetails($paymentId);
-	$color               = '80ec91';
+	$invoiceOrderSummary   = generateInvoiceOrderSummaryForAccommodation($delegateId, $slipId);
+	$rowFetchPayment 	   = getPaymentDetails($paymentId);
+	$user_password     	   = $mycms->decoded($rowFetchUserDetails['user_password']);
 
-	$sqlMSG = array();
-	$sqlMSG['QUERY'] = "SELECT `conf_start_date`,`conf_end_date` FROM " . _DB_COMPANY_INFORMATION_ . " WHERE `id` = 1";
-	$result      = $mycms->sql_select($sqlMSG);
-	$companyInfo = $result[0];
+	$sqlaccommodationDetails = array();
+	$sqlaccommodationDetails['QUERY']  = "SELECT accommodation.*,masterHotel.hotel_name AS hotel_name,
+	   												 masterHotel.hotel_address AS hotel_address,package.package_name
+											    FROM " . _DB_REQUEST_ACCOMMODATION_ . " accommodation
+										  INNER JOIN " . _DB_PACKAGE_ACCOMMODATION_ . " package
+												  ON accommodation.package_id = package.id
+										  INNER JOIN " . _DB_MASTER_HOTEL_ . " masterHotel
+												  ON masterHotel.id = package.hotel_id
+											   WHERE accommodation.status = ? 
+												 AND accommodation.user_id = ?";
 
-	$startD    = $companyInfo['conf_start_date'];
-	$endD      = $companyInfo['conf_end_date'];
-	$startDate = new DateTime($startD);
-	$endDate   = new DateTime($endD);
+	$sqlaccommodationDetails['PARAM'][]   = array('FILD' => 'accommodation.status',   'DATA' => 'A',   		  'TYP' => 's');
+	$sqlaccommodationDetails['PARAM'][]   = array('FILD' => 'accommodation.user_id',   'DATA' => $delegateId,   		  'TYP' => 's');
+	$resaccommodation = $mycms->sql_select($sqlaccommodationDetails);
+	$rowaccomm             = $resaccommodation[0];
 
-	if ($startDate->format('F Y') == $endDate->format('F Y')) {
-		$formatted = $startDate->format("F jS") . " - " . $endDate->format("jS");
-	} else {
-		$formatted = $startDate->format("F jS") . " - " . $endDate->format("F jS");
-	}
+	$sqlInvoice 	=	array();
+	$sqlInvoice['QUERY'] = "SELECT * 
+								  FROM " . _DB_INVOICE_ . " 
+								 WHERE `slip_id` =? 
+								   AND `delegate_id` =? 
+								   AND `status` = ?";
+	$sqlInvoice['PARAM'][]   = array('FILD' => 'slip_id',            'DATA' => $slipId,   	 'TYP' => 's');
+	$sqlInvoice['PARAM'][]   = array('FILD' => 'delegate_id',        'DATA' => $delegateId,   'TYP' => 's');
+	$sqlInvoice['PARAM'][]   = array('FILD' => 'status',             'DATA' => 'A',   		 'TYP' => 's');
+	$resInvoice 		= $mycms->sql_select($sqlInvoice);
 
-	$sqlSlip = array();
-	$sqlSlip['QUERY']    = "SELECT * FROM " . _DB_SLIP_ . " WHERE status = ? AND id = ? ";
-	$sqlSlip['PARAM'][]  = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
-	$sqlSlip['PARAM'][]  = array('FILD' => 'id',     'DATA' => $rowFetchPayment['slip_id'], 'TYP' => 's');
-	$resSlip   = $mycms->sql_select($sqlSlip);
-	$rowaSlip  = $resSlip[0];
 
-	$user_password    = $mycms->decoded($rowFetchUserDetails['user_password']);
-	$delagateCatagory = getUserClassificationId($delegateId);
 
-	$sqlaccommodation = array();
-	$sqlaccommodation['QUERY']   = "SELECT * FROM " . _DB_REQUEST_ACCOMMODATION_ . " WHERE status = ? AND user_id = ? ";
-	$sqlaccommodation['PARAM'][] = array('FILD' => 'status',  'DATA' => 'A', 'TYP' => 's');
-	$sqlaccommodation['PARAM'][] = array('FILD' => 'user_id', 'DATA' => $delegateId, 'TYP' => 's');
-	$resaccom  = $mycms->sql_select($sqlaccommodation);
-	$rowaccomm = $resaccom[0];
+	$getAccommodatioPaymentDetails = getAccommodatioPaymentDetails($paymentId, $delegateId, $slipId);
 
-	$accommodationDetails = accmodation_details_New($delegateId);
-	$mailPaymentDetails    = mailPaymentDetails($delegateId, $paymentId, '80ec91');
-	$mailInvoiceDetails    = mailInvoiceDetails($delegateId, $slipId, '80ec91', '29742f');
 
-	$slipAmount = invoiceAmountOfSlip($slipId);
-	if ($slipAmount == 0) {
-		$mailPaymentDetails = '</tr><tr><td colspan="2" style="background: #36f14930;color:black"><p><h1 align="center">Complimentary</h1></p></td></tr>';
-		$mailInvoiceDetails = "";
-	}
+	$sqlMail 	=	array();
+	$sqlMail['QUERY'] 	   = "SELECT * 
+						    FROM " . _DB_EMAIL_TEMPLATE_ . " 
+					       WHERE status = ? 
+						     AND  id = ? ";
+	$sqlMail['PARAM'][]   = array('FILD' => 'status',   'DATA' => 'A',   		  				'TYP' => 's');
+	$sqlMail['PARAM'][]   = array('FILD' => 'id',   	'DATA' => 10,   'TYP' => 's');
+	$resMail			   = $mycms->sql_select($sqlMail);
+	$rowaMail              = $resMail[0];
 
-	$sqlMail = array();
-	$sqlMail['QUERY']   = "SELECT * FROM " . _DB_EMAIL_TEMPLATE_ . " WHERE status = ? AND id = ? ";
-	$sqlMail['PARAM'][] = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
-	$sqlMail['PARAM'][] = array('FILD' => 'id',     'DATA' => 3,   'TYP' => 's');
-	$resMail  = $mycms->sql_select($sqlMail);
-	$rowaMail = $resMail[0];
-
-	$sql = array();
-	$sql['QUERY'] = "SELECT * FROM " . _DB_EMAIL_SETTING_ . " WHERE `status`='A' order by id desc limit 1";
+	$sql 	=	array();
+	$sql['QUERY'] = "SELECT * FROM " . _DB_EMAIL_SETTING_ . " 
+													WHERE `status`='A' order by id desc limit 1";
+	//$sql['PARAM'][]	=	array('FILD' => 'status' ,     		 'DATA' => 'A' ,       	           'TYP' => 's');					 
 	$result = $mycms->sql_select($sql);
 	$row = $result[0];
 
-	$sqlUserImage = array();
-	$sqlUserImage['QUERY'] = "SELECT * From " . _DB_ICON_SETTING_ . " WHERE `title` = 'Payment Successful'";
-	$fetchData = $mycms->sql_select($sqlUserImage, false);
-	$img = _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $fetchData[0]['icon'];
 
-	$logo       = '<img src="' . _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $cfg['MAILER.LOGO'] . '" style="display: inline-block;width: 115px;">';
-	$line       = _BASE_URL_ . 'images/mailer/title-line-bottom.png';
-	$line1      = _BASE_URL_ . 'images/mailer/line-before.png';
-	$line2      = _BASE_URL_ . 'images/mailer/line-after.png';
-	$reg_link   = _BASE_URL_;
-	$footer_img = _BASE_URL_ . 'images/mailer/footer-bg.png';
+	if ($resInvoice) {
+		$counter = 0;
+		$acmponyCounter = 0;
+		foreach ($resInvoice as $keyInvoice => $rowInvoice) {
 
-	$invoiceArr = invoiceDetailsOfSlip($slipId);
 
-	// ---- Amenities for this hotel, split into two even columns ----
-	$sqlAcc = array();
-	$sqlAcc['QUERY'] = "SELECT * FROM " . _DB_ACCOMMODATION_ACCESSORIES_ . "
-						WHERE `hotel_id` = '" . $rowaccomm['hotel_id'] . "' AND status='A' AND purpose='aminity' ORDER BY `id` ASC";
-	$queryAcc = $mycms->sql_select($sqlAcc, false);
+			if ($rowInvoice['service_type'] == "DELEGATE_ACCOMMODATION_REQUEST") {
+				$RegData['REGISTRATION_DATA']['REGTYP']  = getRegClsfName(getUserClassificationId($delegateId));
+				$RegData['ACCOMODATION_DETAILS'] 		 = accmodation_details($delegateId);
 
-	$amenitiesLeftHtml  = '';
-	$amenitiesRightHtml = '';
-
-	if ($queryAcc) {
-		$totalAmenities = count($queryAcc);
-		$leftCount      = ceil($totalAmenities / 2);   // e.g. 6 -> 3/3, 8 -> 4/4, 7 -> 4/3
-
-		$amenityRowTpl = function ($aminity) {
-			$icon = '';
-			if ($aminity['accessories_icon'] != '') {
-				$icon = '<img src="' . _BASE_URL_ . 'uploads/EMAIL.HEADER.FOOTER.IMAGE/' . $aminity['accessories_icon'] . '" style="width: 100%;display: inline-block;">';
-			}
-			return '
-				<tr>
-					<td style="width: 31px;padding: 5px 0;">' . $icon . '</td>
-					<td style="color: #ffffff; font-size: 17px;padding: 5px 0;padding-left: 10px;">
-						' . $aminity['accessories_name'] . '
-					</td>
-				</tr>';
-		};
-
-		foreach ($queryAcc as $keyqueryAcc => $aminity) {
-			if ($keyqueryAcc < $leftCount) {
-				$amenitiesLeftHtml  .= $amenityRowTpl($aminity);
-			} else {
-				$amenitiesRightHtml .= $amenityRowTpl($aminity);
+				$getAccommodationDetails['ACCOMODATION_DETAILS_ROOM'] = getAccommodationDetails($delegateId, $rowInvoice['id']);
 			}
 		}
 	}
 
-	// Defaults so downstream str_replace() never hits an undefined variable
-	// if $invoiceArr happens to be empty or lacks a matching service_type.
-	$registrationDetails = '';
-	$accomodationDetails = '';
-	$accompanyDetails    = '';
-	$workshopDetails      = '';
 
-	foreach ($invoiceArr as $key => $invoiceDetailsRow) {
-
-		if ($invoiceDetailsRow['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
-			$registrationDetails = '<tr>
-					<td colspan="2" style="padding: 20px;font-size: 23px;">
-						Thanks <b>' . $rowFetchUserDetails['user_full_name'] . '</b>! Your registration for <b>' . $cfg['EMAIL_CONF_NAME'] . '</b> dated <b>' . $formatted . '</b> at <b>' . $cfg['EMAIL_CONF_VENUE'] . '</b> has been <b>Confirmed</b>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" style="padding: 0 20px;">
-						<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #f7f7f7;border-radius: 15px;">
-							<tbody>
-								<tr>
-									<td colspan="2" style="padding: 20px;font-size: 24px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-										Registration Inclusions are:</td>
-								</tr>
-								' . $invoiceOrderSummary . '
-							</tbody>
-						</table>
-					</td>
-				</tr>';
-		}
-	   if ($invoiceDetailsRow['service_type'] == "ACCOMPANY_CONFERENCE_REGISTRATION") {
-			$accompanyUserDetails = getUserDetails($invoiceDetailsRow['refference_id']);
-			$accompanyDetails = '<tr>
-					<td colspan="2"  style="padding: 20px;">
-						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Accompany Registration</p>
-						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-							' . $accompanyUserDetails['user_full_name'] . '</p>
-					</td>
-
-				</tr>
-				<tr>
-					<td colspan="2" style="padding: 0 20px;">
-						<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius: 17px;background: #fff3e9;">
-							<tbody>
-								<tr>
-									<td colspan="2" style="padding: 20px;font-size: 24px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-										Inclutions:</td>
-								</tr>
-								' . $invoiceOrderSummary . '
-							</tbody>
-						</table>
-					</td>
-				</tr>';
-		}
-
-		if ($invoiceDetailsRow['service_type'] == "DELEGATE_WORKSHOP_REGISTRATION") {
-			$workShopDetails = getWorkshopDetails($invoiceDetailsRow['refference_id']);
-				$sqlWorkshopclsf 	=	array();		
-			$sqlWorkshopclsf['QUERY'] = "SELECT `venue` FROM "._DB_WORKSHOP_CLASSIFICATION_." WHERE status = ? AND `id` = ?";
-			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
-			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
-				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
-					<td colspan="2"  style="padding: 20px;">
-						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
-						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-							' . getWorkshopName($workShopDetails['workshop_id']). '</p>
-					</td>
-
-				</tr>
-				<tr>
-					<td colspan="2" style="padding: 0 20px;">
-						<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius: 17px;background: #fff3e9;">
-							<tbody>
-								<tr>
-									<td colspan="2" style="padding: 20px;font-size: 24px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-										Workshop Details:</td>
-								</tr>
-								<td style="width: 50%;padding: 20px;padding-top: 0;vertical-align: top;">
-									<table width="100%" cellpadding="0" cellspacing="0" border="0">
-										<tbody>Workshop Date :  '.getWorkshopDate($workShopDetails['workshop_id']).'</tbody>
-									</table>
-									<table width="100%" cellpadding="0" cellspacing="0" border="0">
-										<tbody>Workshop Venue :  '.$resWorkshopclsf[0]['venue'].'</tbody>
-									</table>
-								</td>
-								
-							</tbody>
-						</table>
-					</td>
-				</tr>';
-		}
-		if ($invoiceDetailsRow['service_type'] == "DELEGATE_ACCOMMODATION_REQUEST") {
-				$sqlaccommodationDetails['QUERY'] 				 = "SELECT accommodation.*,package.package_name 
-													  FROM " . _DB_REQUEST_ACCOMMODATION_ . " accommodation
-												INNER JOIN " . _DB_PACKAGE_ACCOMMODATION_ . " package
-														ON accommodation.package_id = package.id
-													 WHERE accommodation.status = 'A' 
-													   AND accommodation.user_id = '" . $invoiceDetailsRow['delegateId'] . "'
-													   AND accommodation.id = '" . $invoiceDetailsRow['refference_id'] . "'";
-
-			$resaccommodation = $mycms->sql_select($sqlaccommodationDetails);
-			$rowaccommodation = $resaccommodation[0];
-			$accomodationDetails = '  <tr>
-						<td style="width: 50%;padding: 20px;">
-							<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Accommodation booking at</p>
-							<p style="margin-bottom: 0;margin-top: 1px;font-size: 26px;color: #3f3f3f;font-weight: 500;font-style: italic;">
-								' . $accommodationDetails['HOTEL_DETAILS']['hotel_name'] . '</p>
-						</td>
-						<td style="width: 50%;text-align: right;padding: 20px;">
-							<p style="margin: 0;font-size: 16px;color: #4e4e4e;font-style: italic;">' . $accommodationDetails['BOOKING_DETAILS']['checkin_date'] . ' 
-							</p>
-							<p style="margin-bottom: 0;margin-top: 4px;font-size: 16px;color: #4e4e4e;font-style: italic;">' . $accommodationDetails['BOOKING_DETAILS']['checkin_date'] . '
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" style="padding: 0 20px;">
-							<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius: 17px;background: linear-gradient(45deg, rgb(225, 101, 90), rgb(60, 2, 170));">
-								<tbody>
-									<tr>
-										<td colspan="2" style="padding: 20px;font-size: 24px;color: #ffffff;font-weight: 500;font-style: italic;">
-											Hotel Amenities:</td>
-									</tr>
-									<tr>
-										<td style="width: 50%;padding: 20px;padding-top: 0;vertical-align: top;">
-											<table width="100%" cellpadding="0" cellspacing="0" border="0">
-												<tbody>' . $amenitiesLeftHtml . '</tbody>
-											</table>
-										</td>
-										<td style="width: 50%;padding: 20px;padding-top: 0;vertical-align: top;">
-											<table width="100%" cellpadding="0" cellspacing="0" border="0">
-												<tbody>' . $amenitiesRightHtml . '</tbody>
-											</table>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" style="padding: 20px;font-size: 24px; color: #3f3f3f;font-weight: 500;font-style: italic;">
-							Reservation Details</td>
-					</tr>
-					<tr>
-						<td colspan="2" style="padding: 0 20px;">
-							<table width="100%" cellpadding="0" cellspacing="0" border="1px" style="font-size: 15px;color: #6b6b6b;">
-								<tbody>
-									<tr>
-										<td style="padding: 15px;width: 30%;">Check-in</td>
-										<td style="padding: 15px;color: #272727;">'.$accommodationDetails['BOOKING_DETAILS']['checkin_date'].'</td>
-									</tr>
-									<tr>
-										<td style="padding: 15px;">Check-out</td>
-										<td style="padding: 15px; color: #272727;">'.$accommodationDetails['BOOKING_DETAILS']['checkout_date'].'</td>
-									</tr>
-									<tr>
-										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;"> ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
-									</tr>
-									
-									<tr>
-										<td style="padding: 15px;">Location</td>
-										<td style="padding: 15px; color: #272727;">'.$accommodationDetails['HOTEL_DETAILS']['hotel_address'].'</td>
-									</tr>
-									<tr>
-										<td style="padding: 15px;">Phone</td>
-										<td style="padding: 15px; color: #272727;"><a href="tel: +916746686666">'.$accommodationDetails['HOTEL_DETAILS']['hotel_phone_no'].'</a></td>
-									</tr>
-									
-									<tr>
-										<td style="padding: 15px;">Cancellation policy</td>
-										<td style="padding: 15px; color: #272727;"><b>'.$cfg['ACCOMODATION_CANCEL_POLICY'].'</b></td>
-									</tr>
-									<tr>
-										<td style="padding: 15px;">Reservation Policy</td>
-										<td style="padding: 15px; color: #272727;">
-											'.$accommodationDetails['HOTEL_DETAILS']['hotel_policy'].'
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-					</tr>';
-		}
-
-	
+	$header_image = _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $row['header_image'];
+	$footer_image = _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $row['footer_image'];
+	if ($row['header_image'] != '') {
+		$emailHeader  = $header_image;
 	}
 
-	/**
-	 * Picks GST-inclusive vs basic price for a line item based on gst_flag_invoice,
-	 * and returns BOTH the raw numeric value (for totals math) and the formatted
-	 * string (for display), so the two can never drift apart again.
-	 */
-	$resolveLinePrice = function (array $gstArray, $gstFlagInvoice) {
-		$raw = ($gstFlagInvoice == 3) ? $gstArray['GST.PRICE'] : $gstArray['BASIC.PRICE'];
-		return array(
-			'raw'    => $raw,
-			'display' => number_format($raw, 2),
-		);
-	};
-
-	$invoiceDetails = '<tr>
-    <td colspan="2" style="padding: 20px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #dce6ff;">
-            <tbody>';
-
-	$totalCGST          = 0;
-	$totalSGST          = 0;
-	$subTotalOfAllItems = 0;
-	$invoiceMode        = '';
-	$internetHandling   = 0;
-    $discountAmount   = 0;
-	foreach ($invoiceArr as $key => $invoiceItem) {
-
-		if (isset($invoiceItem['invoice_mode'])) {
-			$invoiceMode = $invoiceItem['invoice_mode'];
-		}
-		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
-		}
-
-		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
-			if ($cfg['IGST.FLAG'] == 0) {
-				$cgst = $cfg['CONFERENCE.CGST'];
-				$sgst = $cfg['CONFERENCE.SGST'];
-			} else {
-				$cgst = $cfg['CONFERENCE.IGST'] / 2;
-				$sgst = $cfg['CONFERENCE.IGST'] / 2;
-			}
-
-			$gstArray = gstCalculation($cgst, $sgst, $invoiceItem['service_unit_price'], $igst);
-			$price    = $resolveLinePrice($gstArray, $invoiceItem['gst_flag_invoice']);
-            $discountAmount += $invoiceItem['discount_amount'];
-			$subTotalOfAllItems += $price['raw'];
-			$totalCGST           += $gstArray['CGST.PRICE'];
-			$totalSGST           += $gstArray['SGST.PRICE'];
-
-			$particulaTitle = getRegClsfName(getUserClassificationId($delegateId, true));
-
-			$invoiceDetails .= '
-							<tr>
-								<td style="width: 50%; padding: 5px 20px; padding-top: 20px">' . $particulaTitle . '</td>
-								<td style="text-align: right; width: 50%; padding: 5px 20px; padding-top: 20px">
-									₹ ' . $price['display'] . '
-								</td>
-							</tr>';
-		}
-
-		
-		if ($invoiceItem['service_type'] == "ACCOMPANY_CONFERENCE_REGISTRATION") {
-			$cgst                 = $cfg['ACCOMPANY.CGST'];
-			$sgst                 = $cfg['ACCOMPANY.SGST'];
-			$accompanyUserDetails = getUserDetails($invoiceItem['refference_id'], true);
-			$gstArray             = gstCalculation($cgst, $sgst, $invoiceItem['service_unit_price']);
-			$price                = $resolveLinePrice($gstArray, $invoiceItem['gst_flag_invoice']);
-
-			$subTotalOfAllItems += $price['raw'];
-			$totalCGST           += $gstArray['CGST.PRICE'];
-			$totalSGST           += $gstArray['SGST.PRICE'];
-            $discountAmount += $invoiceItem['discount_amount'];
-			$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px; ">
-							Accompanying Person- ' . $accompanyUserDetails['user_full_name'] . '
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . $price['display'] . '
-						</td>
-					</tr>';
-		}
-
-		if ($invoiceItem['service_type'] == "DELEGATE_WORKSHOP_REGISTRATION") {
-			$cgst                 = $cfg['ACCOMPANY.CGST'];
-			$sgst                 = $cfg['ACCOMPANY.SGST'];
-			$gstArray             = gstCalculation($cgst, $sgst, $invoiceItem['service_unit_price']);
-			$price                = $resolveLinePrice($gstArray, $invoiceItem['gst_flag_invoice']);
-			$workShopDetails 				 = getWorkshopDetails($invoiceItem['refference_id'], true);
-			$subTotalOfAllItems += $price['raw'];
-			$totalCGST           += $gstArray['CGST.PRICE'];
-			$totalSGST           += $gstArray['SGST.PRICE'];
-            $discountAmount += $invoiceItem['discount_amount'];
-			$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px; ">
-							'.getWorkshopName($workShopDetails['workshop_id']) .'
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . $price['display'] . '
-						</td>
-					</tr>';
-		}
-		if ($invoiceItem['service_type'] == "DELEGATE_ACCOMMODATION_REQUEST") {
-			$sqlaccommodationDetails = array();
-			$sqlaccommodationDetails['QUERY'] = "SELECT accommodation.*,package.package_name, package.id AS packageId, room.room_id
-														FROM " . _DB_REQUEST_ACCOMMODATION_ . " accommodation
-													INNER JOIN " . _DB_PACKAGE_ACCOMMODATION_ . " package
-															ON accommodation.package_id = package.id
-													INNER JOIN " . _DB_MASTER_ROOM_ . " room
-															ON accommodation.id = room.request_accommodation_id
-														WHERE accommodation.status = ?
-														AND accommodation.user_id = ?
-														AND accommodation.id = ? ";
-			$sqlaccommodationDetails['PARAM'][] = array('FILD' => 'accommodation.status',  'DATA' => 'A', 'TYP' => 's');
-			$sqlaccommodationDetails['PARAM'][] = array('FILD' => 'accommodation.user_id', 'DATA' => $invoiceItem['delegateId'], 'TYP' => 's');
-			$sqlaccommodationDetails['PARAM'][] = array('FILD' => 'accommodation.id',      'DATA' => $invoiceItem['refference_id'], 'TYP' => 's');
-
-			$resaccommodation = $mycms->sql_select($sqlaccommodationDetails);
-			$rowaccommodation = $resaccommodation[0];
-
-			$cgst              = $cfg['ACCOMMODATION.CGST'];
-			$sgst              = $cfg['ACCOMMODATION.SGST'];
-			$accommodationDtls = getAccomodationDetails($invoiceItem['refference_id'], true);
-			$gstArray          = gstCalculation($cgst, $sgst, $invoiceItem['service_unit_price']);
-			$price             = $resolveLinePrice($gstArray, $invoiceItem['gst_flag_invoice']);
-            $discountAmount += $invoiceItem['discount_amount'];
-			$subTotalOfAllItems += $price['raw'];
-			$totalCGST           += $gstArray['CGST.PRICE'];
-			$totalSGST           += $gstArray['SGST.PRICE'];
-
-			$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px;">
-							Accommodation Booking
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . $price['display'] . '
-						</td>
-					</tr>';
-		}
-
+	if ($row['footer_image'] != '') {
+		$emailFooter  = $footer_image;
 	}
 
-	$totalPrice = $subTotalOfAllItems + $totalCGST + $totalSGST-$discountAmount;
-	if ($invoiceMode == 'ONLINE') {
-		$totalPrice += $internetHandling;
-	}
-   
-
-	$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px;">
-							Goods &amp; services tax
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . number_format($totalCGST + $totalSGST, 2) . '
-						</td>
-					</tr>';
-
-	if ($invoiceMode == 'ONLINE') {
-		$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px;">
-							Internet service charge
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-							₹ ' . number_format($internetHandling, 2) . '
-						</td>
-					</tr>';
-	}
-    if ($discountAmount > 0) {
-		$invoiceDetails .= '
-					<tr>
-						<td style="width: 50%; padding: 5px 20px;">
-							Discount Amount
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px;">
-						-	₹ ' . number_format($discountAmount, 2) . '
-						</td>
-					</tr>';
-	}
-	$invoiceDetails .= '
-					<tr>
-						<td colspan="2" style="padding:0 20px;">
-							<hr style="background: #5a70aa;height: 2px;border: 0;margin: 15px 0;">
-						</td>
-					</tr>
-
-					<tr>
-						<td style="width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 500; font-size: 20px;">
-							Total price
-						</td>
-						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-							₹ ' . $slipAmount . '
-						</td>
-					</tr>
-
-					</tbody>
-					</table>
-				</td>
-			</tr>';
-	
-     $paid_by = '<p style="margin-bottom: 0;margin-top: 3px;font-size: 14px;">You’ve guaranteed your
-                                        booking by '.$rowFetchPayment['payment_mode'].'</p>';
 	$mailTemplateDescription = htmlspecialchars_decode($rowaMail['description']);
-	$appInfo = '';
-	if ($rowFetchPayment['payment_mode']== 'UPI') {
-    $logoSrc = _BASE_URL_ . "images/unified-payment-interface-upi-logo-png_seeklogo-333088.png";
-	$payment_logo = '<tr>
-						<td style="padding: 20px;"><img src="'.$logoSrc.'" style="width: 79px;"></td>
-					</tr>';
-	} elseif ($rowFetchPayment['payment_mode'] == 'NEFT') {
-		$logoSrc =_BASE_URL_ . "images/neft-logo-png_seeklogo-192965.png";
-		$payment_logo = '<tr>
-						<td style="padding: 20px;"><img src="'.$logoSrc.'" style="width: 79px;"></td>
-					</tr>';
-	} elseif ($rowFetchPayment['payment_mode'] == 'CARD' || $rowFetchPayment['payment_mode'] == 'Card' || $rowFetchPayment['payment_mode']== 'ONLINE' || $invoiceMode == 'ONLINE') {
-		$sql_qr = array();
-		$sql_qr['QUERY'] = "SELECT `title`, `image` FROM " . _DB_LANDING_FLYER_IMAGE_ . "
-							WHERE `status` = 'A' AND `title` IN ('QR Code','Online Payment Logo')";
-		$result = $mycms->sql_select($sql_qr);
 
-		// Index by title so we never depend on row order.
-		$imagesByTitle = array();
-		foreach ($result as $row) {
-			$imagesByTitle[$row['title']] = $row['image'];
-		}
+	$find = ['[USERNAME]', '[RESERVATION_DETAILS]', '[PAYMENT_DETAILS]'];
 
-		$qrCodeImage       = isset($imagesByTitle['QR Code'])
-			? _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $imagesByTitle['QR Code']
-			: '';
-		$onlinePaymentLogo = isset($imagesByTitle['Online Payment Logo'])
-			? _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $imagesByTitle['Online Payment Logo']
-			: '';
+	$replacement = [$rowFetchUserDetails['user_full_name'], $invoiceOrderSummary, $getAccommodatioPaymentDetails];
 
-		$logoSrc = $onlinePaymentLogo; // what actually renders below
-		$payment_logo = '<tr>
-						<td style="padding: 20px;"><img src="'.$logoSrc.'" style="width: 190px;"></td>
-					</tr>';
+
+	$result = str_replace($find, $replacement, $mailTemplateDescription);
+
+	$message = '';
+
+	$message .= '<img src="' . $emailHeader . ' " width="100%" alt="header" /><br/><br/>';
+	$message .= $result;
+	$message .= '<img src="' . $emailFooter . ' " width="100%" alt="header" /><br/><br/>';
+
+
+
+	//echo '<pre>'; print_r($getAccommodationDetails); die;
+
+	if ($getAccommodationDetails['ACCOMODATION_DETAILS_ROOM']['ACCOMMODATION_DATA']['ROOM_TYPE'] == 'Y') {
+		$subject  = "Additional accommodation is confirmed_" . $cfg['EMAIL_CONF_NAME'];
 	} else {
-		$logoSrc = ''; // fallback so $logoSrc is never undefined for e.g. CASH/CHEQUE
-	}
-    if ($slipAmount == 0) {
-		$paid_by = '<p style="margin-bottom: 0;margin-top: 10px;font-size: 14px;">COMPLIMENTARY</p>';
-		$payment_logo = '';
-	}
-	$find = [
-		'[LOGO]', '[CONF_DATE]', '[CONF_VENUE]', '[UNIQUE_ID]', '[username]',
-		'[PROFILE_LINK]', '[WEBSITE_LINK]', '[IMG]', '[REG_ID]', '[MAIL]',
-		'[MOBILE]', '[REG_CLS_NAME]', '[payment_details]', '[invoice_details]',
-		'[amount]', '[inr]', '[invoice_order_details]', '[LINE]', '[LINE1]',
-		'[LINE2]', '[REG_LINK]', '[CONF_EMAIL]', '[CONF_MOBILE]', '[REPLY_EMAIL]',
-		'[CONF_NAME]', '[VENUE_ADDRESS]', '[HOTEL_NAME]', '[CHECKINDATE]',
-		'[CHECKOUTDATE]', '[HOTEL_ADDRESS]', '[HOTEL_MOBILE]', '[QTY]',
-		'[CANCELATION_POLICY]', '[REFUND_POLICY]', '[REGISTRATION_DETAILS]',
-		'[ACCOMODATION_DETAILS]', '[ACCOMPANY_DETAILS]', '[WORKSHOP_DETAILS]',
-		'[INVOICE_DETAILS]', '[APP_INFO]','[CHECK_PNG]','[CIRCLE_PNG]', '[PAID_BY]','[ACCOMODATION_CANCEL_POLICY]','[PAYMENT_LOGO]','[FOOTER_IMG]'
-	];
-
-	$regClsId = $rowFetchUserDetails['registration_classification_id'];
-
-	$replacement = [
-		$logo,
-		$formatted,
-		$cfg['EMAIL_CONF_VENUE'],
-		$rowFetchUserDetails['user_unique_sequence'],
-		$rowFetchUserDetails['user_full_name'],
-		_BASE_URL_ . 'profile.php',
-		$cfg['SITE_LINK'],
-		$img,
-		$rowFetchUserDetails['user_registration_id'],
-		$rowFetchUserDetails['user_email_id'],
-		$rowFetchUserDetails['user_mobile_no'],
-		getRegClsfName($regClsId),
-		$mailPaymentDetails,
-		$mailInvoiceDetails,
-		number_format($financialSummaryOfSlip['AMOUNT'], 2),
-		$currr,
-		$invoiceOrderSummary,
-		$line,
-		$line1,
-		$line2,
-		$reg_link,
-		$cfg['EMAIL_CONF_EMAIL_US'],
-		$cfg['EMAIL_CONF_CONTACT_US'],
-		$cfg['EMAIL_CONF_REPLY_US'],
-		$cfg['EMAIL_CONF_NAME'],
-		$cfg['EMAIL_CONF_VENUE'],
-		$accommodationDetails['HOTEL_DETAILS']['hotel_name'],
-		$accommodationDetails['BOOKING_DETAILS']['checkin_date'],
-		$accommodationDetails['BOOKING_DETAILS']['checkout_date'],
-		$accommodationDetails['HOTEL_DETAILS']['hotel_address'],
-		$accommodationDetails['HOTEL_DETAILS']['hotel_phone_no'],
-		$accommodationDetails['BOOKING_DETAILS']['booking_quantity'],
-		$cfg['CANCELLATION_PAGE_INFO'],
-		$cfg['TERMS_PAGE_INFO'],
-		$registrationDetails,
-		$accomodationDetails,
-		$accompanyDetails,
-		$workshopDetails,
-		$invoiceDetails,
-		$appInfo,
-		_BASE_URL_ . 'images/check.png',
-		_BASE_URL_ . 'images/circle-in-black-of-a-drum-top-view.png',
-		$paid_by,
-		$cfg['ACCOMODATION_CANCEL_POLICY'],
-		$payment_logo,
-		$footer_img
-	];
-
-	$result  = str_replace($find, $replacement, $mailTemplateDescription);
-	$message = $result;
-
-	// ===== SAVE REGISTRATION EMAIL AS FILE =====
-	$uploadDir = __DIR__ . "/../uploads/registration_confirmation/";
-	if (!file_exists($uploadDir)) {
-		mkdir($uploadDir, 0755, true);
+		$subject  = "Your accommodation is revised_" . $cfg['EMAIL_CONF_NAME'];
 	}
 
-	$fileName = "registration_" . $delegateId . "_" . $slipId . "_" . time() . ".html";
-	$filePath = $uploadDir . $fileName;
-	file_put_contents($filePath, $message);
+	/*echo $message;
+		echo $rowFetchUserDetails['user_email_id'];
+		die();*/
 
-	$sqlSaveFile = array();
-	$sqlSaveFile['QUERY']   = "UPDATE " . _DB_USER_REGISTRATION_ . " SET registration_confirm_file = ? WHERE id = ?";
-	$sqlSaveFile['PARAM'][] = array('FILD' => 'registration_confirm_file', 'DATA' => $fileName, 'TYP' => 's');
-	$sqlSaveFile['PARAM'][] = array('FILD' => 'id', 'DATA' => $delegateId, 'TYP' => 'i');
-	$mycms->sql_update($sqlSaveFile);
-
-	// COMPOSING EMAIL
-	$subject = $rowaMail['subject'];
-
-	$payRegSms = "Transaction SUCCESSFUL. " . $cfg['EMAIL_CONF_NAME'] . " has received the payment of "
-		. getRegistrationCurrency(getUserClassificationId($delegateId)) . '. '
-		. number_format($rowFetchPayment['amount'], 2)
-		. " for the registration of " . $rowFetchUserDetails['user_full_name']
-		. ". You are now SUCCESSFULLY REGISTERED for " . $cfg['EMAIL_CONF_NAME']
-		. ". Your Unique Sequence:" . $rowFetchUserDetails['user_unique_sequence']
-		. " , Registration ID:" . $rowFetchUserDetails['user_registration_id']
-		. " , Registered Email ID:" . $rowFetchUserDetails['user_email_id']
-		. ". For details, please check the Registration Confirmation mail. Invoice will be sent at registered mail id. Have a nice day.";
-
+	$paysms  = "Transaction SUCCESSFUL " . $cfg['EMAIL_CONF_NAME'] . " has received " . getRegistrationCurrency(getUserClassificationId($delegateId)) . "." . number_format($rowFetchPayment['amount'], 2) . " to book a stay for " . $rowaccomm['hotel_name'] . " Transaction ID " . $rowFetchPayment['atom_atom_transaction_id'] . " Have a nice day.";
+	$regsms = "Your reservation at " . $rowaccomm['hotel_name'] . ", " . $rowaccomm['hotel_address'] . " is CONFIRMED. Check-in 14:00 hrs. " . $rowaccomm['checkin_date'] . ", Check-out 12:00 hrs. on " . $rowaccomm['checkout_date'] . ".";
 	if ($operation == 'SEND') {
 		$mycms->send_mail($rowFetchUserDetails['user_full_name'], $rowFetchUserDetails['user_email_id'], $subject, $message, '', $cfg['ADMIN_EMAIL']);
-
-		if (floatval($rowFetchPayment['amount']) > 0) {
-			$paystatus = $mycms->send_sms($rowFetchUserDetails['user_mobile_no'], $payRegSms);
-		}
+		$regstatus = $mycms->send_sms($rowFetchUserDetails['user_mobile_no'], $regsms);
 		return true;
 	} else if ($operation == 'RETURN_TEXT') {
 		$array = array();
 		$array['MAIL_SUBJECT'] = $subject;
-		$array['MAIL_BODY']    = $message;
-		$array['SMS_NO']       = $rowFetchUserDetails['user_mobile_no'];
-		$array['SMS_BODY'][0]  = $payRegSms;
+		$array['MAIL_BODY'] = $message;
+		$array['SMS_NO'] 	  = $rowFetchUserDetails['user_mobile_no'];
+		$array['SMS_BODY'][0] = $paysms;
+		$array['SMS_BODY'][1] = $regsms;
 		return $array;
 	} else {
 		return false;
@@ -12482,7 +11394,7 @@ function offline_conference_registration_confirmation_workshop_message($delegate
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'status', 'DATA' =>'A',  'TYP' => 's');
 			$sqlWorkshopclsf['PARAM'][]   = array('FILD' => 'id', 'DATA' =>$workShopDetails['workshop_id'],  'TYP' => 's');
 				$resWorkshopclsf = $mycms->sql_select($sqlWorkshopclsf);		
-			$workshopDetails .=  '<tr>
+			$workshopDetails = '<tr>
 					<td colspan="2"  style="padding: 20px;">
 						<p style="margin: 0;font-size: 18px;font-weight: 400;color: #4e4e4e;">Workshop Registration</p>
 						<p style="margin-bottom: 0;margin-top: 1px;font-size: 22px;color: #3f3f3f;font-weight: 500;font-style: italic;">
@@ -12578,7 +11490,7 @@ function offline_conference_registration_confirmation_workshop_message($delegate
 									</tr>
 									<tr>
 										<td style="padding: 15px;">Your reservation</td>
-										<td style="padding: 15px; color: #272727;"> ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
+										<td style="padding: 15px; color: #272727;">1 night, ' . getAccomPackageName($accommodationDetails['BOOKING_DETAILS']['package_id']) .'</td>
 									</tr>
 									
 									<tr>
@@ -12639,7 +11551,7 @@ function offline_conference_registration_confirmation_workshop_message($delegate
 			$invoiceMode = $invoiceItem['invoice_mode'];
 		}
 		if (isset($invoiceItem['internet_handling_amount'])) {
-			$internetHandling += $invoiceItem['internet_handling_amount'];
+			$internetHandling = $invoiceItem['internet_handling_amount'];
 		}
 
 		if ($invoiceItem['service_type'] == "DELEGATE_CONFERENCE_REGISTRATION") {
@@ -12803,7 +11715,7 @@ function offline_conference_registration_confirmation_workshop_message($delegate
 							Total price
 						</td>
 						<td style="text-align: right; width: 50%; padding: 5px 20px; padding-bottom: 20px; font-weight: 700; font-size: 20px;">
-							₹ ' .$slipAmount . '
+							₹ ' . number_format(ceil($totalPrice), 0) . '
 						</td>
 					</tr>
 

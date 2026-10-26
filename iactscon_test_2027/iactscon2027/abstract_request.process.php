@@ -143,34 +143,11 @@ switch ($act) {
 		$mycms->redirect("webmaster/abstract_submited.php");
 		exit();
 		break;
-	case 'editAbstractFileFront':
-    try {
-        $details = editAbstractFileProcessFront();
-
-        if (!empty($_POST['is_ajax'])) {
-            header('Content-Type: application/json');
-            echo json_encode([
-                'status'   => 'success',
-                'redirect' => 'abstract.updation.notification.php?Submissionid=' . $details
-            ]);
-            exit();
-        }
-
-        $mycms->redirect("abstract.updation.notification.php?Submissionid=" . $details);
-        exit();
-
-    } catch (Exception $e) {
-        if (!empty($_POST['is_ajax'])) {
-            header('Content-Type: application/json');
-            echo json_encode([
-                'status'  => 'error',
-                'message' => 'Something went wrong. Please try again.'
-            ]);
-            exit();
-        }
-        throw $e; // fall back to normal error handling for non-ajax requests
-    }
-    break;
+		case 'editAbstractFileFront':
+		$casereportSubmission = editAbstractFileProcessFront();
+		$mycms->redirect("abstract.updation.notification.php?Submissionid=" . $casereportSubmission);
+		exit();
+		break;
 	case 'caseReportSubmission':
 		$casereportSubmission = caseReportSubmission($mycms, $cfg);
 		$mycms->redirect("abstract.submission.notification.php?Submissionid=" . $casereportSubmission);
@@ -3087,7 +3064,7 @@ function editAbstractFileProcessFront()
 		$abstract_coauthor_edit_first_name    = $_REQUEST['abstract_coauthor_edit_first_name'][$keyCoAuthor];
 		$abstract_coauthor_edit_middle_name   = $_REQUEST['abstract_coauthor_edit_middle_name'][$keyCoAuthor];
 		$abstract_coauthor_edit_last_name    = $_REQUEST['abstract_coauthor_edit_last_name'][$keyCoAuthor];
-		$abstract_coauthor_edit_address    =  addslashes(trim($_REQUEST['abstract_coauthor_edit_address'][$keyCoAuthor]));
+		$abstract_coauthor_edit_address    = $_REQUEST['abstract_coauthor_edit_address'][$keyCoAuthor];
 		$abstract_coauthor_pincode    = $_REQUEST['abstract_coauthor_pincode'][$keyCoAuthor];
 	    $abstract_coauthor_edit_name = $abstract_coauthor_edit_title . " " . $abstract_coauthor_edit_first_name ." " . $abstract_coauthor_edit_middle_name . " " . $abstract_coauthor_edit_last_name;
 

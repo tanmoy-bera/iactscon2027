@@ -316,24 +316,6 @@ include_once("header.php");
         </div>
     </div>
     <?php
-    }else if(empty($paymentStatus) && $totalRoundPrc <= 0){
-    ?>
-    <div class="success_page_inner success">
-        <img src="images/regifail.png" alt="" class="success_page_bk">
-        <div class="success_page_box">
-            <img src="<?=$success_image?>" alt="">
-            <h3>Registration Successfull</h3>
-            <?php
-             $find = ['[USER]', '[AMOUNT]','[CONF_NAME]', '[UNIQUE_ID]', '[REG_ID]'];
-
-                  $replacement = [$userDetails['user_full_name'], $totalRoundPrc, $cfg['EMAIL_CONF_NAME'], $userDetails['user_unique_sequence'], $userDetails['user_registration_id']];
-            ?>
-             <div class="success_btn_class">
-               <a href="profile.php" class="note-btns" target="blank" >Visit Profile<?php view() ?></a>
-            </div>
-        </div>
-    </div>
-    <?php
     }else if(empty($paymentStatus) && !empty($userDetails['user_full_name'])){
     ?>
     <div class="success_page_inner fail">

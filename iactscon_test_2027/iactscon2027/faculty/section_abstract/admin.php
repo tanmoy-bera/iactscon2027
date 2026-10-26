@@ -372,16 +372,13 @@ function abstractListingDisplayWindow($cfg, $mycms)
 							<h4><span><b>Abstract Title</b></span><br><?= $rowAbstractDetails['abstract_title'] ?></h4>
 							<h5><span><b>Status</b></span><br>
 								<?php
-								$reviewGrade = getReviewerGrade($rowAbstractDetails['id'], $loggedUserID);
-
-								if ($reviewGrade != '') {
-									echo "<b>" . htmlspecialchars($reviewGrade) . "</b>";
-								} elseif (trim($rowReviewMarks['totalMarksObtained']) != '') {
-									echo "<b>" . $rowReviewMarks['totalMarksObtained'] . "</b>";
+								if (trim($rowReviewMarks['totalMarksObtained']) != '') {
+									echo "<b>" . $rowReviewMarks['totalMarksObtained'] . '</b>';
 								} else {
-									echo "Not Reviewed";
+								?>Not Reviewed
+							<?php
 								}
-								?>
+							?>
 							</h5>
 							<h6>
 								<?php

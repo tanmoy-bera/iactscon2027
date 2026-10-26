@@ -476,37 +476,17 @@ function abstractReviewDisplayPanel($abstractId, $abstractResultSet)
 									$cls = '#FFC7C6';
 								}
 							?>
-								<?php
-								$optRow  = $resultReviewCategory[0];
-								$isGrade = (($optRow['category'] ?? '') === 'Grade');
-
-								if ($isGrade) {                       // Grade -> submit the grade, marks = 0
-									$optLabel = $optRow['score'];
-									$optMarks = 0;
-									$style= "width:50%";
-								} elseif ($optRow['score'] == -1) {   // NA
-									$optLabel = $optRow['category'];
-									$optMarks = 0;
-								} else {                              // Score
-									$optLabel = $optRow['score'];
-									$optMarks = $optRow['score'];
-								}
-							?>
-								<label class="score_radio" style="<?=$style?>">
-									<input type="radio"
-										name="abstract_review_option_id_inval[<?= $rowReviewCriteria['criteriaId'] ?>]"
-										id="abstract_review_option_id_inval<?= $criteriaCounter ?>"
-										operationMode="abstract_review_marks"
-										criteriaId="<?= $rowReviewCriteria['criteriaId'] ?>"
-										criteriaOptionId="<?= $optRow['id'] ?>"
-										isGrade="<?= $isGrade ? 'Y' : 'N' ?>"
-										value="<?= htmlspecialchars($optLabel) ?>@@<?= $optRow['id'] ?>"
-										<?= ($reviewResultArray[$rowReviewCriteria['criteriaId']]['CRITERIA_OPTION_ID'] == $optRow['id']) ? 'checked' : '' ?>
-										reviewMarksId="<?= $optMarks ?>"
-										required />
-									<span class="checkmark"><i><?= htmlspecialchars($optLabel) ?></i></span>
+								<label class="score_radio">
+									<input type="radio" name="abstract_review_option_id_inval[<?= $rowReviewCriteria['criteriaId'] ?>]"
+												id="abstract_review_option_id_inval<?= $criteriaCounter ?>"
+												operationMode="abstract_review_marks" criteriaId="<?= $rowReviewCriteria['criteriaId'] ?>" criteriaOptionId="<?= $resultReviewCategory[0]['id'] ?>"
+												value="<?= $resultReviewCategory[0]['score'] == -1 ? $resultReviewCategory[0]['category'] : $resultReviewCategory[0]['score'] ?>@@<?= $resultReviewCategory[0]['id'] ?>" <?= ($reviewResultArray[$rowReviewCriteria['criteriaId']]['CRITERIA_OPTION_ID'] == $resultReviewCategory[0]['id']) ? 'checked' : '' ?> reviewMarksId="<?= $resultReviewCategory[0]['score'] == -1 ? 0 : $resultReviewCategory[0]['score'] ?>"
+												 required />
+									<span class="checkmark"><i>
+										 <?= $resultReviewCategory[0]['score'] == -1 ? $resultReviewCategory[0]['category'] : $resultReviewCategory[0]['score'] ?>
+									</i></span>
 								</label>
-							<?php
+								<?php
 								$i++;
 							}
 								?>
@@ -528,10 +508,11 @@ function abstractReviewDisplayPanel($abstractId, $abstractResultSet)
 
 			<textarea placeholder="Remarks..." name="faculty_review" <?= $status == true ? 'readonly=readonly' : '' ?>
 				cols="35px" rows="5"><?= $rowReviewCriteria['faculty_review'] ?></textarea>
-            <? if (empty($isGrade)) {   ?>
+
 
 			<p>Mark Obtained: <span operationMode="abstract_review_marks_obtained" style="color: #ff384c;font-weight:bolder"><?= $obtainedFullMarks ?></span> / <?= $totalFullMarks ?></p>
-           <? } ?>
+
+
 
 
 			<style>
@@ -976,26 +957,15 @@ function abstractReviewProcess($abstractId)
 		$netMarks = 0;
 		foreach ($reviewCriteriaArray as $keyCriteria => $valReviewCriteriaId) {
 			// OPERATION RELATED OPTION VALUES
-			$scoreDetailsArray                     = explode('@@', trim($_REQUEST['abstract_review_option_id_inval'][$valReviewCriteriaId]));
-			$abstract_review_option_id             = addslashes($scoreDetailsArray[1] == '' ? '-1' : $scoreDetailsArray[1]);
-			$abstract_review_option_id_val         = addslashes($scoreDetailsArray[0]);
-			$abstract_review_option_id_val_numeric = trim(is_numeric($scoreDetailsArray[0]) ? $scoreDetailsArray[0] : 0);
+			$scoreDetailsArray 	= explode('@@', trim($_REQUEST['abstract_review_option_id_inval'][$valReviewCriteriaId]));
+			$abstract_review_option_id = addslashes($scoreDetailsArray[1] == '' ? '-1' : $scoreDetailsArray[1]);
+			$abstract_review_option_id_val 	= addslashes($scoreDetailsArray[0]);
+			$abstract_review_option_id_val_numeric 	= trim(is_numeric($scoreDetailsArray[0]) ? $scoreDetailsArray[0] : 0);
 
-			if ($abstract_review_option_id != '-1') {
-				$sqlOpt = array();
-				$sqlOpt['QUERY'] = "SELECT category, score FROM " . _DB_ABSTRACT_REVIEW_SCORE_ . "
-									WHERE id = '" . (int)$scoreDetailsArray[1] . "' LIMIT 1";
-				$resOpt = $mycms->sql_select($sqlOpt);
 
-				if ($resOpt && $resOpt[0]['category'] === 'Grade') {
-					$abstract_review_option_id_val         = addslashes($resOpt[0]['score']);
-					$abstract_review_option_id_val_numeric = '0';
-				}
-			}
-            $abstract_review_option_id_val_numeric = (string)$abstract_review_option_id_val_numeric;
 
 			if ($abstract_review_option_id_val_numeric != "") {
-               $netMarks += (float)$abstract_review_option_id_val_numeric;
+				$netMarks        += $abstract_review_option_id_val_numeric;
 
 				// INSERT ABSTRACT REVIEW RESULT DETAILS review_criteria_option_id
 				$sqlInsertReviewDetails['QUERY']     = "INSERT INTO " . _DB_ABSTRACT_REVIEW_RESULT_DETAILS_ . " 
@@ -1010,6 +980,7 @@ function abstractReviewProcess($abstractId)
 																	   `created_ip` = '" . $_SERVER['REMOTE_ADDR'] . "', 
 																	   `created_sessionId` = '" . session_id() . "', 
 																	   `created_dateTime` = '" . date('Y-m-d H:i:s') . "'";
+				// echo '<pre>'; print_r($sqlInsertReviewDetails); 
 				// echo "-----<br>";
 				$mycms->sql_insert($sqlInsertReviewDetails);
 			}
@@ -1052,26 +1023,8 @@ function abstractReviewProcess($abstractId)
 	}
 }
 
+
 /////////// DEPRECATED  //////////////
-function getReviewerGrade($abstractId, $facultyId)
-{
-    global $mycms;
-
-    $sql = array();
-    $sql['QUERY'] = "SELECT d.review_obtained_marks AS grade
-                       FROM " . _DB_ABSTRACT_REVIEW_RESULT_ . " r
-                 INNER JOIN " . _DB_ABSTRACT_REVIEW_RESULT_DETAILS_ . " d
-                         ON d.review_result_id = r.id AND d.status = 'A'
-                 INNER JOIN " . _DB_ABSTRACT_REVIEW_SCORE_ . " s
-                         ON s.id = d.review_criteria_option_id AND s.category = 'Grade'
-                      WHERE r.abstract_id = '" . (int)$abstractId . "'
-                        AND r.faculty_id  = '" . addslashes($facultyId) . "'
-                        AND r.status = 'A'
-                   ORDER BY d.id ASC";
-
-    $res = $mycms->sql_select($sql);
-    return $res ? implode(', ', array_column($res, 'grade')) : '';
-}
 
 function abstractReviewUpdatePanel_20190708($abstractId, $abstractResultSet, $status)
 {

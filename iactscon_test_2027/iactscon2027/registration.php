@@ -792,7 +792,7 @@ $blurclass = count($userRec) > 0 ? "" : "blur_bw";
 
                         <label class="cus_check regi_category <?= $disableClass ?>" data-aos="fade-up" data-aos-delay="0">
                           <!-- IMPORTANT: Keep original name/id for jQuery support -->
-                          <input type="radio" name="registration_classification_id[]" onclick="toggleMemberField(this)" onchange="setRegistration(this.value)" id="registration_classification_id" operationMode="registration_tariff" operationModeType="conference" reg="reg" value="<?= $registrationDetailsVal['REG_CLASSIFICATION_ID'] ?>" currency="<?= $registrationDetailsVal['CURRENCY'] ?>" amount="<?= $registrationDetailsVal['AMOUNT'] ?>" invoiceTitle="Registration" invoiceName="<?= $registrationDetailsVal['CLASSIFICATION_TITTLE'] ?>" <?= $disableClass ?> icon="<?= $icon ?>" data-has-checkbox-desc="<?= !empty(trim($registrationDetailsVal['CHECKBOX_DESCRIPTION'] ?? '')) ? '1' : '0' ?>">
+                          <input type="radio" name="registration_classification_id[]" onclick="toggleMemberField(this)" onchange="setRegistration(this.value)" id="registration_classification_id" operationMode="registration_tariff" operationModeType="conference" reg="reg" value="<?= $registrationDetailsVal['REG_CLASSIFICATION_ID'] ?>" currency="<?= $registrationDetailsVal['CURRENCY'] ?>" amount="<?= $registrationDetailsVal['AMOUNT'] ?>" invoiceTitle="Registration" invoiceName="<?= $registrationDetailsVal['CLASSIFICATION_TITTLE'] ?>" <?= $disableClass ?> icon="<?= $icon ?>">
 
                               <!-- <img src="<?= $icon ?>" -->
                           <span class="checkmark">
@@ -811,88 +811,6 @@ $blurclass = count($userRec) > 0 ? "" : "blur_bw";
                               <input type="text" name="membership_number" validate="Please Enter Member Id">
                             </div>
                           </div>
-                          <?php if (!empty(trim($registrationDetailsVal['CHECKBOX_DESCRIPTION'] ?? ''))) { ?>
-                          <div class="regi_category_checkbox_note d-none"
-                              data-classification-id="<?= $registrationDetailsVal['REG_CLASSIFICATION_ID'] ?>"
-                              onclick="event.stopPropagation();">
-                              <label class="regi_note_label">
-                                  <input type="checkbox"
-                                        class="category_terms_checkbox"
-                                        name="category_terms_checkbox[<?= $registrationDetailsVal['REG_CLASSIFICATION_ID'] ?>]"
-                                        value="1"
-                                        data-classification-id="<?= $registrationDetailsVal['REG_CLASSIFICATION_ID'] ?>">
-                                  <span class="regi_checkbox_note_text"><?= htmlspecialchars($registrationDetailsVal['CHECKBOX_DESCRIPTION']) ?></span>
-                              </label>
-                          </div>
-                      <?php } ?>
-                      <style>
-                      /* Wrapper: sits below the card with breathing room */
-                      .regi_category_checkbox_note {
-                          margin: 8px 0 0;
-                          padding: 0 4px;
-                      }
-
-                      /* Checkbox and text on one line */
-                      .regi_note_label {
-                          display: flex;
-                          align-items: flex-start;
-                          gap: 10px;
-                          margin: 0;
-                          cursor: pointer;
-                      }
-
-                      /* Small custom checkbox */
-                      .regi_note_label .category_terms_checkbox {
-                          -webkit-appearance: none;
-                          appearance: none;
-                          box-sizing: border-box;
-                          position: relative;
-                          display: inline-block;
-                          opacity: 1;
-                          flex: 0 0 16px;
-                          width: 16px;
-                          height: 16px;
-                          margin: 2px 0 0;
-                          padding: 0;
-                          border: 1.5px solid rgba(255, 255, 255, 0.65);
-                          border-radius: 3px;
-                          background: transparent;
-                          cursor: pointer;
-                          transition: background .15s, border-color .15s;
-                      }
-
-                      /* Checked state: filled box */
-                      .regi_note_label .category_terms_checkbox:checked {
-                          background: #7fb3ff;          /* match your theme's accent */
-                          border-color: #7fb3ff;
-                      }
-
-                      /* Tick inside the box */
-                      .regi_note_label .category_terms_checkbox:checked::after {
-                          content: "";
-                          position: absolute;
-                          left: 4px;
-                          top: 0;
-                          width: 4px;
-                          height: 9px;
-                          border: solid #0a2a55;        /* tick colour, dark so it shows on the light fill */
-                          border-width: 0 2px 2px 0;
-                          transform: rotate(45deg);
-                      }
-
-                      /* Focus ring for keyboard users */
-                      .regi_note_label .category_terms_checkbox:focus-visible {
-                          outline: 2px solid #7fb3ff;
-                          outline-offset: 2px;
-                      }
-
-                      .regi_note_label .regi_checkbox_note_text {
-                          flex: 1;
-                          font-size: 14px;
-                          line-height: 1.4;
-                          color: #fff;
-                      }
-                        </style>
                         </label>
 
                   <?php
@@ -935,35 +853,7 @@ $blurclass = count($userRec) > 0 ? "" : "blur_bw";
                           <a class="text_danger text_danger_clear" style="cursor: pointer;">Clear Choise</a>
                       </div> -->
                   </div>
-                 
-
-                  <div class="registration_right_body_tab">
-                    <div id="hotelDateStore" style="display:none;"></div>
-                        <div class="hotel_link_owl owl-carousel owl-theme">
-
-                  <?php
-                        if (count($resultFetchHotel)) {
-                            foreach ($resultFetchHotel as $k => $val) {
-                                $sqlValidHotel = array();
-                                $sqlValidHotel['QUERY'] = "SELECT 1 FROM " . _DB_TARIFF_ACCOMMODATION_ . "
-                                                          WHERE status = ? AND tariff_cutoff_id = ? AND hotel_id = ? AND inr_amount > 0 LIMIT 1";
-                                $sqlValidHotel['PARAM'][] = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
-                                $sqlValidHotel['PARAM'][] = array('FILD' => 'tariff_cutoff_id', 'DATA' => $currentCutoffId, 'TYP' => 's');
-                                $sqlValidHotel['PARAM'][] = array('FILD' => 'hotel_id', 'DATA' => $val['id'], 'TYP' => 's');
-                                $hotelHasValidAmount = $mycms->sql_select($sqlValidHotel);
-                              
-                                if (empty($hotelHasValidAmount)) {
-                                    continue;
-                                }
-                        ?>
-                                <button class="active hotel_tab_btn" data-tab="<?= $val['id'] ?>" data-notes="<?= htmlspecialchars($val['hotel_notes'] ?? '', ENT_QUOTES) ?>"><?= $val['hotel_name'] ?><span><i class="fa-solid fa-star"></i><?=$val['hotelRatings']?></span></button>
-                        <?php
-                            }
-                        }
-                        ?>
-                      </div>
-                  </div>
-                   <div
+                  <div
                       class="registration_right_body_head registration_right_body_sub_head accommodation_body_head">
                       <!-- <div class="registration_right_body_head_left">
                           <span><?php hotel() ?></span>
@@ -1077,6 +967,33 @@ $blurclass = count($userRec) > 0 ? "" : "blur_bw";
                                   </div>
                               </div> -->
                           </div>
+                      </div>
+                  </div>
+
+                  <div class="registration_right_body_tab">
+                    <div id="hotelDateStore" style="display:none;"></div>
+                        <div class="hotel_link_owl owl-carousel owl-theme">
+
+                  <?php
+                        if (count($resultFetchHotel)) {
+                            foreach ($resultFetchHotel as $k => $val) {
+                                $sqlValidHotel = array();
+                                $sqlValidHotel['QUERY'] = "SELECT 1 FROM " . _DB_TARIFF_ACCOMMODATION_ . "
+                                                          WHERE status = ? AND tariff_cutoff_id = ? AND hotel_id = ? AND inr_amount > 0 LIMIT 1";
+                                $sqlValidHotel['PARAM'][] = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
+                                $sqlValidHotel['PARAM'][] = array('FILD' => 'tariff_cutoff_id', 'DATA' => $currentCutoffId, 'TYP' => 's');
+                                $sqlValidHotel['PARAM'][] = array('FILD' => 'hotel_id', 'DATA' => $val['id'], 'TYP' => 's');
+                                $hotelHasValidAmount = $mycms->sql_select($sqlValidHotel);
+                              
+                                if (empty($hotelHasValidAmount)) {
+                                    continue;
+                                }
+                        ?>
+                                <button class="active hotel_tab_btn" data-tab="<?= $val['id'] ?>" data-notes="<?= htmlspecialchars($val['hotel_notes'] ?? '', ENT_QUOTES) ?>"><?= $val['hotel_name'] ?><span><i class="fa-solid fa-star"></i><?=$val['hotelRatings']?></span></button>
+                        <?php
+                            }
+                        }
+                        ?>
                       </div>
                   </div>
                   <div class="registration_right_body_content accommodation_body_content">
@@ -1566,7 +1483,7 @@ $blurclass = count($userRec) > 0 ? "" : "blur_bw";
                   $sql_cal['QUERY']  =  "SELECT DISTINCT `workshop_date`
                                           FROM " . _DB_WORKSHOP_CLASSIFICATION_ . " 
                                           WHERE status = 'A' 
-                                          ORDER BY `workshop_date` ASC";
+                                          ORDER BY `display` ASC";
                   $res_cal = $mycms->sql_select($sql_cal);
                   foreach ($res_cal as $key => $rowsl) {
                   ?>
@@ -1931,16 +1848,6 @@ $blurclass = count($userRec) > 0 ? "" : "blur_bw";
                     </ul>
                   </div>
                   <div class="review_right">
-                     <div id="complimentaryMessage" style="display: none;">
-                      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 350px; padding: 40px 20px; text-align: center;">
-                          <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(83, 200, 232, 0.1); border: 2px solid var(--sky); display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-                              <i class="fal fa-check" style="font-size: 36px; color: var(--sky);"></i>
-                          </div>
-                          <h4 style="color: var(--sky); margin-bottom: 12px; font-size: 20px; font-weight: 600;">Complimentary Registration</h4>
-                          <p style="color: #aaa; max-width: 320px; line-height: 1.6; margin: 0;">No payment is required for your selection.</p>
-                          <input type="radio" name="payment_mode" value="Complimentary" hidden>
-                      </div>
-                  </div>
                   <div class="review_tab">
                     <div class="hotel_link_owl owl-carousel owl-theme">
                      <input type="hidden" name="registrationMode" id="registrationMode">
@@ -3401,36 +3308,19 @@ document.addEventListener("DOMContentLoaded", function() {
       var isValid = true;
       if (current_fs.hasClass("category")) {
 
-          // check if any category is selected
-          if (!current_fs.find("input[name='registration_classification_id[]']:checked").length) {
+        // check if any category is selected
+        if (!current_fs.find("input[name='registration_classification_id[]']:checked").length) {
 
-              toastr.error('Please select a category', 'Error', {
-                  progressBar: true,
-                  timeOut: 3000,
-                  showMethod: "slideDown",
-                  hideMethod: "slideUp"
-              });
+          toastr.error('Please select a category', 'Error', {
+            progressBar: true,
+            timeOut: 3000,
+            showMethod: "slideDown",
+            hideMethod: "slideUp"
+          });
 
-              isValid = false;
-          } else {
-              // Check if the selected category has a mandatory checkbox note
-              var $selectedCat = current_fs.find("input[name='registration_classification_id[]']:checked");
-              var selectedCatId = $selectedCat.val();
-              var $note = current_fs.find('.regi_category_checkbox_note[data-classification-id="' + selectedCatId + '"]');
-              
-              if ($note.length && !$note.hasClass('d-none')) {
-                  var $cb = $note.find('.category_terms_checkbox');
-                  if (!$cb.is(':checked')) {
-                      toastr.error('Please check the acknowledgement/terms for the selected category', 'Error', {
-                          progressBar: true,
-                          timeOut: 3000,
-                          showMethod: "slideDown",
-                          hideMethod: "slideUp"
-                      });
-                      isValid = false;
-                  }
-              }
-          }
+          isValid = false;
+          // return false; // ⛔ stop Continue
+        }
       }
       if (current_fs.hasClass("accomodationFindset")) {
 
@@ -4619,46 +4509,5 @@ $(document).on('click', '.regi_category.disabled', function(e) {
         alert('This option is only for Faculty members.');
     }
 });
-// Show/hide the checkbox note based on selected category
-$(document).on('change', "input[type=radio][operationMode=registration_tariff]", function() {
-    var $this = $(this);
-    var classificationId = $this.val();
-    var hasCheckboxDesc = $this.data('has-checkbox-desc') == 1;
-    
-    // Hide all checkbox notes first
-    $('.regi_category_checkbox_note').addClass('d-none');
-    // Uncheck all category terms checkboxes
-    $('.category_terms_checkbox').prop('checked', false);
-    
-    if ($this.is(':checked') && hasCheckboxDesc) {
-        // Show the note for this specific classification
-        $('.regi_category_checkbox_note[data-classification-id="' + classificationId + '"]')
-            .removeClass('d-none');
-    }
-});
-
-// Validation: prevent continue if a category is selected but its terms checkbox isn't checked
-function validateCategoryCheckbox() {
-    var $selected = $("input[name='registration_classification_id[]']:checked");
-    if (!$selected.length) return true; // no category selected, other validation handles this
-    
-    var classificationId = $selected.val();
-    var $note = $('.regi_category_checkbox_note[data-classification-id="' + classificationId + '"]');
-    
-    if ($note.length && !$note.hasClass('d-none')) {
-        // This classification has a checkbox note - check if it's checked
-        var $cb = $note.find('.category_terms_checkbox');
-        if (!$cb.is(':checked')) {
-            toastr.error('Please accept the terms/conditions for the selected category', 'Error', {
-                progressBar: true,
-                timeOut: 3000,
-                showMethod: "slideDown",
-                hideMethod: "slideUp"
-            });
-            return false;
-        }
-    }
-    return true;
-}
 </script>
 </html>

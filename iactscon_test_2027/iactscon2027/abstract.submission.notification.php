@@ -200,7 +200,7 @@ $SuccessImg = _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $resultSuccessImg
                 <div class="note-details">
 
                   <?php
-                  $find = ['[USER]', '[REF_NO]', '[CATEGORY]', '[ABSTRACT_TITLE]', '[ABSTRACT.SUBMIT.LASTDATE]', '[REPLY_EMAIL]'];
+                  $find = ['[USER]', '[REF_NO]', '[CATEGORY]', '[ABSTRACT_TITLE]', '[ABSTRACT_CONFIRMATION_DATE]', '[REPLY_EMAIL]'];
                   $replacement = [
                     $rowUserDetails['user_full_name'],
                     $_REQUEST['Submissionid'],
@@ -236,7 +236,7 @@ $SuccessImg = _BASE_URL_ . $cfg['EMAIL.HEADER.FOOTER.IMAGE'] . $resultSuccessImg
           <img src="<?=$success_image?>" alt="">
           <h3>Abstract Submission Successfull!</h3>
             <?php
-                  $find = ['[USER]', '[REF_NO]', '[CATEGORY]', '[ABSTRACT_TITLE]', '[ABSTRACT.SUBMIT.LASTDATE]', '[REPLY_EMAIL]'];
+                  $find = ['[USER]', '[REF_NO]', '[CATEGORY]', '[ABSTRACT_TITLE]', '[ABSTRACT_CONFIRMATION_DATE]', '[REPLY_EMAIL]'];
                   $replacement = [
                     $rowUserDetails['user_full_name'],
                     $_REQUEST['Submissionid'],
