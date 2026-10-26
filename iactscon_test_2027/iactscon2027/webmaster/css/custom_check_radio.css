@@ -25,9 +25,9 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: transparent;
+    background-color: var(--darkhover);
     border: 1px solid var(--border1);
-    border-radius: 5px;
+    border-radius: 10px;
     line-height: 34px;
     text-align: center;
     display: inline-block;

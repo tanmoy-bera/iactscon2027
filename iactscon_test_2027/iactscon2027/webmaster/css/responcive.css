@@ -79,7 +79,7 @@
     .pg_shdl_action .partidipent_grp,
     .progress-value,
     .noti_drop ul li p {
-        font-size: 14px;
+        font-size: 14px !important;
     }
 
     .dash_top_right_box h6,
@@ -655,9 +655,15 @@
 
     .registration_btn_wrap button,
     .quick_add_resp button[type="submit"],
-    .side_form_btn {
-        padding: 11px 19px;
-        font-size: 16px;
+    .side_form_btn,
+    .real_time_portal a,
+    .venue_box_bottom a,
+    .venue_hall_top a,
+    .venue_guid_bottom_head a,
+    .theme_con_box p,
+    .image_box_bottom button {
+               padding: 8px 15px;
+        font-size: 14px;
     }
 
     .noti_drop ul li span {
@@ -674,6 +680,287 @@
         font-size: 15px;
         padding: 11px;
         gap: 11px;
+    }
+
+    .overview_grid_box h2 {
+        font-size: 24px;
+    }
+
+    .overview_grid_box h3 {
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+    .overview_grid_box n {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .overview_grid_box l {
+        font-size: 14px;
+        line-height: 21px;
+    }
+
+    .app_stup_index ul li p n {
+        font-size: 16px;
+    }
+
+    .app_stup_index ul li p g,
+    .real_time_portal h6 {
+        font-size: 14px;
+    }
+
+    .app_stup_index ul li span,
+    .venue_hall_top h5 n {
+        font-size: 17px;
+    }
+
+    .app_heading,
+    .overvire_top_mid p,
+    .id_card_content_top h6 {
+        font-size: 18px;
+    }
+
+    .overview_grid_box n i {
+        font-size: 21px;
+    }
+
+    .overvire_top_mid h2 {
+        font-size: 39px;
+        margin-bottom: 15px;
+    }
+
+    .overvire_top_mid f,
+    .venue_hall_top h5 l {
+        font-size: 15px;
+    }
+
+    .overvire_top_mid h6 l {
+        font-size: 15px;
+        padding: 8px 18px;
+        padding-left: 30px;
+    }
+
+    .overvire_top_mid h6 l::before {
+        width: 8px;
+        top: 12px;
+    }
+
+    .overvire_top_mid h6 n {
+        font-size: 15px;
+        padding: 8px 18px;
+    }
+
+    .overvire_top a,
+    .app_setup_top_right a {
+        font-size: 14px;
+        gap: 11px;
+        padding: 8px 17px;
+    }
+
+    .app_setup_top_left h3 {
+        font-size: 36px;
+    }
+
+    .app_setup_top_left p {
+        font-size: 16px;
+    }
+
+    .app_setup_top_left h5,
+    .real_time_portal_heading n,
+    .venue_guide_box ul li p n {
+        font-size: 17px;
+    }
+
+    .app_setup_top_left h5 span {
+        width: 42px;
+        font-size: 19px;
+    }
+
+    .app_tab_btn li {
+        font-size: 15px;
+        padding: 11px 20px;
+    }
+
+    .app_setup_top_right h5 n l {
+        font-size: 17px;
+        gap: 10px;
+    }
+
+    .app_setup_top_right h5 n g,
+    .real_time_portal_body_mid,
+    .committee_box_mid p,
+    .committee_box ul li,
+    .quizques li,
+    .push_noti_right_botttom_body_box span,
+    .feature_box_bottom,
+    .image_box h6,
+    .id_card_content_bottom p {
+        font-size: 14px;
+    }
+
+    .app_setup_top_right h5 {
+        padding: 12px !important;
+        width: 400px;
+    }
+
+    .app_setup_top_right h5 span {
+        width: 50px;
+    }
+
+    .real_time_portal_body_bottom li n,
+    .real_time_portal_body_head h5 n,
+    .real_time_portal_body_bottom li,
+    .committee_box_mid h6,
+    .push_noti_right_botttom_body_box p n,
+    .push_noti_right_grid_box span,
+    .executiver_grid_box_top p l,
+    .exexcutivestats_bottom ul li,
+    .feature_box_top h5 l,
+    .theme_con_box h5 n g,
+    .theme_con_box h6,
+    .image_box p,
+    .venue_guide_box ul li p g,
+    .venue_guid_bottom ul li span,
+    .quizliveques li span {
+        font-size: 15px;
+    }
+
+    .real_time_portal_body_head h5 l {
+        font-size: 27px;
+    }
+
+    .real_time_portal_body_head h5 g,
+    .venue_box_top h5 l {
+        font-size: 16px;
+    }
+
+    .real_time_portal_body_head span {
+        width: 72px;
+    }
+
+    .real_time_portal_heading l {
+        font-size: 13px;
+        padding: 6px 13px;
+    }
+
+    .venue_box_top h5 n {
+        font-size: 20px;
+    }
+
+    .venue_box_bottom p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    .venue_box_top_right button {
+        font-size: 14px;
+        padding: 8px 11px;
+    }
+
+    .venue_box_bottom ul {
+        padding: 15px !important;
+        font-size: 15px;
+    }
+
+    .venue_box_bottom ul li i,
+    .executiver_grid_box_bottom {
+        font-size: 14px;
+    }
+
+    .venue_box_top_right {
+        width: 163px;
+    }
+
+    .committee_box_mid h5,
+    .feature_box_top h5 n,
+    .theme_con_box h5 n l,
+    .id_card_content_top h5 {
+        font-size: 19px;
+    }
+
+    .committee_box_mid span {
+        font-size: 13px;
+        line-height: 20px;
+    }
+
+    .committee_box_top span {
+        width: 80px;
+    }
+
+    .committee_filter ul button {
+        font-size: 15px;
+        padding: 7px 12px;
+    }
+
+    .push_noti_right_grid_box p,
+    .executiver_grid_box_top p n {
+        font-size: 24px;
+    }
+
+    .push_noti_right_botttom_body_box h6 {
+        font-size: 13px;
+    }
+
+    .executiver_grid_box_top span {
+        width: 50px;
+        font-size: 21px;
+    }
+
+    .feature_box p {
+        font-size: 14px;
+        line-height: 21px;
+    }
+
+    .feature_box_bottom a {
+        font-size: 12px;
+        padding: 6px 13px;
+    }
+
+    .feature_box_top span {
+        width: 50px;
+        font-size: 21px;
+    }
+
+    .theme_con_box h6 l {
+        font-size: 14px;
+        padding: 8px 13px;
+    }
+
+    .image_box_top span {
+        font-size: 13px;
+        padding: 3px 10px;
+    }
+
+    .image_box_top {
+        height: 175px;
+    }
+
+    .id_card_content_top n {
+        font-size: 16px;
+    }
+
+    .id_card_content {
+        width: 400px;
+    }
+
+    .id_card_content_top l {
+        font-size: 16px;
+        padding: 7px 15px;
+    }
+
+    .id_card_content_top {
+        padding: 62px 57px;
+    }
+
+    .push_noti_right_botttom_body_box p l {
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    .push_noti_top span {
+        font-size: 12px;
+        padding: 6px 15px;
     }
 }
 
@@ -841,6 +1128,7 @@
     :root {
         --login-right: 320px;
         --gap: 10px;
+        --cominline: 2;
     }
 
     .d-mob {
@@ -1129,32 +1417,318 @@
     .spot_new_right .registration-pop_body_box_inner .side_form_btn {
         margin-top: var(--p20);
     }
+
     .deliver_box_wrap {
-    flex-direction: column;
-}
-.deliver_box_left h5 {
-    font-size: 13px;
-}
-.deliver_box_left p {
-    font-size: 11px;
-}
-.deliver_box_left span {
-    font-size: 10px;
-}
-.regi_search_wrap .regi_search_wrap_btn_box a {
-    height: 38px;
-}
-.regi_search_wrap .regi_search_wrap_btn_box a.add {
-    font-size: 12px;
-    padding: 5px 13px;
-}
-.page_top_wrap_right {
-    flex-wrap: wrap;
-}
-.abstract_details_box ul {
-    grid-template-columns: repeat(1, minmax(0px, 1fr));
-}
-.page_top_wrap .breadcrumb-item.active {
-    font-size: 16px;
-}
+        flex-direction: column;
+    }
+
+    .deliver_box_left h5 {
+        font-size: 13px;
+    }
+
+    .deliver_box_left p {
+        font-size: 11px;
+    }
+
+    .deliver_box_left span {
+        font-size: 10px;
+    }
+
+    .regi_search_wrap .regi_search_wrap_btn_box a {
+        height: 38px;
+    }
+
+    .regi_search_wrap .regi_search_wrap_btn_box a.add {
+        font-size: 12px;
+        padding: 5px 13px;
+    }
+
+    .page_top_wrap_right {
+        flex-wrap: wrap;
+    }
+
+    .abstract_details_box ul {
+        grid-template-columns: repeat(1, minmax(0px, 1fr));
+    }
+
+    .page_top_wrap .breadcrumb-item.active {
+        font-size: 16px;
+    }
+
+    .overview_grid {
+        flex-direction: column;
+    }
+
+    .app_stup_index ul {
+        grid-template-columns: 1fr;
+    }
+
+    .app_setup_top {
+        padding: 14px;
+        border-radius: 16px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .app_setup_top_left h3 {
+        font-size: 22px;
+    }
+
+    .app_setup_top_left p {
+        font-size: 11px;
+    }
+
+    .app_setup_top_left h5 {
+        font-size: 12px;
+    }
+
+    .app_setup_top_left h5 span {
+        width: 30px;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+
+    .app_tab_btn li {
+        font-size: 11px;
+        border-radius: 8px;
+        padding: 6px 11px;
+        gap: 6px;
+    }
+
+    .app_setup_top_right h5 {
+        border-radius: 8px;
+        width: 100%;
+    }
+
+    .overvire_top {
+        padding: 15px;
+        border-radius: 10px;
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .app_tab_btn {
+        border-radius: 10px
+    }
+
+    .overvire_top_mid h6 {
+        margin-bottom: 10px;
+        gap: 5px;
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .overvire_top_img {
+        width: 80px;
+        border-radius: 8px;
+    }
+
+    .overview_grid_box h2 {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .overview_grid_box h3 {
+        font-size: 12px;
+        line-height: 15px;
+        margin-bottom: 8px;
+    }
+
+    .app_heading {
+        font-size: 12px;
+        display: flex;
+    }
+
+    .overvire_top_mid h2 {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+
+    .overvire_top_mid {
+        padding-right: 0;
+    }
+
+    .overvire_top_mid p {
+        font-size: 11px;
+    }
+
+    .overvire_top_mid f {
+        font-size: 11px;
+    }
+
+    .basic_grid {
+        flex-direction: column;
+    }
+
+    .id_box_right,
+    .venue_box,
+    .push_noti_right_botttom_body_box,
+    .push_noti_right_grid_box,
+    .venue_hall_top,
+    .committee_box,
+    .basic_grid_box,
+    .real_time_portal_body,
+    .app_stup_index,
+    .overview_grid_box,
+    .venue_guide_top,
+    .venue_guide_box,
+    .venue_guid_bottom,
+    .theme_box,
+    .feature_box,
+    .executiver_grid_box,
+    .exexcutivestats_bottom {
+        padding: 15px;
+        border: 1px solid var(--border1);
+        border-radius: 10px;
+        background: var(--background1);
+    }
+
+    .venue_hall_top {
+        flex-direction: column;
+        align-items: start;
+        gap: 15px;
+    }
+
+    .venue_hall_top h5 n {
+        font-size: 13px;
+    }
+
+    .venue_hall_top h5 l {
+        font-size: 11px;
+    }
+
+    .venue_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .venue_box_top {
+        align-items: end;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .venue_box_bottom ul {
+        font-size: 10px;
+        grid-template-columns: 1fr;
+    }
+
+    .committee_filter {
+        gap: 10px;
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .search_div {
+        width: 100%;
+    }
+
+    .search_div input {
+        height: 38px;
+        width: 100%;
+    }
+
+    .committee_filter ul {
+        width: 100%;
+    }
+
+    .quizques_wrap {
+        max-height: max-content;
+    }
+
+    .feature_box {
+        width: 100%;
+    }
+
+    .real_time_portal_body_head span {
+        width: 50px;
+        border-radius: 8px;
+    }
+
+    .real_time_portal_body_head h5 {
+        gap: 3px;
+    }
+
+    .real_time_portal_body_head h5 n,
+    .committee_box ul li,
+    .quizques li {
+        font-size: 10px;
+    }
+
+    .real_time_portal_body_head h5 l {
+        font-size: 18px;
+    }
+
+    .real_time_portal_body_head h5 g,
+    .venue_box_top h5 l,
+    .real_time_portal_body_bottom li,
+    .real_time_portal_heading n,
+    .committee_box_mid h6,
+    .push_noti_right_botttom_body_box p n,
+    .push_noti_right_grid_box span {
+        font-size: 11px;
+    }
+
+    .real_time_portal_body_mid {
+        border-radius: 8px;
+        padding: 9px 9px !important;
+        font-size: 11px;
+    }
+
+    .venue_box_top h5 n {
+        font-size: 14px;
+    }
+
+    .venue_box_bottom p {
+        font-size: 10px;
+        line-height: 17px;
+    }
+
+    .committee_box_top span {
+        width: 50px;
+        border-radius: 8px;
+    }
+
+    .committee_box_mid span {
+        font-size: 9px;
+        line-height: 14px;
+    }
+
+    .committee_box_mid h5 {
+        font-size: 14px;
+    }
+
+    .committee_box ul {
+        padding-top: 10px;
+        margin-top: 10px;
+        gap: 3px;
+    }
+
+    .committee_filter ul button {
+        font-size: 11px;
+        border-radius: 8px;
+        padding: 3px 7px;
+    }
+
+    .committee_filter ul {
+        padding: 3px;
+        gap: 2px;
+    }
+
+    .quizques li.ansred {
+        padding: 5px 10px;
+    }
+
+    .push_noti_right_botttom_head {
+        font-size: 12px;
+    }
+
+    .push_noti_right_grid_box p {
+        font-size: 16px;
+        margin-top: 4px;
+    }
+
+    .id_card_content_top l {
+        font-size: 11px;
+        padding: 3px 9px;
+    }
 }

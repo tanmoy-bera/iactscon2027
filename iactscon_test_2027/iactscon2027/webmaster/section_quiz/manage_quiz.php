@@ -1,820 +1,604 @@
 <?php
-include_once('includes/init.php');
-
-page_header("Quiz");
-
-$pageKey = "_pgn_";
-
-$pageKeyVal = ($_REQUEST[$pageKey] == "") ? 0 : $_REQUEST[$pageKey];
-
-@$searchString = "";
-$searchArray  = array();
-
-$searchArray[$pageKey]                 	= $pageKeyVal;
-$searchArray['start_date']       		= $_REQUEST['start_date'];
-
-foreach ($searchArray as $searchKey => $searchVal) {
-	$searchString .= "&" . $searchKey . "=" . $searchVal;
-}
+include_once("../includes/source.php");
+include_once('../includes/init.php');
+include_once('../includes/function.workshop.php');
 ?>
-<link rel="stylesheet" type="text/css" href="https://ruedakolkata.com/ccicon_2025/webmaster/util/font-awesome-4.7.0/css/font-awesome.min.css" />
-<script language="javascript" src="<?= _BASE_URL_ ?>JS/jquery.js"></script>
-<div class="container">
-	<?php
-	switch ($show) {
-		// show add window
-		case 'add':
-			addQuiz($cfg, $mycms);
-			break;
-		// show edit window	
-		case 'edit':
-			editQuiz($cfg, $mycms);
-			break;
-		// view details record
-		case 'view':
-			viewQuiz($cfg, $mycms);
-			break;
-		// show all record	
-		default:
-			showAllQuiz($cfg, $mycms);
-			break;
-	}
-	?>
-</div>
-<?php
-page_footer();
 
-/*============== SHOW ALL COUNTRY WINDOW =============*/
+<body>
+    <?php include_once("../includes/left-menu.php"); ?>
+    <header>
+        <h2>Manage Quiz</h2>
+        <?php include_once("../includes/header_right.php"); ?>
+    </header>
+    <div class="body_wrap">
+        <?php
+        $pageKey    = "_pgn_";
+        $pageKeyVal = (empty($_REQUEST[$pageKey])) ? 0 : $_REQUEST[$pageKey];
+
+        $searchString = "";
+        $searchArray  = array();
+        $searchArray[$pageKey]     = $pageKeyVal;
+        $searchArray['start_date'] = $_REQUEST['start_date'] ?? '';
+
+        foreach ($searchArray as $searchKey => $searchVal) {
+            $searchString .= "&" . $searchKey . "=" . $searchVal;
+        }
+
+        $show = $_REQUEST['show'] ?? '';
+        ?>
+
+        <div class="page_top_wrap mb-3">
+            <div class="page_top_wrap_left">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Quiz</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="#">Manage Quiz</a></li>
+                    </ol>
+                </nav>
+                <h2><?= ($show == 'add') ? 'Create New Quiz' : (($show == 'edit') ? 'Edit Quiz' : 'Quiz Listing') ?></h2>
+                <h6>Manage quizzes, halls, rounds and participation settings.</h6>
+            </div>
+            <?php if ($show == '') { ?>
+            <div class="page_top_wrap_right">
+                <a href="<?= $_SERVER['PHP_SELF'] ?>?show=add<?= $searchString ?>" class="badge_primary"><i class="fal fa-plus"></i> Create New Quiz</a>
+            </div>
+            <?php } ?>
+        </div>
+
+        <div class="com_info_wrap">
+            <div class="com_info_right" style="width:100%;">
+                <?php
+                switch ($show) {
+                    // show add window
+                    case 'add':
+                        addQuiz($cfg, $mycms);
+                        break;
+                    // show edit window
+                    case 'edit':
+                        editQuiz($cfg, $mycms);
+                        break;
+                    // view details record
+                    case 'view':
+                        if (function_exists('viewQuiz')) {
+                            viewQuiz($cfg, $mycms);
+                        }
+                        break;
+                    // show all record
+                    default:
+                        showAllQuiz($cfg, $mycms);
+                        break;
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</body>
+<?php include_once("../includes/js-source.php"); ?>
+<link rel="stylesheet" type="text/css" href="https://ruedakolkata.com/ccicon_2025/webmaster/util/font-awesome-4.7.0/css/font-awesome.min.css" />
+<script>
+    // Select/Deselect All
+    $('#check_all').on('click', function() {
+        $('.checkBoxListing').prop('checked', this.checked);
+    });
+
+    // Apply Button Click
+    $('#applyMultiActionBtn').on('click', function() {
+        let action = $('#multiOperationSelector').val();
+        let selected = $('.checkBoxListing:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (action === '') {
+            alert('Please choose an action.');
+            return;
+        }
+        if (selected.length === 0) {
+            alert('Please select at least one quiz.');
+            return;
+        }
+
+        console.log(selected);
+        // return;
+        if (confirm(`Are you sure you want to ${action} the selected quizzes?`)) {
+            $.ajax({
+                url: '<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php',
+                type: 'POST',
+                data: {
+                    act: 'MultiAction',
+                    action: action,
+                    ids: selected
+                },
+                success: function(response) {
+                    console.log(response);
+                    location.reload(); // refresh after success
+                }
+            });
+        }
+    });
+
+    // Quiz type toggle (add + edit)
+    $(document).ready(function () {
+        $('#quiz_type').on('change', function () {
+            let quizType = $('#quiz_type').val();
+            if (quizType === 'panel discussion') {
+                $('.optionalData').hide();
+            } else {
+                $('.optionalData').show();
+            }
+        });
+    });
+</script>
+</html>
+<?php
+
+/*============== SHOW ALL QUIZ WINDOW =============*/
 function showAllQuiz($cfg, $mycms)
 {
-	global $searchArray, $searchString;
-?>
-	<form name="frmCountryListing" id="frmCountryListing" action="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php" method="post">
-		<input type="hidden" name="act" id="act" value="search_country" />
-		<input type="hidden" id="excelPrintVal" name="excelPrintVal" />
-		<table width="100%" align="center" class="tborder">
-			<tr>
-				<td colspan="2" align="left" class="tcat">
-					<span style="float:left">Quiz Listing</span>
-					<span class="tsearchTool" forType="tsearchTool"></span>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="margin:0px; padding:0px;">
+    global $searchArray, $searchString;
 
-					<!-- <div class="tsearch">
-							<table width="100%">
-								<tr>
-									<td align="right">
-										Country Name:
-										<input type="text" name="start_date" id="start_date" 
-										 value="<?= $_REQUEST['start_date'] ?>" />                        
-										&nbsp;
-										<?php
-										searchStatus();
-										?>
-										<input type="submit" name="searchBtn" id="searchBtn" value="Search" class="btn btn-small btn-blue" />
-									</td>
-								</tr>
-							</table>
-						</div> -->
+    $con    = "";
+    $params = [];
+    if (!empty($_REQUEST['start_date'])) {
+        $con .= " AND DATE(`start_time`) >= ?";
+        $params[] = [
+            'FILD' => 'start_date',
+            'DATA' => $_REQUEST['start_date'],
+            'TYP'  => 's'
+        ];
+    }
 
-					<table width="100%">
-						<tr class="theader">
-							<td width="30" align="center">
-								<input name="check_all" id="check_all" targetElement="checkBoxListing"
-									type="checkbox" onclick="checkall(this);" />
-							</td>
-							<td width="50" align="center">Sl No </td>
-							<td width="100" align="left">Quiz Title</td>
-							<td width="50" align="center">Hall</td>
-							<td width="70" align="center">Start Time</td>
-							<td width="50" align="center">Quiz Status</td>
-							<!-- <td width="50" align="center">Questions</td> -->
-							<td width="50" align="center">Applicants</td>
-							<td width="50" align="center">Status</td>
-							<td width="70" align="center">Action</td>
-						</tr>
-						<?php
-						$con = "";
-						$params = [];
-						if (!empty($_REQUEST['start_date'])) {
-							$con .= " AND DATE(`start_time`) >= ?";
-							$params[] = [
-								'FILD' => 'start_date',
-								'DATA' => $_REQUEST['start_date'],
-								'TYP'  => 's'
-							];
-						}
+    $sql = [];
+    $sql['QUERY'] = "SELECT q.*, h.hall_title 
+        FROM `rcg_quizzes` AS q
+        LEFT JOIN `rcg_program_schedule_hall` AS h 
+            ON q.hall_id = h.id
+        WHERE q.`row_status` != ? 
+        $con 
+        -- AND (q.`status` = 'active' OR q.`status` = 'draft') 
+        ORDER BY q.start_time DESC";
 
-						$i = 0;
+    $sql['PARAM'][] = [
+        'FILD' => 'row_status',
+        'DATA' => 'D',
+        'TYP'  => 's'
+    ];
 
-						$sql = [];
-						// $sql['QUERY'] = "SELECT * FROM `rcg_quizzes` 
-						// 	WHERE `row_status` != ? 
-						// 	$con 
-						// 	AND (`status` = 'active' OR `status` = 'draft') 
-						// 	ORDER BY start_time DESC";
+    foreach ($params as $p) {
+        $sql['PARAM'][] = $p;
+    }
 
-						// $sql['PARAM'][] = ['FILD' => 'row_status', 'DATA' => 'D', 'TYP' => 's'];
-						$sql = [];
-						$sql['QUERY'] = "SELECT q.*, h.hall_title 
-							FROM `rcg_quizzes` AS q
-							LEFT JOIN `rcg_program_schedule_hall` AS h 
-								ON q.hall_id = h.id
-							WHERE q.`row_status` != ? 
-							$con 
-							-- AND (q.`status` = 'active' OR q.`status` = 'draft') 
-							ORDER BY q.start_time DESC";
+    $result = $mycms->sql_select_paginated($indexVal, $sql, 15, $restrt);
+    ?>
+    <form name="frmCountryListing" id="frmCountryListing" action="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php" method="post">
+        <input type="hidden" name="act" id="act" value="search_country" />
+        <input type="hidden" id="excelPrintVal" name="excelPrintVal" />
 
-						$sql['PARAM'][] = [
-							'FILD' => 'row_status',
-							'DATA' => 'D',
-							'TYP'  => 's'
-						];
+        <div class="com_info_box active" id="quizListing">
+            <div class="com_info_box_grid">
+                <div class="com_info_box_grid_box">
+                    <h5 class="com_info_box_head">
+                        <n><span class="text_primary"><i class="fal fa-question-circle"></i></span> Quiz Listing</n>
+                    </h5>
+                    <div class="com_info_box_inner">
+                        <div class="table_wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="sl">
+                                            <input name="check_all" id="check_all" targetElement="checkBoxListing" type="checkbox" />
+                                        </th>
+                                        <th class="sl">Sl No</th>
+                                        <th>Quiz Title</th>
+                                        <th>Hall</th>
+                                        <th>Start Time</th>
+                                        <th>Quiz Status</th>
+                                        <th>Applicants</th>
+                                        <th>Status</th>
+                                        <th class="action text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if ($result) {
+                                        $i = 0;
+                                        foreach ($result as $row) {
+                                            $i++;
+                                    ?>
+                                    <tr>
+                                        <td class="sl">
+                                            <input type="checkbox" name="selected_ids[]" class="checkBoxListing" forType="checkBoxListing" value="<?= $row['id'] ?>" />
+                                        </td>
+                                        <td class="sl"><?= $i + ($_REQUEST['_pgn_'] * 15) ?></td>
+                                        <td><?= htmlspecialchars($row['title']) ?></td>
+                                        <td><?= htmlspecialchars($row['hall_title'] ?? '') ?></td>
+                                        <td><?= !empty($row['start_time']) ? date('d-m-Y H:i:s', strtotime($row['start_time'])) : '--' ?></td>
+                                        <td><?= ucfirst($row['status']) ?></td>
+                                        <td>
+                                            <a href="<?= $cfg['SECTION_BASE_URL'] ?>participations.php?quiz_id=<?= $row['id'] ?>" target="_blank" class="icon_hover badge_secondary action-transparent">View</a>
+                                        </td>
+                                        <td>
+                                            <a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?act=<?= ($row['row_status'] == 'A') ? 'Inactive' : 'Active' ?>&id=<?= $row['id'] ?><?= $searchString ?>"
+                                                class="badge_padding <?= ($row['row_status'] == 'A') ? 'badge_success' : 'badge_danger' ?> w-max-con text-uppercase">
+                                                <?= ($row['row_status'] == 'A') ? 'Active' : 'Inactive' ?>
+                                            </a>
+                                        </td>
+                                        <td class="action">
+                                            <div class="action_div dropdown" role="menu" aria-label="Actions">
+                                                <button type="button" class="icon_hover badge_dark action-transparent dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><?php ellips(); ?></button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <?php if ($row['status'] !== 'completed') { ?>
+                                                        <a href="<?= $cfg['SECTION_BASE_URL'] ?>new_quiz_updated.php?quiz_id=<?= $row['id'] ?>" class="icon_hover badge_secondary action-transparent"><i class="fal fa-eye"></i> View</a>
+                                                        <?php if ($row['status'] === 'active') { ?>
+                                                        <a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?quiz_id=<?= $row['id'] ?>&act=notify_all" class="icon_hover badge_secondary action-transparent"><i class="fal fa-bell"></i> Notify All</a>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                    <a href="<?= $_SERVER['PHP_SELF'] ?>?show=edit&quiz_id=<?= $row['id'] ?><?= $searchString ?>" class="icon_hover badge_secondary action-transparent"><?php edit(); ?>Edit Details</a>
+                                                    <a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?quiz_id=<?= $row['id'] ?>&act=reset_quiz" class="icon_hover badge_secondary action-transparent"><i class="fal fa-redo"></i> Reset Quiz</a>
+                                                    <a href="<?= $cfg['SECTION_BASE_URL'] ?>participants.php?quiz_id=<?= $row['id'] ?>" class="icon_hover badge_secondary action-transparent"><i class="fal fa-users"></i> Participants</a>
+                                                    <a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?act=Remove&id=<?= $row['id'] ?><?= $searchString ?>" onclick="return confirm('Do you really want to remove this record');" class="icon_hover badge_danger action-transparent br-5 w-auto"><?php delete(); ?>Remove</a>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                        }
+                                    } else {
+                                    ?>
+                                    <tr>
+                                        <td colspan="9" align="center">
+                                            <span class="mandatory">No Record.</span>
+                                        </td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
 
-						foreach ($params as $p) {
-							$sql['PARAM'][] = $p;
-						}
-						$result = $mycms->sql_select_paginated($indexVal, $sql, 15, $restrt);
+                        <div class="page_top_wrap mt-3">
+                            <div class="page_top_wrap_left">
+                                <select name="multiOperationSelector" id="multiOperationSelector">
+                                    <option value="">Choose an action...</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Remove">Remove</option>
+                                </select>
+                                <button type="button" name="applyMultiAction" id="applyMultiActionBtn" class="badge_dark">Apply to selected</button>
+                            </div>
+                        </div>
 
-						if ($result) {
-							foreach ($result as $i => $row) {
-								@$i++;
-						?>
-								<tr class="tlisting">
-									<td align="center">
-										<!-- <input type="checkbox" name="checkvalue" id="checkvalue" forType="checkBoxListing"
-											value="" /> -->
-										<input type="checkbox" name="selected_ids[]" id="checkvalue" class="checkBoxListing" forType="checkBoxListing"
-											value="<?= $row['id'] ?>" />
-									</td>
-									<td align="center"><?= $i + ($_REQUEST['_pgn_'] * 15) ?></td>
-									<td><?= $row['title'] ?></td>
-									<td align="left"><?= $row['hall_title'] ?? '' ?></td>
-									<td align="center"><?= !empty($row['start_time']) ? date('d-m-Y H:i:s', strtotime($row['start_time'])) : '--' ?></td>
-									<td align="center"><?= ucfirst($row['status']) ?></td>
-									<!-- <td align="center"><a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_questions.php?quiz_id=<?= $row['id'] ?>" target="_blank">View</a></td> -->
-									<td align="center"><a href="<?= $cfg['SECTION_BASE_URL'] ?>participations.php?quiz_id=<?= $row['id'] ?>" target="_blank">View</a></td>
-									<td align="center">
-										<a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?act=<?= ($row['row_status'] == 'A') ? 'Inactive' : 'Active' ?>&id=<?= $row['id'] ?><?= $searchString ?>"
-											class="<?= ($row['row_status'] == 'A') ? 'ticket ticket-success' : 'ticket ticket-important' ?>"><?= ($row['row_status'] == 'A') ? 'Active' : 'Inactive' ?></a>
-									</td>
-
-									<td align="center">
-
-										<?php /* <a href="javascript:void(null);" onClick="redirectionOfLink(this)" ehref="<?= $cfg['SECTION_BASE_URL'] ?>quiz_details.php?quiz_id=<?= $row['id'] ?>">
-											<span title="View" class="icon-eye">
-										</a> */ ?>
-										<?php
-										if($row['status'] !== 'completed'){
-											?>
-										<a href="javascript:void(null);" onClick="redirectionOfLink(this)" ehref="<?= $cfg['SECTION_BASE_URL'] ?>new_quiz_updated.php?quiz_id=<?= $row['id'] ?>">
-											<span title="View" class="icon-eye"></span>
-										</a>
-										&nbsp;
-
-										<?php
-										if($row['status'] === 'active'){
-											?>
-										<a href="javascript:void(null);" onClick="redirectionOfLink(this)" ehref="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?quiz_id=<?= $row['id'] ?>&act=notify_all">
-											<span title="Notify All" class="icon-notification"></span>
-										</a>
-										&nbsp;
-										<?php } } ?>
-
-										<a href="javascript:void(null);" onClick="redirectionOfLink(this)" ehref="<?= $_SERVER['PHP_SELF'] ?>?show=edit&quiz_id=<?= $row['id'] ?><?= $searchString ?>">
-											<span src="<?= $cfg['THEME_IMAGE_PATH'] . 'edit.png' ?>" title="Edit" class="icon-pen"></span>
-
-										</a>
-										&nbsp;
-										<a href="javascript:void(null);" onClick="redirectionOfLink(this)" ehref="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?quiz_id=<?= $row['id'] ?>&act=reset_quiz">
-											<span title="Reset Quiz" class="fa fa-refresh"></span>
-
-										</a>
-										&nbsp;
-										<a href="<?= $cfg['SECTION_BASE_URL'] ?>participants.php?quiz_id=<?= $row['id'] ?>">
-											<span title="Participants" class="fa fa-users"></span>
-										</a>
-										&nbsp;
-										<a href="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php?act=Remove&id=<?= $row['id'] ?><?= $searchString ?>">
-											<span src="<?= $cfg['THEME_IMAGE_PATH'] . 'drop.png' ?>" title="Remove" class="icon-trash-stroke"
-												onClick="return confirm('Do you really want to remove this record');"></span>
-										</a>
-										<br>
-										<!-- <button type="button">
-											<a href="<?= $cfg['SECTION_BASE_URL'] ?>quiz.php" target="_blank"> Start Quiz </a>
-										</button> -->
-									</td>
-								</tr>
-							<?php }
-						} else { ?>
-							<tr>
-								<td colspan="10" align="center">
-									<span class="mandatory">No Record.</span>
-								</td>
-							</tr>
-						<?php } ?>
-					</table>
-				</td>
-			</tr>
-
-			<tr>
-				<td width="50%" align="left">
-					<select name="multiOperationSelector" id="multiOperationSelector">
-						<option value="">Choose an action...</option>
-						<option value="Active">Active</option>
-						<option value="Inactive">Inactive</option>
-						<option value="Remove">Remove</option>
-					</select>
-					<input value="Apply to selected" name="applyMultiAction" type="button"
-						class="btn btn-small btn-blue" id="applyMultiActionBtn" />
-				</td>
-				<td width="50%" align="right">
-					<a href="<?= $_SERVER['PHP_SELF'] ?>?show=add<?= $searchString ?>">Create New Quiz</a>
-				</td>
-			</tr>
-			<tr class="tfooter">
-				<td colspan="2">
-					<span class="paginationRecDisplay"><?= $mycms->paginateRecInfo($indexVal) ?></span>
-					<span class="paginationDisplay"><?= $mycms->paginate($indexVal, 'pagination') ?></span>
-				</td>
-			</tr>
-		</table>
-	</form>
-
-	<script>
-		// Select/Deselect All
-		$('#check_all').on('click', function() {
-			$('.checkBoxListing').prop('checked', this.checked);
-		});
-		// Apply Button Click
-		$('#applyMultiActionBtn').on('click', function() {
-			let action = $('#multiOperationSelector').val();
-			let selected = $('.checkBoxListing:checked').map(function() {
-				return $(this).val();
-			}).get();
-
-			if (action === '') {
-				alert('Please choose an action.');
-				return;
-			}
-			if (selected.length === 0) {
-				alert('Please select at least one quiz.');
-				return;
-			}
-
-			console.log(selected);
-			// return;
-			if (confirm(`Are you sure you want to ${action} the selected quizzes?`)) {
-				$.ajax({
-					url: 'manage_quiz.process.php',
-					type: 'POST',
-					data: {
-						act: 'MultiAction',
-						action: action,
-						ids: selected
-					},
-					success: function(response) {
-						console.log(response);
-						location.reload(); // refresh after success
-					}
-				});
-			}
-		});
-	</script>
-<?php
+                        <div class="paginationDisplay">
+                            <span class="paginationRecDisplay"><?= $mycms->paginateRecInfo($indexVal) ?></span>
+                            <span class="paginationDisplay"><?= $mycms->paginate($indexVal, 'pagination') ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <?php
 }
 
-/*================= ADD COUNTRY WINDOW ===============*/
+/*================= ADD QUIZ WINDOW ===============*/
 function addQuiz($cfg, $mycms)
 {
-	global $searchArray, $searchString;
-?>
-	<form name="frmtypeadd" method="post" action="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php" id="frmtypeadd" onsubmit="return onSubmitAction();">
-		<input type="hidden" name="act" value="add_quiz" />
-		<?php
-		foreach ($searchArray as $key => $val) {
-		?>
-			<input type="hidden" name="<?= $key ?>" id="<?= $key ?>" value="<?= $val ?>" />
-		<?php
-		}
-		?>
-		<table width="50%" class="tborder">
-			<thead>
-				<tr>
-					<td colspan="2" align="left" class="tcat">Create New Quiz</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td colspan="2" align="center" style="margin:0px; padding:0px;">
+    global $searchArray, $searchString;
 
-						<table width="100%">
-							<tr class="thighlight">
-								<td colspan="2" align="left">Quiz Details</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Quiz Type <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="quiz_type" id="quiz_type" style="width:83.6%;" required="">
-										<option value="default">Default</option>
-										<option value="panel discussion">Panel Discussion</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Quiz Title <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="text" name="title" id="title"
-										class="validate[required]" style="width:80%;" required="" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Hall <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="hall" id="hall" class="validate[required]" style="width:83.6%;" required="">
-										<option value=""> - Select - </option>
-										<?php
-										// rcg_program_schedule_hall
-										// id, hall_title, status(A, I, D)
-										$sql_hall = [];
-										$sql_hall['QUERY'] = "SELECT id, hall_title FROM rcg_program_schedule_hall 
-															WHERE status = 'A'
-															ORDER BY hall_title ASC";
-
-										$quiz_halls = $mycms->sql_select($sql_hall);
-										foreach ($quiz_halls as $i => $hall) {
-										?>
-											<option value="<?= $hall['id'] ?>"><?= $hall['hall_title'] ?></option>
-										<?php } ?>
-									</select>
-								</td>
-							</tr>
-							<tr class="optionalData">
-								<td width="40%" align="left">
-									Rounds <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="rounds" id="rounds"
-										class="validate[required]" style="width:80%;" value="1" required="" />
-								</td>
-							</tr>
-							<tr class="optionalData">
-								<td width="40%" align="left">
-									Levels <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="levels" id="levels"
-										class="validate[required]" style="width:80%;" value="1" required="" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Start Time <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="datetime-local" name="start_time" id="start_time" style="width:80%;" required="" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Answer Time(in sec.) <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="answer_time" id="answer_time" style="width:80%;" required="" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Buffer Time(in sec.) <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="buffer_time" id="buffer_time" style="width:80%;" required="" value="0" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Marks for Correct Answer
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="marks_correct" id="marks_correct" style="width:80%;" value="0" step="0.1"/>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Marks for Incorrect Answer
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="marks_incorrect" id="marks_incorrect" style="width:80%;" value="0" step="0.1"/>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Quiz Status <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="quiz_status" id="quiz_status" style="width:83.6%;" required="">
-										<option value="draft">Draft</option>
-										<option value="active">Active</option>
-										<option value="completed">Completed</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									View Leader Board <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="view_answer" id="view_answer" style="width:83.6%;" required="">
-										<option value="end">At The End of The Quiz</option>
-										<option value="question">After Each Question</option>
-										<option value="level">After Each Level</option>
-										<option value="round">After Each Round</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Seat Limit <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="seat_limit" id="seat_limit" style="width:80%;" required="" value="0" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Application Closing Time <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="datetime-local" name="application_close_time" id="application_close_time" style="width:80%;" required=""/>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Application Status <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="application_status" id="application_status" style="width:83.6%;" required="">
-										<option value="active">Active</option>
-										<option value="closed">Closed</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Participation Type <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="participation_type" id="participation_type" style="width:83.6%;" required="">
-										<option value="solo" selected>Solo</option>
-										<option value="group">Group</option>
-										<option value="both">Both</option>
-									</select>
-								</td>
-							</tr>
-							<tr class="thighlight">
-								<td width="100%" align="left" colspan="2">
-									Joining instructions
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Show QR Code <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="radio" value="yes" name="enable_qr">
-									<label for="">Yes</label>
-									&nbsp;
-									<input type="radio" value="no" name="enable_qr" checked>
-									<label for="">No</label>
-								</td>
-							</tr>
-							<?php
-							/*
-							<tr>
-								<td width="40%" align="left">
-									Show instructions bar <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="radio" value="yes" name="enable_instruction_bar">
-									<label for="">Yes</label>
-									&nbsp;
-									<input type="radio" value="no" name="enable_instruction_bar" checked>
-									<label for="">No</label>
-								</td>
-							</tr>
-							*/ ?>
-							
-						</table>
-
-					</td>
-				</tr>
-				<tr>
-					<td width="40%"></td>
-					<td align="left">
-						<a href="<?= $_SERVER['PHP_SELF'] ?>?pageno=<?= $_REQUEST['pageno'] ?>">
-							<input type="button" name="BackAdd" id="BackAdd" value="Back" class="btn btn-small btn-red" /></a>
-						&nbsp;
-						<input type="submit" name="Save2" id="Save2" value="Save" class="btn btn-small btn-blue" />
-					</td>
-				</tr>
-				<tr class="tfooter">
-					<td colspan="2">&nbsp;</td>
-				</tr>
-			</tbody>
-		</table>
-	</form>
-	<script>
-		$(document).ready(function(){
-			$('#quiz_type').on('change', function(){
-				let quizType = $('#quiz_type').val();
-				if(quizType === 'panel discussion') {
-					$('.optionalData').hide();
-				} else {
-					$('.optionalData').show();
-				}
-			});
-		});
-	</script>
-<?php
+    // rcg_program_schedule_hall
+    // id, hall_title, status(A, I, D)
+    $sql_hall = [];
+    $sql_hall['QUERY'] = "SELECT id, hall_title FROM rcg_program_schedule_hall 
+                        WHERE status = 'A'
+                        ORDER BY hall_title ASC";
+    $quiz_halls = $mycms->sql_select($sql_hall);
+    ?>
+    <div class="com_info_box active" id="addQuiz">
+        <form name="frmtypeadd" method="post" action="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php" id="frmtypeadd" onsubmit="return onSubmitAction();">
+            <input type="hidden" name="act" value="add_quiz" />
+            <?php
+            foreach ($searchArray as $key => $val) {
+            ?>
+            <input type="hidden" name="<?= $key ?>" id="<?= $key ?>" value="<?= $val ?>" />
+            <?php
+            }
+            ?>
+            <div class="com_info_box_grid">
+                <div class="com_info_box_grid_box">
+                    <h5 class="com_info_box_head">
+                        <n><span class="text_success"><i class="fal fa-question-circle"></i></span> Quiz Details</n>
+                        <div class="page_top_wrap_right">
+                            <a href="<?= $_SERVER['PHP_SELF'] ?>?pageno=<?= $_REQUEST['pageno'] ?? '' ?>" class="badge_dark"><i class="fal fa-arrow-left"></i> Back</a>
+                            <button type="submit" id="Save2" name="Save2" class="badge_success"><i class="fal fa-save"></i> Save</button>
+                        </div>
+                    </h5>
+                    <div class="com_info_box_inner">
+                        <div class="form_grid g_3">
+                            <div class="frm_grp">
+                                <p class="frm-head">Quiz Type <span class="mandatory">*</span></p>
+                                <select name="quiz_type" id="quiz_type" required>
+                                    <option value="default">Default</option>
+                                    <option value="panel discussion">Panel Discussion</option>
+                                </select>
+                            </div>
+                            <div class="frm_grp span_2">
+                                <p class="frm-head">Quiz Title <span class="mandatory">*</span></p>
+                                <input type="text" name="title" id="title" class="validate[required]" required />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Hall <span class="mandatory">*</span></p>
+                                <select name="hall" id="hall" class="validate[required]" required>
+                                    <option value=""> - Select - </option>
+                                    <?php foreach ($quiz_halls as $hall) { ?>
+                                        <option value="<?= $hall['id'] ?>"><?= htmlspecialchars($hall['hall_title']) ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="frm_grp optionalData">
+                                <p class="frm-head">Rounds <span class="mandatory">*</span></p>
+                                <input type="number" name="rounds" id="rounds" class="validate[required]" value="1" required />
+                            </div>
+                            <div class="frm_grp optionalData">
+                                <p class="frm-head">Levels <span class="mandatory">*</span></p>
+                                <input type="number" name="levels" id="levels" class="validate[required]" value="1" required />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Start Time <span class="mandatory">*</span></p>
+                                <input type="datetime-local" name="start_time" id="start_time" required />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Answer Time (in sec.) <span class="mandatory">*</span></p>
+                                <input type="number" name="answer_time" id="answer_time" required />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Buffer Time (in sec.) <span class="mandatory">*</span></p>
+                                <input type="number" name="buffer_time" id="buffer_time" required value="0" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Marks for Correct Answer</p>
+                                <input type="number" name="marks_correct" id="marks_correct" value="0" step="0.1" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Marks for Incorrect Answer</p>
+                                <input type="number" name="marks_incorrect" id="marks_incorrect" value="0" step="0.1" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Quiz Status <span class="mandatory">*</span></p>
+                                <select name="quiz_status" id="quiz_status" required>
+                                    <option value="draft">Draft</option>
+                                    <option value="active">Active</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">View Leader Board <span class="mandatory">*</span></p>
+                                <select name="view_answer" id="view_answer" required>
+                                    <option value="end">At The End of The Quiz</option>
+                                    <option value="question">After Each Question</option>
+                                    <option value="level">After Each Level</option>
+                                    <option value="round">After Each Round</option>
+                                </select>
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Seat Limit <span class="mandatory">*</span></p>
+                                <input type="number" name="seat_limit" id="seat_limit" required value="0" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Application Closing Time <span class="mandatory">*</span></p>
+                                <input type="datetime-local" name="application_close_time" id="application_close_time" required />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Application Status <span class="mandatory">*</span></p>
+                                <select name="application_status" id="application_status" required>
+                                    <option value="active">Active</option>
+                                    <option value="closed">Closed</option>
+                                </select>
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Participation Type <span class="mandatory">*</span></p>
+                                <select name="participation_type" id="participation_type" required>
+                                    <option value="solo" selected>Solo</option>
+                                    <option value="group">Group</option>
+                                    <option value="both">Both</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="com_info_box_grid_box">
+                    <h5 class="com_info_box_head">
+                        <n><span class="text_primary"><i class="fal fa-info-circle"></i></span> Joining Instructions</n>
+                    </h5>
+                    <div class="com_info_box_inner">
+                        <div class="form_grid g_3">
+                            <div class="frm_grp">
+                                <p class="frm-head">Show QR Code <span class="mandatory">*</span></p>
+                                <div class="cus_check_wrap">
+                                    <label class="cus_check outfrm_radio">
+                                        <input type="radio" value="yes" name="enable_qr">
+                                        <span class="checkmark">Yes</span>
+                                    </label>
+                                    <label class="cus_check outfrm_radio">
+                                        <input type="radio" value="no" name="enable_qr" checked>
+                                        <span class="checkmark">No</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <?php
+                            /*
+                            Show instructions bar (enable_instruction_bar) - yes / no (default: no)
+                            */ ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <?php
 }
 
-/*================= EDIT COUNTRY WINDOW ==============*/
+/*================= EDIT QUIZ WINDOW ==============*/
 function editQuiz($cfg, $mycms)
 {
-	global $searchArray, $searchString;
+    global $searchArray, $searchString;
 
-	$sql 	=	array();
-	$sql['QUERY']    = "SELECT * FROM `rcg_quizzes`  
-						   WHERE `id` = ?";
-	$sql['PARAM'][]	=	array('FILD' => 'id', 'DATA' => $_REQUEST['quiz_id'], 'TYP' => 's');
-	$result			 = $mycms->sql_select($sql);
-	$row    		 = $result[0];
-?>
-	<form name="frmtypeedit" method="post" action="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php" id="frmtypeedit" onsubmit="return onSubmitAction();">
-		<input type="hidden" name="act" value="edit_quiz" />
-		<input type="hidden" name="quiz_id" id="quiz_id" value="<?= $_REQUEST['quiz_id'] ?>" />
-		<?php
-		foreach ($searchArray as $key => $val) {
-		?>
-			<input type="hidden" name="<?= $key ?>" id="<?= $key ?>" value="<?= $val ?>" />
-		<?php
-		}
-		?>
-		<table width="50%" class="tborder">
-			<thead>
-				<tr>
-					<td colspan="2" align="left" class="tcat">Edit Quiz</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td colspan="2" align="center" style="margin:0px; padding:0px;">
+    $sql            = array();
+    $sql['QUERY']   = "SELECT * FROM `rcg_quizzes` WHERE `id` = ?";
+    $sql['PARAM'][] = array('FILD' => 'id', 'DATA' => $_REQUEST['quiz_id'], 'TYP' => 's');
+    $result         = $mycms->sql_select($sql);
+    $row            = $result[0];
 
-						<table width="100%">
-							<tr class="thighlight">
-								<td colspan="2" align="left">Quiz Details</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Quiz Type <span class="mandatory">*</span>
-								</td>
-								<?php
-									$quiz_type = $row['quiz_type'];
-									$displayOptionTr = (strtolower($quiz_type) == 'panel discussion') ? 'none' : '';
-								?>
-								<td width="60%" align="left">
-									<select name="quiz_type" id="quiz_type" style="width:83.6%;" required="">
-										<option <?= (strtolower($quiz_type) == 'default') ? 'selected' : ''; ?> value="default">Default</option>
-										<option <?= (strtolower($quiz_type) == 'panel discussion') ? 'selected' : ''; ?> value="panel discussion">Panel Discussion</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Quiz Title <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="text" name="title" id="title"
-										class="validate[required]" style="width:80%;" value="<?= $row['title']; ?>" required="" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Hall <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="hall" id="hall" class="validate[required]" style="width:83.6%;" required="">
-										<option value=""> - Select - </option>
-										<?php
-										// rcg_program_schedule_hall
-										// id, hall_title, status(A, I, D)
-										$sql_hall = [];
-										$sql_hall['QUERY'] = "SELECT id, hall_title FROM rcg_program_schedule_hall 
-														WHERE status = 'A'
-														ORDER BY hall_title ASC";
+    // rcg_program_schedule_hall
+    // id, hall_title, status(A, I, D)
+    $sql_hall = [];
+    $sql_hall['QUERY'] = "SELECT id, hall_title FROM rcg_program_schedule_hall 
+                        WHERE status = 'A'
+                        ORDER BY hall_title ASC";
+    $quiz_halls = $mycms->sql_select($sql_hall);
 
-										$quiz_halls = $mycms->sql_select($sql_hall);
-										foreach ($quiz_halls as $i => $hall) {
-										?>
-											<option value="<?= $hall['id'] ?>" <?= ($row['hall_id'] == $hall['id']) ? 'selected' : ''; ?>><?= $hall['hall_title']; ?></option>
-										<?php } ?>
-									</select>
-								</td>
-							</tr>
-							<tr class="optionalData" style="width:100%; display: <?= $displayOptionTr ?>;">
-								<td width="40%" align="left">
-									Rounds <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="rounds" id="rounds"
-										class="validate[required]" style="width:80%;" value="<?= ($row['rounds'] > 0) ? $row['rounds'] : 1; ?>" required="" />
-								</td>
-							</tr>
-							<tr class="optionalData" style="width:100%; display: <?= $displayOptionTr ?>;">
-								<td width="40%" align="left">
-									Levels <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="levels" id="levels"
-										class="validate[required]" style="width:80%;" value="<?= ($row['levels'] > 0) ? $row['levels'] : 1; ?>" required="" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Start Time <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="datetime-local" name="start_time" id="start_time" value="<?= $row['start_time']; ?>" style="width:80%;" required="" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Answer Time(in sec.) <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="answer_time" value="<?= $row['answer_time']; ?>" id="answer_time" style="width:80%;" required="" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Buffer Time(in sec.) <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="buffer_time" id="buffer_time" style="width:80%;" required="" value="<?= ($row['buffer_time'] > 0) ? $row['buffer_time'] : 1; ?>" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Marks for Correct Answer
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="marks_correct" id="marks_correct" style="width:80%;" value="<?= ($row['marks_correct'] > 0) ? $row['marks_correct'] : 0; ?>" step="0.1"/>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Marks for Incorrect Answer
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="marks_incorrect" id="marks_incorrect" style="width:80%;" value="<?= ($row['marks_incorrect'] > 0) ? $row['marks_incorrect'] : 0; ?>" step="0.1"/>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Quiz Status <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="quiz_status" id="quiz_status" style="width:83.6%;" required="">
-										<option <?= ($row['status'] == 'draft') ? 'selected' : ''; ?> value="draft">Draft</option>
-										<option <?= ($row['status'] == 'active') ? 'selected' : ''; ?> value="active">Active</option>
-										<option <?= ($row['status'] == 'completed') ? 'selected' : ''; ?> value="completed">Completed</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									View Leader Board <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="view_answer" id="view_answer" style="width:83.6%;" required="">
-										<option <?= ($row['view_answer'] == 'end') ? 'selected' : ''; ?> value="end">At The End of The Quiz</option>
-										<option <?= ($row['view_answer'] == 'question') ? 'selected' : ''; ?> value="question">After Each Question</option>
-										<option <?= ($row['view_answer'] == 'level') ? 'selected' : ''; ?> value="level">After Each Level</option>
-										<option <?= ($row['view_answer'] == 'round') ? 'selected' : ''; ?> value="round">After Each Round</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Seat Limit <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="number" name="seat_limit" id="seat_limit" style="width:80%;" required="" value="<?= $row['seat_limit']; ?>" />
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Application Closing Time <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="datetime-local" name="application_close_time" id="application_close_time" style="width:80%;" required="" value="<?= $row['application_close_time']; ?>"/>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Application Status <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="application_status" id="application_status" style="width:83.6%;" required="">
-										<option <?= ($row['application_status'] == 'active') ? 'selected' : ''; ?> value="active">Active</option>
-										<option <?= ($row['application_status'] == 'closed') ? 'selected' : ''; ?> value="closed">Closed</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Participation Type <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<select name="participation_type" id="participation_type" style="width:83.6%;" required="">
-										<option <?= ($row['participation_type'] == 'solo') ? 'selected' : ''; ?> value="solo">Solo</option>
-										<option <?= ($row['participation_type'] == 'group') ? 'selected' : ''; ?> value="group">Group</option>
-										<option <?= ($row['participation_type'] == 'both') ? 'selected' : ''; ?> value="both">Both</option>
-									</select>
-								</td>
-							</tr>
-							<tr class="thighlight">
-								<td width="100%" align="left" colspan="2">
-									Joining instructions
-								</td>
-							</tr>
-							<tr>
-								<td width="40%" align="left">
-									Show QR Code <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="radio" value="yes" name="enable_qr" <?= ($row['enable_qr'] == 'yes') ? 'checked' : ''; ?> >
-									<label for="">Yes</label>
-									&nbsp;
-									<input type="radio" value="no" name="enable_qr" <?= ($row['enable_qr'] == 'no') ? 'checked' : ''; ?>>
-									<label for="">No</label>
-								</td>
-							</tr>
-							<?php
-							/*
-							<tr>
-								<td width="40%" align="left">
-									Show instructions bar <span class="mandatory">*</span>
-								</td>
-								<td width="60%" align="left">
-									<input type="radio" value="yes" name="enable_instruction_bar"  <?= ($row['enable_instruction_bar'] == 'yes') ? 'checked' : ''; ?> >
-									<label for="">Yes</label>
-									&nbsp;
-									<input type="radio" value="no" name="enable_instruction_bar"  <?= ($row['enable_instruction_bar'] == 'no') ? 'checked' : ''; ?> >
-									<label for="">No</label>
-								</td>
-							</tr>
-							*/ ?>
-
-						</table>
-
-					</td>
-				</tr>
-				<tr>
-					<td width="40%"></td>
-					<td align="left">
-						<a href="<?= $_SERVER['PHP_SELF'] ?>?<?= $searchString ?>">
-							<input type="button" name="BackEdit" id="BackEdit" value="Back" class="btn btn-small btn-red" /></a>
-						&nbsp;
-						<input type="submit" name="Save" id="Save" value="Save" class="btn btn-small btn-blue" />
-					</td>
-				</tr>
-				<tr class="tfooter">
-					<td colspan="2">&nbsp;</td>
-				</tr>
-			</tbody>
-		</table>
-	</form>
-	<script>
-		$(document).ready(function(){
-			$('#quiz_type').on('change', function(){
-				let quizType = $('#quiz_type').val();
-				if(quizType === 'panel discussion') {
-					$('.optionalData').hide();
-				} else {
-					$('.optionalData').show();
-				}
-			});
-		});
-	</script>
-<?php
+    $quiz_type       = $row['quiz_type'];
+    $displayOptionTr = (strtolower($quiz_type) == 'panel discussion') ? 'none' : '';
+    ?>
+    <div class="com_info_box active" id="editQuiz">
+        <form name="frmtypeedit" method="post" action="<?= $cfg['SECTION_BASE_URL'] ?>manage_quiz.process.php" id="frmtypeedit" onsubmit="return onSubmitAction();">
+            <input type="hidden" name="act" value="edit_quiz" />
+            <input type="hidden" name="quiz_id" id="quiz_id" value="<?= $_REQUEST['quiz_id'] ?>" />
+            <?php
+            foreach ($searchArray as $key => $val) {
+            ?>
+            <input type="hidden" name="<?= $key ?>" id="<?= $key ?>" value="<?= $val ?>" />
+            <?php
+            }
+            ?>
+            <div class="com_info_box_grid">
+                <div class="com_info_box_grid_box">
+                    <h5 class="com_info_box_head">
+                        <n><span class="text_success"><i class="fal fa-question-circle"></i></span> Quiz Details</n>
+                        <div class="page_top_wrap_right">
+                            <a href="<?= $_SERVER['PHP_SELF'] ?>?<?= $searchString ?>" class="badge_dark"><i class="fal fa-arrow-left"></i> Back</a>
+                            <button type="submit" id="Save" name="Save" class="badge_success"><i class="fal fa-save"></i> Save</button>
+                        </div>
+                    </h5>
+                    <div class="com_info_box_inner">
+                        <div class="form_grid g_3">
+                            <div class="frm_grp">
+                                <p class="frm-head">Quiz Type <span class="mandatory">*</span></p>
+                                <select name="quiz_type" id="quiz_type" required>
+                                    <option <?= (strtolower($quiz_type) == 'default') ? 'selected' : ''; ?> value="default">Default</option>
+                                    <option <?= (strtolower($quiz_type) == 'panel discussion') ? 'selected' : ''; ?> value="panel discussion">Panel Discussion</option>
+                                </select>
+                            </div>
+                            <div class="frm_grp span_2">
+                                <p class="frm-head">Quiz Title <span class="mandatory">*</span></p>
+                                <input type="text" name="title" id="title" class="validate[required]" value="<?= htmlspecialchars($row['title']); ?>" required />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Hall <span class="mandatory">*</span></p>
+                                <select name="hall" id="hall" class="validate[required]" required>
+                                    <option value=""> - Select - </option>
+                                    <?php foreach ($quiz_halls as $hall) { ?>
+                                        <option value="<?= $hall['id'] ?>" <?= ($row['hall_id'] == $hall['id']) ? 'selected' : ''; ?>><?= htmlspecialchars($hall['hall_title']); ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="frm_grp optionalData" style="display: <?= $displayOptionTr ?>;">
+                                <p class="frm-head">Rounds <span class="mandatory">*</span></p>
+                                <input type="number" name="rounds" id="rounds" class="validate[required]" value="<?= ($row['rounds'] > 0) ? $row['rounds'] : 1; ?>" required />
+                            </div>
+                            <div class="frm_grp optionalData" style="display: <?= $displayOptionTr ?>;">
+                                <p class="frm-head">Levels <span class="mandatory">*</span></p>
+                                <input type="number" name="levels" id="levels" class="validate[required]" value="<?= ($row['levels'] > 0) ? $row['levels'] : 1; ?>" required />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Start Time <span class="mandatory">*</span></p>
+                                <input type="datetime-local" name="start_time" id="start_time" value="<?= $row['start_time']; ?>" required />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Answer Time (in sec.) <span class="mandatory">*</span></p>
+                                <input type="number" name="answer_time" value="<?= $row['answer_time']; ?>" id="answer_time" required />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Buffer Time (in sec.) <span class="mandatory">*</span></p>
+                                <input type="number" name="buffer_time" id="buffer_time" required value="<?= ($row['buffer_time'] > 0) ? $row['buffer_time'] : 1; ?>" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Marks for Correct Answer</p>
+                                <input type="number" name="marks_correct" id="marks_correct" value="<?= ($row['marks_correct'] > 0) ? $row['marks_correct'] : 0; ?>" step="0.1" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Marks for Incorrect Answer</p>
+                                <input type="number" name="marks_incorrect" id="marks_incorrect" value="<?= ($row['marks_incorrect'] > 0) ? $row['marks_incorrect'] : 0; ?>" step="0.1" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Quiz Status <span class="mandatory">*</span></p>
+                                <select name="quiz_status" id="quiz_status" required>
+                                    <option <?= ($row['status'] == 'draft') ? 'selected' : ''; ?> value="draft">Draft</option>
+                                    <option <?= ($row['status'] == 'active') ? 'selected' : ''; ?> value="active">Active</option>
+                                    <option <?= ($row['status'] == 'completed') ? 'selected' : ''; ?> value="completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">View Leader Board <span class="mandatory">*</span></p>
+                                <select name="view_answer" id="view_answer" required>
+                                    <option <?= ($row['view_answer'] == 'end') ? 'selected' : ''; ?> value="end">At The End of The Quiz</option>
+                                    <option <?= ($row['view_answer'] == 'question') ? 'selected' : ''; ?> value="question">After Each Question</option>
+                                    <option <?= ($row['view_answer'] == 'level') ? 'selected' : ''; ?> value="level">After Each Level</option>
+                                    <option <?= ($row['view_answer'] == 'round') ? 'selected' : ''; ?> value="round">After Each Round</option>
+                                </select>
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Seat Limit <span class="mandatory">*</span></p>
+                                <input type="number" name="seat_limit" id="seat_limit" required value="<?= $row['seat_limit']; ?>" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Application Closing Time <span class="mandatory">*</span></p>
+                                <input type="datetime-local" name="application_close_time" id="application_close_time" required value="<?= $row['application_close_time']; ?>" />
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Application Status <span class="mandatory">*</span></p>
+                                <select name="application_status" id="application_status" required>
+                                    <option <?= ($row['application_status'] == 'active') ? 'selected' : ''; ?> value="active">Active</option>
+                                    <option <?= ($row['application_status'] == 'closed') ? 'selected' : ''; ?> value="closed">Closed</option>
+                                </select>
+                            </div>
+                            <div class="frm_grp">
+                                <p class="frm-head">Participation Type <span class="mandatory">*</span></p>
+                                <select name="participation_type" id="participation_type" required>
+                                    <option <?= ($row['participation_type'] == 'solo') ? 'selected' : ''; ?> value="solo">Solo</option>
+                                    <option <?= ($row['participation_type'] == 'group') ? 'selected' : ''; ?> value="group">Group</option>
+                                    <option <?= ($row['participation_type'] == 'both') ? 'selected' : ''; ?> value="both">Both</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="com_info_box_grid_box">
+                    <h5 class="com_info_box_head">
+                        <n><span class="text_primary"><i class="fal fa-info-circle"></i></span> Joining Instructions</n>
+                    </h5>
+                    <div class="com_info_box_inner">
+                        <div class="form_grid g_3">
+                            <div class="frm_grp">
+                                <p class="frm-head">Show QR Code <span class="mandatory">*</span></p>
+                                <div class="cus_check_wrap">
+                                    <label class="cus_check outfrm_radio">
+                                        <input type="radio" value="yes" name="enable_qr" <?= ($row['enable_qr'] == 'yes') ? 'checked' : ''; ?>>
+                                        <span class="checkmark">Yes</span>
+                                    </label>
+                                    <label class="cus_check outfrm_radio">
+                                        <input type="radio" value="no" name="enable_qr" <?= ($row['enable_qr'] == 'no') ? 'checked' : ''; ?>>
+                                        <span class="checkmark">No</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <?php
+                            /*
+                            Show instructions bar (enable_instruction_bar) - yes / no
+                            */ ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <?php
 }
 ?>

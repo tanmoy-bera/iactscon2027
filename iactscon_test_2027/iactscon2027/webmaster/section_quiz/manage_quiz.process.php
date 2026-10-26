@@ -1,6 +1,6 @@
 <?php
-include_once('includes/init.php');
-include_once('includes/fcm-helper.php');
+include_once('..includes/init.php');
+include_once('..includes/fcm-helper.php');
 
 $loggedUserID = $mycms->getLoggedUserId();
 $act = @$_REQUEST['act'];

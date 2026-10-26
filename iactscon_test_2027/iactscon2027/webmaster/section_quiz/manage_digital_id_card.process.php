@@ -1,6 +1,6 @@
 <?php
 
-include_once('includes/init.php');
+include_once('../includes/init.php');
 $loggedUserID = $mycms->getLoggedUserId();
 $act = @$_REQUEST['act'];
 
