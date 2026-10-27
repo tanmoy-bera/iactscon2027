@@ -2,7 +2,7 @@
 // ── LEADERBOARD AJAX (must be first, before any output) ──────────────────────
 if (isset($_GET['act']) && $_GET['act'] === 'leaderboard') {
     ini_set('display_errors', 0);
-    include_once("..includes/init.php");
+    include_once("includes/init.php");
     header('Content-Type: application/json');
 
     $quizId = isset($_GET['quiz_id']) ? preg_replace('/[^a-zA-Z0-9_\-]/', '', $_GET['quiz_id']) : null;

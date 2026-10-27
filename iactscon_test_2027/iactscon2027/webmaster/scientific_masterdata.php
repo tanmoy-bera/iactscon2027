@@ -908,8 +908,931 @@ if (smd_capacity_table_exists($mycms)) {
             </form>
         </div>
     </div>
-    <?php include_once("includes/popup.php"); ?>
 </body>
+  <div class="pop_up_wrap" id="editscientificSession">
+            <div class="pop_up_inner">
+          <!-- Add scientific session pop up -->
+        <div class="pop_up_body" >
+            <?php
+            $sqlSessionListing = array();
+            $sqlSessionListing['QUERY'] = "SELECT * FROM " . _DB_SESSION_CLASSIFICATION .
+                " WHERE status != 'D'";
+            $resultSessionListing = $mycms->sql_select($sqlSessionListing);
+            foreach ($resultSessionListing as $kkkk => $rowSessionListing) {
+                ?>
+                        <i style="display:none;" use='dataStore' datatype='sessionType'><?= $rowSessionListing['session_classifications'] ?></i>
+                    <?
+            }
+            ?>
+              <form name="frmEditSession" id="frmEditSessionn" action="additional_data.process.php" method="post" >
+           <input type="hidden" name="act" value="editSession" />
+           <input type="hidden" name="id" id="sessionId" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Edit Session Type</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Session Type</p>
+                                    <input  type="text" name="type_name" id="session_type_edit"  onBlur="checktheValue(this);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+          </form>
+        </div>
+        <!-- Edit scientific session pop up -->
+         </div>
+        </div>
+ <div class="pop_up_wrap" id="newscientificdate">
+            <div class="pop_up_inner">
+        <!-- Add program date pop up -->
+        <div class="pop_up_body" >
+            <form name="frmInsertSession" id="frmInsertSession" action="additional_data.process.php" method="post" enctype="multipart/form-data">
+             <input type="hidden" name="act" value="insertconfDate" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Add Program Date</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                 <!-- <div class="frm_grp span_1 frm_grp_date">
+                                    <p class="frm-head">Speaker Image</p>
+                                    <input style="display: none;"  class="date_input" id="conf_image" name="conf_image"  type="file" >
+                                    <label for="accessoriesicon" class="frm-image uploaddateImage"><i class="fal fa-upload"></i></label>
+                                    <div class="frm_img_preview frm_img_preview_date">
+                                        <img class="date_preview" src="https://ruedakolkata.com/natcon2025/uploads/EMAIL.HEADER.FOOTER.IMAGE/HOTELICON_0_0001_250107125112.png">
+                                        <button  class="removedate"><i class="fal fa-trash-alt"></i></button>
+                                    </div>
+                                </div> -->
+                                 <div class="frm_grp span_2">
+                                    <p class="frm-head">Program Date</p>
+                                    <input type="date" name="session_date_add" id="session_date_add" required>
+                                </div>
+                                <div class="frm_grp span_2">
+                                    <p class="frm-head">Program Time</p>
+                                    <input type="time" name="session_time_add" id="session_time_add">
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Program Title</p>
+                                    <input type="text" name="conf_title" id="conf_title">
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Program Description</p>
+                                    <input type="text" name="conf_desc" id="conf_desc" >
+                                </div>
+                               
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Program Highlights</p>
+                                    <textarea name="conf_highlight" id="conf_highlight"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+           </form>
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.22.1/ckeditor.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    CKEDITOR.config.versionCheck = false;
+
+                    CKEDITOR.replace('conf_highlight', {
+                        toolbar: 'Basic',
+                        height: 100,
+                        weidth: 500
+
+                    });
+                    
+                });
+                // Handle click events for upload and remove
+                document.addEventListener('click', function(e) {
+                    const box = e.target.closest('.frm_grp_date');
+                    if (!box) return;
+
+                    const input = box.querySelector('.date_input');
+                    const previewBox = box.querySelector('.frm_img_preview_date');
+                    const previewImg = box.querySelector('.date_preview');
+                    const uploadBtn = box.querySelector('.uploaddateImage');
+
+                    // Upload click
+                    if (e.target.closest('.uploaddateImage')) {
+                        input.click();
+                        return;
+                    }
+
+                    // Remove icon
+                    if (e.target.closest('.removedate')) {
+                        e.preventDefault();
+                        input.value = "";
+                        previewImg.src = "uploads/nouserimage.png";
+                        previewBox.style.display = "none";
+                        uploadBtn.style.display = "block";
+                        
+                        // Optional: Send AJAX to delete image from server
+                        // deleteImageFromServer();
+                        return;
+                    }
+                });
+
+                // File change
+                document.addEventListener('change', function(e) {
+                    if (!e.target.classList.contains('date_input')) return;
+
+                    const input = e.target;
+                    const box = input.closest('.frm_grp_date');
+                    const previewBox = box.querySelector('.frm_img_preview_date');
+                    const previewImg = box.querySelector('.date_preview');
+                    const uploadBtn = box.querySelector('.uploaddateImage');
+
+                    const file = input.files[0];
+                    if (!file || !file.type.startsWith('image/')) {
+                        alert('Please select an image file');
+                        input.value = "";
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        previewImg.src = evt.target.result;
+                        previewBox.style.display = "block";
+                        uploadBtn.style.display = "none";
+                    };
+                    reader.readAsDataURL(file);
+                });
+            </script>
+        </div>
+        <!-- Add program date pop up -->
+         </div>
+        </div>
+         <div class="pop_up_wrap" id="editscientificdate">
+            <div class="pop_up_inner">
+          <!-- Add program date pop up -->
+        <div class="pop_up_body" >
+            <?php
+            $dateId = addslashes(trim($_REQUEST['dateId']));
+
+            $sqlHallListing = array();
+            $sqlHallListing['QUERY'] = "SELECT * FROM " . _DB_PROGRAM_SCHEDULE_DATE_ . " WHERE `id` = '" . $dateId . "'";
+            $resultHallListing = $mycms->sql_select($sqlHallListing);
+            $rowProgramSession = $resultHallListing[0];
+            $confDate = $rowProgramSession['conf_date'];
+
+            $dateValue = !empty($confDate) ? date('Y-m-d', strtotime($confDate)) : '';
+            $timeValue = !empty($confDate) ? date('H:i', strtotime($confDate)) : '';
+            ?>
+          <form name="frmUpdateSession" id="frmUpdateSession" action="additional_data.process.php" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="act" value="updateConfDate" />
+          <input type="hidden" name="session_id" value="<?= $rowProgramSession['id'] ?>" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Edit Program Date</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                 <!-- <div class="frm_grp span_1 frm_grp_date">
+                                    <p class="frm-head">Speaker Image</p>
+                                     <?
+
+                                     if ($rowProgramSession['conf_image'] != "") {
+                                         $speakerprofileImage = _BASE_URL_ . $cfg['SP.PARTICIPANT.DOC'] . $rowProgramSession['conf_image'];
+                                         $hasImageSpeaker = true;
+                                     } else {
+                                         $speakerprofileImage = "uploads/nouserimage.png";
+                                         $hasImageSpeaker = false;
+                                     }
+                                     ?>
+                                    <input style="display: none;"  class="date_input" id="conf_image" name="conf_image"  type="file" >
+                                    <label style="<?= $hasImageSpeaker ? 'display:none;' : '' ?>" class="frm-image uploaddateImage"><i class="fal fa-upload"></i></label>
+                                    <div class="frm_img_preview frm_img_preview_date" style="<?= $hasImageSpeaker ? 'display:block;' : 'display:none;' ?>">
+                                        <img class="date_preview" src="<?= $speakerprofileImage ?>">
+                                        <button  class="removedate"><i class="fal fa-trash-alt"></i></button>
+                                    </div>
+                                </div> -->
+                                <div class="frm_grp span_2">
+                                    <p class="frm-head">Program Date</p>
+                                    <input type="date" name="session_date_add"  required value="<?= $dateValue ?>">
+                                </div>
+                                <div class="frm_grp span_2">
+                                    <p class="frm-head">Program Time</p>
+                                    <input type="time" name="session_time_add" value="<?= $timeValue ?>">
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Program Title</p>
+                                    <input type="text" name="conf_title" id="conf_title" value="<?= $rowProgramSession['conf_title'] ?>" >
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Program Description</p>
+                                    <input type="text" name="conf_desc" id="conf_desc" value="<?= $rowProgramSession['conf_desc'] ?>">
+                                </div>
+                                
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Program Highlights</p>
+                                    <textarea name="conf_highlight" id="conf_highlight_edit"><?= $rowProgramSession['conf_highlight'] ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+           </form>
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.22.1/ckeditor.js"></script>
+            <script type="text/javascript">
+                function initeditscientificdater(){
+                $(document).ready(function() {
+                    CKEDITOR.config.versionCheck = false;
+
+                    CKEDITOR.replace('conf_highlight_edit', {
+                        toolbar: 'Basic',
+                        height: 100,
+                        weidth: 500
+
+                    });
+                    
+                });
+                }
+                document.addEventListener("DOMContentLoaded", initeditscientificdater);
+
+            </script>
+        </div>
+        <!-- Add program date pop up -->
+         </div>
+        </div>
+         <div class="pop_up_wrap" id="newscientificparticipanttype">
+            <div class="pop_up_inner">
+        <!-- Add scientific participant type pop up -->
+        <div class="pop_up_body" >
+                <script>
+                function fromValidation() {
+                    var p = $('#type_name').val();
+                    var participantType = p.toLowerCase();
+                    accessVerrification = true;
+                    $.each($("i[use=dataStore][datatype=paticipantType]"), function() {
+                        var v = $(this).text();
+                        var val = v.toLowerCase();
+                        if (participantType == val) {
+                            accessVerrification = false;
+                            return false;
+                        }
+                    })
+
+                    if (!accessVerrification) {
+                        alert("Duplicate Participation Type");
+                    }
+                    return accessVerrification;
+                }
+            </script>
+            <?
+            $sqlParticipantTypeListing = array();
+            $sqlParticipantTypeListing['QUERY'] = "SELECT * FROM " . _DB_SP_PARTICIPANT_TYPE_ . " WHERE `status` = 'A' ORDER BY type_name";
+            $resultParticipantTypeListing = $mycms->sql_select($sqlParticipantTypeListing);
+            foreach ($resultParticipantTypeListing as $kkkk => $rowParticipantTypeListing) {
+                ?>
+                        <i style="display:none;" use='dataStore' datatype='paticipantType'><?= $rowParticipantTypeListing['type_name'] ?></i>
+                    <?
+            }
+            ?>
+           <form name="frmInsertSession" id="frmInsertSession" action="additional_data.process.php" method="post" onsubmit="return fromValidation();">
+           <input type="hidden" name="act" value="insertParticipantType" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Add Participant Type</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Participant Type</p>
+                                    <input name="type_name" id="type_name"  required>
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Participant Description</p>
+                                    <textarea name="type_description" id="type_description"  required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+         </form>
+        </div>
+        <!-- Add scientific participant type pop up -->
+         </div>
+        </div>
+         <div class="pop_up_wrap" id="editscientificparticipanttype">
+            <div class="pop_up_inner">
+           <!-- Edit scientific participant type pop up -->
+        <div class="pop_up_body" >
+                <script>
+                function fromValidation() {
+                    var p = $('#type_name').val();
+                    var participantType = p.toLowerCase();
+                    accessVerrification = true;
+                    $.each($("i[use=dataStore][datatype=paticipantType]"), function() {
+                        var v = $(this).text();
+                        var val = v.toLowerCase();
+                        if (participantType == val) {
+                            accessVerrification = false;
+                            return false;
+                        }
+                    })
+
+                    if (!accessVerrification) {
+                        alert("Duplicate Participation Type");
+                    }
+                    return accessVerrification;
+                }
+            </script>
+            <?
+            $sqlParticipantTypeListing = array();
+            $sqlParticipantTypeListing['QUERY'] = "SELECT * FROM " . _DB_SP_PARTICIPANT_TYPE_ . " WHERE `status` = 'A' ORDER BY type_name";
+            $resultParticipantTypeListing = $mycms->sql_select($sqlParticipantTypeListing);
+            foreach ($resultParticipantTypeListing as $kkkk => $rowParticipantTypeListing) {
+                ?>
+                        <i style="display:none;" use='dataStore' datatype='paticipantType'><?= $rowParticipantTypeListing['type_name'] ?></i>
+                    <?
+            }
+            ?>
+        <form name="frmEditSession" id="frmEditSessionnn" action="additional_data.process.php" method="post" onsubmit="return fromValidation();">
+        <input type="hidden" name="act" value="editParticipantType" />
+        <input type="hidden" name="id" id="participant_type_id" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Edit Participant Type</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Participant Type</p>
+                                    <input name="type_name" id="type_name_edit"  required>
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Participant Description</p>
+                                    <textarea name="type_description" id="type_description_edit"  required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+         </form>
+        </div>
+        <!-- Edit scientific participant type pop up -->
+         </div>
+        </div>
+         <div class="pop_up_wrap" id="newscientifichall">
+            <div class="pop_up_inner">
+        <!-- Add scientific hall pop up -->
+        <div class="pop_up_body" >
+            <script>
+                function fromValidation() {
+                    accessVerrification = true;
+                    if (fieldNotEmpty('#session_title_add', "Please Enter Hall Title") == false) {
+
+                        accessVerrification = false;
+                        return false;
+                    }
+                    if (fieldNotEmpty('#session_tag_add', "Please Enter Hall Tag") == false) {
+
+                        accessVerrification = false;
+                        return false;
+                    }
+                    if (fieldNotEmpty('#session_venue_add', "Please Select Session Venue") == false) {
+
+                        accessVerrification = false;
+                        return false;
+                    }
+
+                    /*if($("input[type=checkbox][use=session_type]:checked").length <= 0){ 
+                        alert("Please Select Atlist One Hall");
+                        accessVerrification = false;
+                        return false; 
+                    }*/
+                    return accessVerrification;
+                }
+
+                function checktheValue(obj) {
+                    $.each($("input[type=text][use=tempHallName]"), function() {
+                        var tempHall = $(this);
+                        if ($(tempHall).val() == '') {
+                            $(tempHall).val($(obj).val());
+                        }
+                    });
+                }
+            </script>
+           <form name="frmInsertSession" id="frmInsertSession" action="additional_data.process.php" method="post" onsubmit="return fromValidation();">
+           <input type="hidden" name="act" value="HallInsert" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Add Hall</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Hall Title</p>
+                                    <input type="text" name="session_title_add" id="session_title_add" onBlur="checktheValue(this);" required>
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Hall Tag</p>
+                                    <input  type="text" name="session_tag_add" id="session_tag_add" required>
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Venue</p>
+                                    <select  name="session_venue_add" id="session_venue_add" required>
+                                        <option value="">-- Select Venue --</option>
+                                         <?
+                                         $sqlVenueListing = array();
+                                         $sqlVenueListing['QUERY'] = "SELECT * FROM " . _DB_PROGRAM_SCHEDULE_VENUE_ . " WHERE `status` = ?";
+
+                                         $sqlVenueListing['PARAM'][] = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
+
+                                         $resultVenueListing = $mycms->sql_select($sqlVenueListing);
+                                         if ($resultVenueListing) {
+                                             foreach ($resultVenueListing as $keyVenueListing => $rowVenueListing) {
+                                                 ?>
+                                                                    <option value="<?= $rowVenueListing['id'] ?>"><?= $rowVenueListing['program_venue'] ?></option>
+                                                            <?
+                                             }
+                                         }
+                                         ?>
+                                    </select>
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <div class="form_grid">
+                                        <?
+                                        $sqlDate = array();
+                                        $sqlDate['QUERY'] = "SELECT * FROM " . _DB_PROGRAM_SCHEDULE_DATE_ . " WHERE `status` = 'A'";
+                                        $resultDate = $mycms->sql_select($sqlDate);
+                                        foreach ($resultDate as $kkkk => $rowDate) {
+                                            ?>
+                                                <div class="registration-pop_body_box_inner span_4">
+                                                    <div class="form_grid">
+                                                        <div class="frm_grp span_2">
+                                                            <p class="frm-head">Date & Time</p>
+                                                            <p class="typed_data"><?= $rowDate['conf_date'] ?></p>
+                                                        </div>
+                                                        <div class="frm_grp span_2">
+                                                            <p class="frm-head">Hall</p>
+                                                            <input type="text" name="hall_temp_name[<?= $rowDate['id'] ?>]"   use="tempHallName">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        <? } ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+         </form>
+        </div>
+        <!-- Add scientific hall pop up -->
+         </div>
+        </div>
+         <div class="pop_up_wrap" id="editscientifichall">
+            <div class="pop_up_inner">
+              <!-- Edit scientific hall pop up -->
+        <div class="pop_up_body" >
+         
+            <?php
+            $hallId = addslashes(trim($_REQUEST['hallId']));
+            $sqlHallListing = array();
+            $sqlHallListing['QUERY'] = "SELECT * FROM " . _DB_MASTER_HALL_ . " WHERE `id` = ?";
+
+            $sqlHallListing['PARAM'][] = array('FILD' => 'id', 'DATA' => $hallId, 'TYP' => 's');
+
+            $resultHallListing = $mycms->sql_select($sqlHallListing);
+            $rowProgramSession = $resultHallListing[0];
+            ?>
+            <form name="frmUpdateSession" id="frmUpdateSession" action="additional_data.process.php" method="post">
+             <input type="hidden" name="act" value="HallUpdate" />
+             <input type="hidden" name="session_id" value="<?= $rowProgramSession['id'] ?>" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Edit Hall</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Hall Title</p>
+                                    <input type="text" name="halltitle" id="halltitle" value="<?= $rowProgramSession['hall_title'] ?>" required onBlur="checktheValue(this);">
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Hall Tag</p>
+                                    <input  type="text" name="halltag" id="halltag" value="<?= $rowProgramSession['tag_name'] ?>" required>
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Venue</p>
+                                    <select  name="session_venue_add" id="session_venue_add" required>
+                                        <option value="">-- Select Venue --</option>
+                                        <?
+                                        $sqlVenueListing = array();
+                                        $sqlVenueListing['QUERY'] = "SELECT * FROM " . _DB_PROGRAM_SCHEDULE_VENUE_ . " WHERE `status` = ?";
+
+                                        $sqlVenueListing['PARAM'][] = array('FILD' => 'status', 'DATA' => 'A', 'TYP' => 's');
+
+                                        $resultVenueListing = $mycms->sql_select($sqlVenueListing);
+                                        if ($resultVenueListing) {
+                                            foreach ($resultVenueListing as $keyVenueListing => $rowVenueListing) {
+                                                ?>
+                                                                <option value="<?= $rowVenueListing['id'] ?>" <?= ($rowVenueListing['id'] == $rowProgramSession['hall_venue']) ? 'selected="selected"' : '' ?>><?= $rowVenueListing['program_venue'] ?></option>
+                                                        <?
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <div class="form_grid">
+                                            <?
+                                            $sqlDate = array();
+                                            $sqlDate['QUERY'] = "SELECT * FROM " . _DB_PROGRAM_SCHEDULE_DATE_ . " WHERE `status` = 'A'";
+                                            $resultDate = $mycms->sql_select($sqlDate);
+                                            foreach ($resultDate as $kkkk => $rowDate) {
+                                                $sqlHallName = array();
+                                                $sqlHallName['QUERY'] = " SELECT hall.*,
+                                                                                    scDate.conf_date 
+                                                                                FROM " . _DB_MASTER_HALL_NAME_ . " hall
+                                                                            INNER JOIN " . _DB_PROGRAM_SCHEDULE_DATE_ . " scDate
+                                                                                    ON hall.date_id = scDate.id 
+                                                                                WHERE hall.status = ?
+                                                                                AND hall.date_id = ?
+                                                                                AND hall.hall_id = ?";
+
+                                                $sqlHallName['PARAM'][] = array('FILD' => 'hall.status', 'DATA' => 'A', 'TYP' => 's');
+                                                $sqlHallName['PARAM'][] = array('FILD' => 'hall.date_id', 'DATA' => $rowDate['id'], 'TYP' => 's');
+                                                $sqlHallName['PARAM'][] = array('FILD' => 'hall.hall_id', 'DATA' => $hallId, 'TYP' => 's');
+
+                                                $resultHallName = $mycms->sql_select($sqlHallName);
+                                                $rowHallName = $resultHallName[0];
+                                                ?>
+                                                <div class="registration-pop_body_box_inner span_4">
+                                                    <div class="form_grid">
+                                                        <div class="frm_grp span_2">
+                                                            <p class="frm-head">Date & Time</p>
+                                                            <p class="typed_data"><?= $rowDate['conf_date'] ?></p>
+                                                        </div>
+                                                        <div class="frm_grp span_2">
+                                                            <p class="frm-head">Hall</p>
+                                                             <input type="text" name="hall_temp_name[<?= $rowDate['id'] ?>]" value="<?= $rowHallName['hall_name'] ?>" style="width:60%;"  use="tempHallName">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        <? } ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+         </form>
+        </div>
+        <!-- Edit scientific hall pop up -->
+         </div>
+        </div>
+         <div class="pop_up_wrap" id="addscientificSession">
+            <div class="pop_up_inner">
+        <!-- Add scientific session pop up -->
+        <div class="pop_up_body" >
+            <script>
+                function fromValidation() {
+                    var p = $('#session_type_add').val();
+                    var participantType = p.toLowerCase();
+                    accessVerrification = true;
+                    $.each($("i[use=dataStore][datatype=sessionType]"), function() {
+                        var v = $(this).text();
+                        var val = v.toLowerCase();
+                        if (participantType == val) {
+                            accessVerrification = false;
+                            return false;
+                        }
+                    })
+
+                    if (!accessVerrification) {
+                        alert("Duplicate Session Type");
+                    }
+                    return accessVerrification;
+                }
+            </script>
+            <?php
+            $sqlSessionListing = array();
+            $sqlSessionListing['QUERY'] = "SELECT * FROM " . _DB_SESSION_CLASSIFICATION .
+                " WHERE status != 'D'";
+            $resultSessionListing = $mycms->sql_select($sqlSessionListing);
+            foreach ($resultSessionListing as $kkkk => $rowSessionListing) {
+                ?>
+                        <i style="display:none;" use='dataStore' datatype='sessionType'><?= $rowSessionListing['session_classifications'] ?></i>
+                    <?
+            }
+            ?>
+            <form name="frmInsertSession" id="frmInsertSession" action="additional_data.process.php" method="post" onsubmit="return fromValidation();">
+                <input type="hidden" name="act" value="insertSessionType" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Add Session Type</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Session Type</p>
+                                    <input  type="text" name="session_type_add" id="session_type_add"  onBlur="checktheValue(this);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+          </form>
+        </div>
+        <!-- Add scientific session pop up -->
+         </div>
+        </div>
+            <div class="pop_up_wrap" id="newspeaker">
+            <div class="pop_up_inner">
+             
+        <!-- Add highlight speakers pop up -->
+        <div class="pop_up_body" >
+            <form name="frmInsertSession" id="frmInsertSession" action="additional_data.process.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="act" value="insertSpeaker" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Add Highlight Speaker</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                <div class="frm_grp span_1 frm_grp_speaker">
+                                    <p class="frm-head">Speaker Image</p>
+                                    <input style="display: none;"  class="speaker_input" id="conf_image" name="image"  type="file" >
+                                    <label for="accessoriesicon" class="frm-image uploadspeakerImage"><i class="fal fa-upload"></i></label>
+                                    <div class="frm_img_preview frm_img_preview_speaker">
+                                        <img class="speaker_preview" src="https://ruedakolkata.com/natcon2025/uploads/EMAIL.HEADER.FOOTER.IMAGE/HOTELICON_0_0001_250107125112.png">
+                                        <button  class="removespeaker"><i class="fal fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                                <div class="frm_grp span_3">
+                                    <p class="frm-head">Speaker Name</p>
+                                    <input type="text" name="speaker_name" id="speaker_name"  required>
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Designation</p>
+                                    <input type="text" name="designation" id="designation"  required>
+                                </div>
+                                <div class="frm_grp span_2">
+                                    <p class="frm-head">Hall Name</p>
+                                    <input type="text" name="hall_name" id="hall_name"  required>
+                                </div>
+                                <div class="frm_grp span_2">
+                                    <p class="frm-head">Program Date</p>
+                                    <input type="datetime-local" name="conf_datetime" id="conf_datetime"  required>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+          </form>
+           <script>
+            // Handle click events for upload and remove
+            document.addEventListener('click', function(e) {
+                const box = e.target.closest('.frm_grp_speaker');
+                if (!box) return;
+
+                const input = box.querySelector('.speaker_input');
+                const previewBox = box.querySelector('.frm_img_preview_speaker');
+                const previewImg = box.querySelector('.speaker_preview');
+                const uploadBtn = box.querySelector('.uploadspeakerImage');
+
+                // Upload click
+                if (e.target.closest('.uploadspeakerImage')) {
+                    input.click();
+                    return;
+                }
+
+                // Remove icon
+                if (e.target.closest('.removespeaker')) {
+                    e.preventDefault();
+                    input.value = "";
+                    previewImg.src = "uploads/nouserimage.png";
+                    previewBox.style.display = "none";
+                    uploadBtn.style.display = "block";
+                    
+                    // Optional: Send AJAX to delete image from server
+                    // deleteImageFromServer();
+                    return;
+                }
+            });
+
+            // File change
+            document.addEventListener('change', function(e) {
+                if (!e.target.classList.contains('speaker_input')) return;
+
+                const input = e.target;
+                const box = input.closest('.frm_grp_speaker');
+                const previewBox = box.querySelector('.frm_img_preview_speaker');
+                const previewImg = box.querySelector('.speaker_preview');
+                const uploadBtn = box.querySelector('.uploadspeakerImage');
+
+                const file = input.files[0];
+                if (!file || !file.type.startsWith('image/')) {
+                    alert('Please select an image file');
+                    input.value = "";
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    previewImg.src = evt.target.result;
+                    previewBox.style.display = "block";
+                    uploadBtn.style.display = "none";
+                };
+                reader.readAsDataURL(file);
+            });
+        </script>
+        </div>
+        <!-- Add highlight speakers pop up -->
+         </div>
+        </div>
+         <div class="pop_up_wrap" id="editspeaker">
+            <div class="pop_up_inner">
+         <!-- Edit highlight speakers pop up -->
+        <div class="pop_up_body" >
+          <? $speakerHId = addslashes(trim($_REQUEST['speakerHId']));
+          $sqlHallListing = array();
+          $sqlHallListing['QUERY'] = "SELECT * FROM " . _DB_PROGRAM_HIGHLIGHT_SPEAKER_ . " WHERE `id` = '" . $speakerHId . "'";
+          $resultHallListing = $mycms->sql_select($sqlHallListing);
+          $rowProgramSession = $resultHallListing[0]; ?>
+           <form name="frmUpdateSession" id="frmUpdateSession" action="additional_data.process.php" method="post" enctype="multipart/form-data">
+           <input type="hidden" name="act" value="updateSpeaker" />
+           <input type="hidden" name="session_id" value="<?= $rowProgramSession['id'] ?>" />
+            <div class="registration_pop_up">
+                <div class="registration-pop_heading">
+                    <span>Edit Highlight Speaker</span>
+                    <p>
+                        <a href="javascript:void(null)" class="popup_close icon_hover badge_danger action-transparent"><?php close(); ?></a>
+                    </p>
+                </div>
+                
+                <div class="registration-pop_body">
+                    <div class="registration-pop_body_box">
+                        <div class="registration-pop_body_box_inner p-0 bg-transparent border-0">
+                            <div class="form_grid">
+                                <div class="frm_grp span_1 frm_grp_speaker">
+                                    <p class="frm-head">Speaker Image</p>
+                                     <?
+
+                                     if ($rowProgramSession['image'] != "") {
+                                         $speakerprofileImage = _BASE_URL_ . $cfg['SP.PARTICIPANT.DOC'] . $rowProgramSession['image'];
+                                         $hasImageSpeaker = true;
+                                     } else {
+                                         $speakerprofileImage = "uploads/nouserimage.png";
+                                         $hasImageSpeaker = false;
+                                     }
+                                     ?>
+                                    <input style="display: none;"  class="speaker_input" id="conf_image" name="image"  type="file" >
+                                    <label class="frm-image uploadspeakerImage" style="<?= $hasImageSpeaker ? 'display:none;' : '' ?>"><?php echo upload(); ?></label>
+                                    <div class="frm_img_preview frm_img_preview_speaker" style="<?= $hasImageSpeaker ? 'display:block;' : 'display:none;' ?>" >
+                                        <img class="speaker_preview" src="<?= $speakerprofileImage ?>">
+                                        <button  class="removespeaker"><i class="fal fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                                <div class="frm_grp span_3">
+                                    <p class="frm-head">Speaker Name</p>
+                                    <input type="text" name="speaker_name" id="speaker_name"  required  value="<?= $rowProgramSession['speaker_name'] ?>">
+                                </div>
+                                <div class="frm_grp span_4">
+                                    <p class="frm-head">Designation</p>
+                                    <input type="text" name="designation" id="designation"  required  value="<?= $rowProgramSession['hall_name'] ?>">
+                                </div>
+                                <div class="frm_grp span_2">
+                                    <p class="frm-head">Hall Name</p>
+                                    <input type="text" name="hall_name" id="hall_name"  required  value="<?= $rowProgramSession['designation'] ?>">
+                                </div>
+                                <div class="frm_grp span_2">
+                                    <p class="frm-head">Program Date</p>
+                                    <input type="datetime-local" name="conf_datetime" id="conf_datetime"  required  value="<?= $rowProgramSession['conf_datetime'] ?>">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="registration-pop_footer">
+                    <div class="registration_btn_wrap">
+                        <button class="popup_close badge_dark">Cancel</button>
+                        <button type="submit" class="mi-1 badge_success"><?php save(); ?>Save</button>
+                    </div>
+                </div>
+            </div>
+          </form>
+           
+        </div>
+        <!-- Edit highlight speakers pop up -->
+         </div>
+        </div>
 <?php include_once("includes/js-source.php"); ?>
 <script>
     $('.com_info_left_click').click(function() {
@@ -944,18 +1867,19 @@ if (smd_capacity_table_exists($mycms)) {
        
         
         $.ajax({
-            url: 'includes/popup.php',
+            url: 'scientific_masterdata.php',
             type: 'POST',
             data: {
                 speakerHId: speakerHId
                
             },
              success: function(response) {
-
-        $('#editspeaker').html($(response).find('#editspeaker').html());
-            // Re-initialize after DOM replacement
-            document.body.dataset.accmInit = "0"; // allow re-binding
+           var $wrapped = $('<div>').html(response);
+            $('#editspeaker').html($wrapped.find('#editspeaker').html());
             initeditspeaker();
+            $('#editspeaker').fadeIn();
+
+   
             },
             error: function(xhr) {
                 console.error('AJAX error', xhr.responseText);
@@ -972,18 +1896,18 @@ if (smd_capacity_table_exists($mycms)) {
        
         
         $.ajax({
-            url: 'includes/popup.php',
+            url: 'scientific_masterdata.php',
             type: 'POST',
             data: {
                 dateId: dateId
                
             },
              success: function(response) {
+               var $wrapped = $('<div>').html(response);
+                $('#editscientificdate').html($wrapped.find('#editscientificdate').html());
+                initeditscientificdater();
+                $('#editscientificdate').fadeIn();
 
-        $('#editscientificdate').html($(response).find('#editscientificdate').html());
-            // Re-initialize after DOM replacement
-            document.body.dataset.accmInit = "0"; // allow re-binding
-            initeditscientificdater();
             },
             error: function(xhr) {
                 console.error('AJAX error', xhr.responseText);
@@ -993,69 +1917,6 @@ if (smd_capacity_table_exists($mycms)) {
    
     });
          ///////////////////date edit end///////////////////////////
-         ///////////////////vanue edit start///////////////////////////
-
-     $(document).on('click', '.editscientificvenuebtn', function() {
-        var venue_id     = $(this).data('id');
-        var title  = $(this).data('title');
-       
-        $('#venue_id').val(venue_id);
-        $('#session_venue_edit').val(title);
-     
-
-        // if(status === 'A') {
-        //     $('#edit_status_active').prop('checked', true);
-        // } else {
-        //     $('#edit_status_inactive').prop('checked', true);
-        // }
-
-        // Trigger the popup-btn functionality
-     $('#editscientificvenue').fadeIn(); // or your popup open function
-    });
-             ///////////////////vanue edit end///////////////////////////
-               ///////////////////participant edit start///////////////////////////
-
-     $(document).on('click', '.editscientificparticipanttypebtn', function() {
-        var participant_type_id     = $(this).data('id');
-        var type  = $(this).data('type');
-       
-        $('#participant_type_id').val(participant_type_id);
-        $('#type_name_edit').val(type);
-     
-
-    
-        // Trigger the popup-btn functionality
-     $('#editscientificparticipanttype').fadeIn(); // or your popup open function
-    });
-             ///////////////////participant edit end///////////////////////////
-           /////////////////// hall start///////////////////////////
-       $(document).on('click', '.editscientifichallbtn', function() {
-            //    console.log($(this).data('package'));
-        let hallId   = $(this).data('id');
-       
-        
-        $.ajax({
-            url: 'includes/popup.php',
-            type: 'POST',
-            data: {
-                hallId: hallId
-               
-            },
-             success: function(response) {
-
-        $('#editscientifichall').html($(response).find('#editscientifichall').html());
-            // Re-initialize after DOM replacement
-            document.body.dataset.accmInit = "0"; // allow re-binding
-            initeditscientifichall();
-            },
-            error: function(xhr) {
-                console.error('AJAX error', xhr.responseText);
-            }
-        });
-        // Trigger the popup-btn functionality
-   
-    });
-         ///////////////////hall edit end///////////////////////////
          ///////////////////venue start///////////////////////////
     function venueAddCapRow(hall, floor, cap) {
         var $row = $($.trim($('#venueCapTemplate').html()));
@@ -1130,6 +1991,49 @@ if (smd_capacity_table_exists($mycms)) {
     $(function() { if ($('#floorAlert').length) { setTimeout(function() { $('#floorAlert').fadeOut(300); }, 4000); } });
     $(document).on('click', '#floorAlertClose', function() { $('#floorAlert').fadeOut(200); });
          ///////////////////floor end///////////////////////////
+         ///////////////////participant edit start///////////////////////////
+
+     $(document).on('click', '.editscientificparticipanttypebtn', function() {
+        var participant_type_id     = $(this).data('id');
+        var type  = $(this).data('type');
+       
+        $('#participant_type_id').val(participant_type_id);
+        $('#type_name_edit').val(type);
+     
+
+    
+        // Trigger the popup-btn functionality
+     $('#editscientificparticipanttype').fadeIn(); // or your popup open function
+    });
+             ///////////////////participant edit end///////////////////////////
+           /////////////////// hall start///////////////////////////
+       $(document).on('click', '.editscientifichallbtn', function() {
+            //    console.log($(this).data('package'));
+        let hallId   = $(this).data('id');
+       
+        
+        $.ajax({
+            url: 'scientific_masterdata.php',
+            type: 'POST',
+            data: {
+                hallId: hallId
+               
+            },
+             success: function(response) {
+                var $wrapped = $('<div>').html(response);
+                $('#editscientifichall').html($wrapped.find('#editscientifichall').html());
+                initeditscientifichall();
+                $('#editscientifichall').fadeIn();
+       
+            },
+            error: function(xhr) {
+                console.error('AJAX error', xhr.responseText);
+            }
+        });
+        // Trigger the popup-btn functionality
+   
+    });
+         ///////////////////hall edit end///////////////////////////
            ///////////////////session edit start///////////////////////////
 
      $(document).on('click', '.editscientificSessionbtn', function() {
@@ -1145,6 +2049,13 @@ if (smd_capacity_table_exists($mycms)) {
      $('#editscientificSession').fadeIn(); // or your popup open function
     });
              ///////////////////session edit end///////////////////////////
+     document.addEventListener("click", function(e) {
+        if (e.target.closest(".popup_close")) {
+            e.preventDefault(); // stops form submit
+                    $(".pop_up_wrap").hide();
+
+        }
+     });
 </script>
 
 </html>
